@@ -2,6 +2,8 @@
 
 Your personal gym assistant for successful training.
 
+https://fitbau.vercel.app/
+
 ## TechStack:
 
 - Typescript
