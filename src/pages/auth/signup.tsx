@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { SyntheticEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
+import PAGE_URL from '@/constants/page.constant';
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,8 +31,8 @@ export default function SignUp() {
     if (res.status === 200) {
       toast.success('Account created! Redirecting to login...');
       setTimeout(() => {
-        router.push('/auth/signin');
-      }, 1500);
+        router.push(PAGE_URL.SIGN_IN);
+      }, 1000);
     } else {
       toast.error(await res.text());
     }
@@ -41,7 +42,7 @@ export default function SignUp() {
     <div className="flex h-full w-full flex-col items-center justify-center">
       <div className="w-96 flex flex-col flex-auto justify-center items-center">
         <div className="mb-5">
-          <Image src="/images/logo.png" alt="App Logo" width={70} height={70} priority />
+          <Image src="/images/logo.png" alt="App Logo" width={80} height={80} priority />
         </div>
         <div className="mb-4 text-center">
           <h1 className="text-2xl tracking-tight mb-5">Create an account</h1>

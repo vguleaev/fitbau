@@ -16,3 +16,7 @@ https://fitbau.vercel.app/
 - Zustand
 - Prisma
 - NextAuth
+
+Hosted on Vercel
+Database hosted on Planetscale
+All graphic assets generated with Midjourney

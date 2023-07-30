@@ -1,5 +1,6 @@
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
+import PAGE_URL from './constants/page.constant';
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
@@ -10,13 +11,13 @@ export default async function middleware(req: NextRequest) {
 
   const session = await getToken({ req });
   if (!session && !path.includes('/auth')) {
-    return NextResponse.redirect(new URL('/auth/signin', req.url));
-  } else if (session && path === '/auth/signin') {
-    return NextResponse.redirect(new URL('/', req.url));
+    return NextResponse.redirect(new URL(PAGE_URL.SIGN_IN, req.url));
+  } else if (session && path === PAGE_URL.SIGN_IN) {
+    return NextResponse.redirect(new URL(PAGE_URL.HOME, req.url));
   }
 
-  if (session && path === '/') {
-    return NextResponse.redirect(new URL('/trainings', req.url));
+  if (session && path === PAGE_URL.HOME) {
+    return NextResponse.redirect(new URL(PAGE_URL.WORKOUTS, req.url));
   }
 
   return NextResponse.next();

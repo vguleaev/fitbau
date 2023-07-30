@@ -34,7 +34,7 @@ export default function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof
 
     if (response?.ok) {
       toast.success(`Successfully logged in!`);
-      await router.push('/protected');
+      await router.push('/');
     } else {
       toast.error(`${response?.error}`);
     }
@@ -44,8 +44,8 @@ export default function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
       <div className="w-96 flex flex-col flex-auto justify-center items-center">
-        <div className="mb-5">
-          <Image src="/images/logo.png" alt="App Logo" width={70} height={70} priority />
+        <div className="mb-4">
+          <Image src="/images/logo.png" alt="App Logo" width={80} height={80} priority />
         </div>
         <div className="mb-4 text-center">
           <h1 className="text-2xl tracking-tight mb-5">Fitbau</h1>

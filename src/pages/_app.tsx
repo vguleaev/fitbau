@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>Fitbau</title>
         <meta name="description" content="FITBAU - Your personal gym assistant for successful training" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`bg-base-100" ${robot.className}`}>
