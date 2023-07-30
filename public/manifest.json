@@ -1,0 +1,22 @@
+{
+  "theme_color": "#f73c4d",
+  "background_color": "#f8fafc",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Fitbau",
+  "short_name": "Fitbau",
+  "description": "Your personal gym assistant for successful training",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
