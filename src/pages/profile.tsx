@@ -19,7 +19,7 @@ export default function Profile() {
             </label>
             <input
               type="text"
-              value={session?.user?.name as string}
+              defaultValue={session?.user?.name as string}
               className="input input-bordered w-full mb-2"
               disabled
             />
@@ -31,7 +31,7 @@ export default function Profile() {
             </label>
             <input
               type="text"
-              value={session?.user?.email as string}
+              defaultValue={session?.user?.email as string}
               className="input input-bordered w-full mb-2"
               disabled
             />
