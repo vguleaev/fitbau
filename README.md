@@ -16,7 +16,12 @@ https://fitbau.vercel.app/
 - Zustand
 - Prisma
 - NextAuth
+- react-icons
 
-Hosted on Vercel
-Database hosted on Planetscale
-All graphic assets generated with Midjourney
+Hosted on **Vercel**
+
+Database hosted on **Planetscale**
+
+All graphic assets generated with **Midjourney**
+
+Created using this starter https://github.com/vguleaev/fullstack-nextjs-starter
