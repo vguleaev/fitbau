@@ -11,3 +11,50 @@ body, html {
 #__next,#root,main {
   height: 100%
 }
+
+/* DaisyUI overwrites */
+.drawer-end .drawer-toggle ~ .drawer-side > *:not(.drawer-overlay) {
+  transform: translateY(100%);
+}
+
+.active {
+  animation-name: flash_border;
+  animation-duration: 500ms;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  -webkit-animation-name: flash_border;
+  -webkit-animation-duration: 500ms;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  -moz-animation-name: flash_border;
+  -moz-animation-duration: 500ms;
+  -moz-animation-timing-function: linear;
+  -moz-animation-iteration-count: 1;
+}
+
+@keyframes flash_border {
+  0% {
+    border-color: #f73c4c00;
+  }
+  100% {
+    border-color: #f73c4d;
+  }
+}
+
+@-webkit-keyframes flash_border {
+  0% {
+    border-color: #f73c4c00;
+  }
+  100% {
+    border-color: #f73c4d;
+  }
+}
+
+@-moz-keyframes flash_border {
+  0% {
+    border-color: #f73c4c00;
+  }
+  100% {
+    border-color: #f73c4d;
+  }
+}

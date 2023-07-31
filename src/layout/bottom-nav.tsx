@@ -14,17 +14,17 @@ export const BottomNav = ({ page }: ComponentProps) => {
       <button
         className={`text-primary bg-base-200 ${PAGE_URL.WORKOUTS == page && 'active'}`}
         onClick={() => router.push(PAGE_URL.WORKOUTS)}>
-        <FaDumbbell className="h-5 w-5" />
+        <FaDumbbell className="h-6 w-6" />
       </button>
       <button
         className={`text-primary bg-base-200 ${PAGE_URL.START_WORKOUT == page && 'active'}`}
         onClick={() => router.push(PAGE_URL.START_WORKOUT)}>
-        <FaPlayCircle className="h-5 w-5" />
+        <FaPlayCircle className="h-6 w-6" />
       </button>
       <button
         className={`text-primary bg-base-200 ${PAGE_URL.PROFILE == page && 'active'}`}
         onClick={() => router.push(PAGE_URL.PROFILE)}>
-        <FaUser className="h-5 w-5" />
+        <FaUser className="h-6 w-6" />
       </button>
     </div>
   );

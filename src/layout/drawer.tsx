@@ -19,20 +19,20 @@ export const Drawer = ({ children }: ComponentProps) => {
         <label htmlFor="my-drawer" className="drawer-overlay" />
         <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
           <li>
-            <a onClick={() => router.push(PAGE_URL.WORKOUTS)}>
-              <FaDumbbell className="h-5 w-5" />
+            <a className="text-[17px] mb-2" onClick={() => router.push(PAGE_URL.WORKOUTS)}>
+              <FaDumbbell className="h-5 w-5 mr-2" />
               Workouts
             </a>
           </li>
           <li>
-            <a onClick={() => router.push(PAGE_URL.START_WORKOUT)}>
-              <FaPlayCircle className="h-5 w-5" />
+            <a className="text-[17px] mb-2" onClick={() => router.push(PAGE_URL.START_WORKOUT)}>
+              <FaPlayCircle className="h-5 w-5  mr-2" />
               Start Workout
             </a>
           </li>
           <li>
-            <a onClick={() => router.push(PAGE_URL.PROFILE)}>
-              <FaUser className="h-5 w-5" />
+            <a className="text-[17px] mb-2" onClick={() => router.push(PAGE_URL.PROFILE)}>
+              <FaUser className="h-5 w-5  mr-2" />
               My Account
             </a>
           </li>

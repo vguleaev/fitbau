@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import Notification from '@/components/notification';
 import { Roboto } from 'next/font/google';
 
-const robot = Roboto({ subsets: ['latin', 'cyrillic'], weight: ['400', '700'] });
+const roboto = Roboto({ subsets: ['latin', 'cyrillic'], weight: ['400', '700'] });
 
 export default function App({ Component, pageProps }: AppProps) {
   const session = pageProps.session;
@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`bg-base-100" ${robot.className}`}>
+      <main className={`bg-base-100" ${roboto.className}`}>
         <Notification />
         <Component {...pageProps} />
       </main>
