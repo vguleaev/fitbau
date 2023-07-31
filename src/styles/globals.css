@@ -17,6 +17,10 @@ body, html {
   transform: translateY(100%);
 }
 
+.drawer-side > *:not(.drawer-overlay) {
+  transition-duration: 400ms;
+}
+
 .active {
   animation-name: flash_border;
   animation-duration: 500ms;

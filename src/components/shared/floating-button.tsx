@@ -8,7 +8,7 @@ type ComponentProps = {
 export const FloatingButton = ({ onClick }: ComponentProps) => {
   return (
     <div className="fixed bottom-[80px] right-[20px]">
-      <button onClick={() => onClick()} className="btn btn-lg btn-circle btn-primary">
+      <button onClick={() => onClick()} className="btn btn-lg btn-circle btn-primary text-white">
         <FaPlus className="w-7 h-7" />
       </button>
     </div>

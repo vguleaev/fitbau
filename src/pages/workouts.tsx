@@ -16,7 +16,11 @@ export default function Home() {
       <div className="flex justify-center text-center m-5">
         Workouts
         <BottomOffcanvas isOpen={isOpen} onClose={() => onClose()}>
-          CONTENT
+          <div className="mt-5">
+            <input className="input input-bordered w-full max-w-xs mb-2" type="text" />
+            <input className="input input-bordered w-full max-w-xs mb-2" type="text" />
+            <input className="input input-bordered w-full max-w-xs mb-2" type="text" />
+          </div>
         </BottomOffcanvas>
         <FloatingButton onClick={() => setIsOpen(!isOpen)} />
       </div>
