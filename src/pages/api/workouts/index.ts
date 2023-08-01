@@ -35,9 +35,5 @@ export default async function handler(
     return res.status(200).json(workout);
   }
 
-  if (req.method === 'DELETE') {
-    // TODO: Implement delete workout
-  }
-
   res.status(404).json({ error: 'Not found' });
 }

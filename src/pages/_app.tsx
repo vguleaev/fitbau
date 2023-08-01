@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import Notification from '@/components/notification';
 import { Roboto } from 'next/font/google';
 
-const roboto = Roboto({ subsets: ['latin', 'cyrillic'], weight: ['400', '700'] });
+const roboto = Roboto({ subsets: ['latin', 'cyrillic'], weight: ['400', '500', '700'] });
 
 export default function App({ Component, pageProps }: AppProps) {
   const session = pageProps.session;
