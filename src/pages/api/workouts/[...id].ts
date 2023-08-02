@@ -22,11 +22,13 @@ export default async function handler(
   }
 
   if (req.method === 'GET') {
-    const { id } = req.query;
+    const id = req.query;
     if (!id) {
       return res.status(400).json({ error: 'Missing id' });
     }
-    const workout = await getWorkoutById(id as string);
+    const workoutId = id[0] as string;
+
+    const workout = await getWorkoutById(workoutId);
     if (!workout) {
       return res.status(404).json({ error: 'Not found' });
     }
@@ -34,21 +36,22 @@ export default async function handler(
   }
 
   if (req.method === 'PUT') {
-    const { id } = req.query;
+    const id = req.query;
     if (!id) {
       return res.status(400).json({ error: 'Missing id' });
     }
 
+    const workoutId = id[0] as string;
     const { name } = req.body;
 
-    const workout = await getWorkoutById(id as string);
+    const workout = await getWorkoutById(workoutId);
     if (!workout) {
       return res.status(404).json({ error: 'Not found' });
     }
     if (workout.userId !== session.user.id) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-    const updated = await updateWorkout(id as string, { name });
+    const updated = await updateWorkout(workoutId, { name });
     if (!updated) {
       return res.status(404).json({ error: 'Not found' });
     }
@@ -61,7 +64,9 @@ export default async function handler(
       return res.status(400).json({ error: 'Missing id' });
     }
 
-    const workout = await getWorkoutById(id as string);
+    const workoutId = id[0] as string;
+
+    const workout = await getWorkoutById(workoutId);
     if (!workout) {
       return res.status(404).json({ error: 'Not found' });
     }
@@ -69,7 +74,7 @@ export default async function handler(
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const deleted = await deleteWorkout(id as string);
+    const deleted = await deleteWorkout(workoutId);
     return res.status(200).json(deleted);
   }
 
