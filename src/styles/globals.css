@@ -12,6 +12,48 @@ body, html {
   height: 100%
 }
 
+[data-theme="light"] .skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+[data-theme="dark"] .skeleton {
+  animation: skeleton-loading-dark 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 10%, 75%);
+  }
+
+  100% {
+    background-color: hsl(200, 10%, 90%);
+  }
+}
+
+@keyframes skeleton-loading-dark {
+  0% {
+    background-color: hsl(200, 10%, 35%);
+  }
+
+  100% {
+    background-color: hsl(200, 10%, 90%);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
 /* DaisyUI overwrites */
 .drawer-end .drawer-toggle ~ .drawer-side > *:not(.drawer-overlay) {
   transform: translateY(100%);

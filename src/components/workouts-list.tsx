@@ -1,6 +1,7 @@
 import { useWorkoutsStore } from '@/stores/workouts.store';
-import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LuTrophy, LuDumbbell, LuTrash } from 'react-icons/lu';
+import { DialogModal } from './shared/dialog-modal';
 
 export const WorkoutsList = () => {
   const { isLoading, workouts, loadWorkouts, deleteWorkout } = useWorkoutsStore((state) => ({
@@ -12,50 +13,68 @@ export const WorkoutsList = () => {
 
   const [selectedWorkoutId, setSelectedWorkoutId] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     loadWorkouts();
   }, []);
 
-  const ref = useRef<HTMLDialogElement>(null);
-
   const showModal = (workoutId: string) => {
-    ref?.current?.showModal();
     setIsDeleteDialogOpen(true);
     setSelectedWorkoutId(workoutId);
   };
 
-  const onDeleteClick = async (e: SyntheticEvent) => {
-    e.preventDefault();
+  const onDeleteClick = async () => {
+    setIsDeleting(true);
     await deleteWorkout(selectedWorkoutId);
+    setIsDeleting(false);
     setIsDeleteDialogOpen(false);
-    ref?.current?.close();
+  };
+
+  const renderWorkoutSkeleton = () => {
+    return (
+      <div className="h-24 mb-4 pt-2 pb-2">
+        <div className="flex flex-row justify-between items-center">
+          <div>
+            <div className="w-[160px] h-5 mb-2 bg-base-200 skeleton" />
+            <div className="w-[110px] h-5 mb-2 bg-base-200 skeleton" />
+          </div>
+          <div className="h-11 w-11 rounded-full bg-base-200 skeleton" />
+        </div>
+        <div className="divider" />
+      </div>
+    );
   };
 
   const renderDeleteModal = () => {
     return (
-      <dialog id="my_modal_2" className="modal" ref={ref} open={isDeleteDialogOpen}>
-        <form method="dialog" className="modal-box">
+      <DialogModal isOpened={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
+        <div>
           <h3 className="font-bold text-lg">Delete</h3>
           <p className="py-4">Are you sure you want to delete workout?</p>
           <div className="flex flex-row justify-between">
-            <button className="btn btn-default w-[80px]">No</button>
-            <button className="btn btn-primary w-[80px]" onClick={(e) => onDeleteClick(e)}>
+            <button className="btn btn-default min-w-[80px]" onClick={() => setIsDeleteDialogOpen(false)}>
+              No
+            </button>
+            <button
+              className="btn btn-primary min-w-[80px] text-white"
+              disabled={isDeleting}
+              onClick={() => onDeleteClick()}>
+              {isDeleting && <span className="loading loading-spinner" />}
               Yes
             </button>
           </div>
-        </form>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+        </div>
+      </DialogModal>
     );
   };
 
   if (isLoading) {
     return (
       <div>
-        <span className="loading loading-spinner loading-md" />
+        {renderWorkoutSkeleton()}
+        {renderWorkoutSkeleton()}
+        {renderWorkoutSkeleton()}
       </div>
     );
   }
