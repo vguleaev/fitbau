@@ -9,9 +9,9 @@ type WorkoutModel = {
 type ExerciseModel = {
   id: string;
   name: string;
-  sets: number;
-  reps: number;
-  weight: number;
+  sets: string;
+  reps: string;
+  weight: string;
 };
 
 type WorkoutCanvasStore = {
@@ -20,13 +20,15 @@ type WorkoutCanvasStore = {
   workoutModel: WorkoutModel;
   exercises: ExerciseModel[];
   exerciseModel: ExerciseModel;
+  selectedWorkoutId: string;
   setIsCanvasOpen: (isCanvasOpen: boolean) => void;
-  createWorkout: () => void;
+  createWorkout: (data: { name: string }) => void;
   clearWorkoutModel: () => void;
   setWorkoutModel: (workoutModel: WorkoutModel) => void;
   addExercise: (workoutModel: ExerciseModel) => void;
   removeExercise: (exerciseId: string) => void;
   setExerciseModel: (exerciseModel: Partial<ExerciseModel>) => void;
+  setSelectedWorkoutId: (id: string) => void;
 };
 
 const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
@@ -38,11 +40,17 @@ const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
   exerciseModel: {
     id: '',
     name: '',
-    sets: 0,
-    reps: 0,
-    weight: 0,
+    sets: '',
+    reps: '',
+    weight: '',
   },
   exercises: [],
+  selectedWorkoutId: '',
+  setSelectedWorkoutId: (id) => {
+    set({
+      selectedWorkoutId: id,
+    });
+  },
   setExerciseModel: (exerciseModel) => {
     set({
       exerciseModel: {
@@ -77,26 +85,19 @@ const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
         ...workoutModel,
       },
     }),
-  createWorkout: async () => {
-    set({ isSaving: true });
-    const name = get().workoutModel.name;
-
+  createWorkout: async (data: { name: string }) => {
     const result = await fetch('/api/workouts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name,
-      }),
+      body: JSON.stringify(data),
     });
 
     if (result.status === 200) {
       toast.success(`Created!`);
-      set({ isCanvasOpen: false, isSaving: false });
     } else {
       toast.error('Something went wrong :(');
-      set({ isSaving: false });
     }
   },
 }));

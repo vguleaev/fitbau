@@ -1,23 +1,31 @@
 import { useWorkoutsStore } from '@/stores/workouts.store';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { LuTrophy, LuDumbbell, LuTrash } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
+import { useWorkoutCanvasStore } from '@/stores/workout-canvas.store';
+import { BottomOffcanvas } from './shared/bottom-offcanvas';
+import { WorkoutForm } from './workout-form';
 
 export const WorkoutsList = () => {
-  const { isLoading, workouts, loadWorkouts, deleteWorkout } = useWorkoutsStore((state) => ({
+  const { isLoading, workouts, deleteWorkout } = useWorkoutsStore((state) => ({
     isLoading: state.isLoading,
     workouts: state.workouts,
-    loadWorkouts: state.loadWorkouts,
     deleteWorkout: state.deleteWorkout,
   }));
 
-  const [selectedWorkoutId, setSelectedWorkoutId] = useState('');
+  const { isCanvasOpen, setIsCanvasOpen, clearWorkoutModel, setSelectedWorkoutId, selectedWorkoutId } =
+    useWorkoutCanvasStore((state) => ({
+      isCanvasOpen: state.isCanvasOpen,
+      workoutModel: state.workoutModel,
+      selectedWorkoutId: state.selectedWorkoutId,
+      setIsCanvasOpen: state.setIsCanvasOpen,
+      setWorkoutModel: state.setWorkoutModel,
+      clearWorkoutModel: state.clearWorkoutModel,
+      setSelectedWorkoutId: state.setSelectedWorkoutId,
+    }));
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    loadWorkouts();
-  }, []);
 
   const showDeleteModal = (workoutId: string) => {
     setIsDeleteDialogOpen(true);
@@ -44,6 +52,21 @@ export const WorkoutsList = () => {
         <div className="divider" />
       </div>
     );
+  };
+
+  const onWorkoutClick = (workoutId: string) => {
+    setIsCanvasOpen(true);
+    setSelectedWorkoutId(workoutId);
+  };
+
+  const onBottomCanvasClose = () => {
+    setIsCanvasOpen(false);
+    clearWorkoutModel();
+  };
+
+  const getWorkoutFormTitle = () => {
+    const workout = workouts.find((w) => w.id === selectedWorkoutId);
+    return workout ? workout.name : '';
   };
 
   const renderDeleteModal = () => {
@@ -90,7 +113,7 @@ export const WorkoutsList = () => {
   return (
     <div>
       {workouts.map((workout) => (
-        <div className="h-24 mb-4 pt-2 pb-2" key={workout.id}>
+        <div className="h-24 mb-4 pt-2 pb-2" key={workout.id} onClick={() => onWorkoutClick(workout.id)}>
           <div className="flex flex-row justify-between items-center">
             <div className="">
               <div className="flex flex-row mb-2 items-center">
@@ -111,6 +134,11 @@ export const WorkoutsList = () => {
           <div className="divider" />
         </div>
       ))}
+
+      <BottomOffcanvas title={getWorkoutFormTitle()} isOpen={isCanvasOpen} onClose={() => onBottomCanvasClose()}>
+        <WorkoutForm />
+      </BottomOffcanvas>
+
       {renderDeleteModal()}
     </div>
   );

@@ -17,6 +17,8 @@ https://fitbau.vercel.app/
 - Prisma
 - NextAuth
 - react-icons
+- react-hook-form
+- zod
 
 Hosted on **Vercel**
 

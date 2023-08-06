@@ -8,61 +8,35 @@ export const WorkoutForm = () => {
     loadWorkouts: state.loadWorkouts,
   }));
 
-  const {
-    isSaving,
-    createWorkout,
-    workoutModel,
-    clearWorkoutModel,
-    setWorkoutModel,
-    exercises,
-    exerciseModel,
-    addExercise,
-    setExerciseModel,
-    removeExercise,
-  } = useWorkoutCanvasStore((state) => ({
-    workoutModel: state.workoutModel,
-    isSaving: state.isSaving,
-    createWorkout: state.createWorkout,
-    clearWorkoutModel: state.clearWorkoutModel,
-    setWorkoutModel: state.setWorkoutModel,
-    addExercise: state.addExercise,
-    removeExercise: state.removeExercise,
-    setExerciseModel: state.setExerciseModel,
-    exercises: state.exercises,
-    exerciseModel: state.exerciseModel,
-  }));
+  const { isSaving, clearWorkoutModel, exercises, exerciseModel, addExercise, setExerciseModel, removeExercise } =
+    useWorkoutCanvasStore((state) => ({
+      workoutModel: state.workoutModel,
+      isSaving: state.isSaving,
+      createWorkout: state.createWorkout,
+      clearWorkoutModel: state.clearWorkoutModel,
+      setWorkoutModel: state.setWorkoutModel,
+      addExercise: state.addExercise,
+      removeExercise: state.removeExercise,
+      setExerciseModel: state.setExerciseModel,
+      exercises: state.exercises,
+      exerciseModel: state.exerciseModel,
+      selectedWorkoutId: state.selectedWorkoutId,
+    }));
 
   const onSaveClick = async () => {
-    await createWorkout();
     clearWorkoutModel();
     loadWorkouts();
   };
 
   const addExerciseToList = () => {
     addExercise(exerciseModel);
-    setExerciseModel({ name: '', reps: 0, sets: 0, weight: 0 });
+    setExerciseModel({ name: '', reps: '', sets: '', weight: '' });
   };
 
   return (
     <div>
       <div className="mt-5">
         <div>
-          <div className="mb-5">
-            <label className="label">Name</label>
-            <input
-              required
-              name="name"
-              value={workoutModel.name}
-              onChange={(e) =>
-                setWorkoutModel({
-                  name: e.target.value,
-                })
-              }
-              className="input input-bordered w-full w-full mb-2"
-              type="text"
-            />
-          </div>
-          <div className="divider" />
           <div className="">
             <div>
               <label className="label">Exercise Name</label>
@@ -88,7 +62,7 @@ export const WorkoutForm = () => {
                   value={exerciseModel.reps}
                   onChange={(e) =>
                     setExerciseModel({
-                      reps: Number(e.target.value),
+                      reps: e.target.value,
                     })
                   }
                 />
@@ -102,7 +76,7 @@ export const WorkoutForm = () => {
                   value={exerciseModel.sets}
                   onChange={(e) =>
                     setExerciseModel({
-                      sets: Number(e.target.value),
+                      sets: e.target.value,
                     })
                   }
                 />
@@ -116,7 +90,7 @@ export const WorkoutForm = () => {
                   value={exerciseModel.weight}
                   onChange={(e) =>
                     setExerciseModel({
-                      weight: Number(e.target.value),
+                      weight: e.target.value,
                     })
                   }
                 />
@@ -126,7 +100,7 @@ export const WorkoutForm = () => {
               </button>
             </div>
           </div>
-
+          <div className="divider" />
           <div className="mt-5 mb-5">Exercises:</div>
 
           {exercises.length === 0 && <div>Empty list</div>}
