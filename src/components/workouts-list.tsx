@@ -19,7 +19,7 @@ export const WorkoutsList = () => {
     loadWorkouts();
   }, []);
 
-  const showModal = (workoutId: string) => {
+  const showDeleteModal = (workoutId: string) => {
     setIsDeleteDialogOpen(true);
     setSelectedWorkoutId(workoutId);
   };
@@ -103,7 +103,7 @@ export const WorkoutsList = () => {
                 <div className="ml-2">3 exercises</div>
               </div>
             </div>
-            <button className="btn btn-circle" onClick={() => showModal(workout.id)}>
+            <button className="btn btn-circle" onClick={() => showDeleteModal(workout.id)}>
               <LuTrash className="h-5 w-5" />
             </button>
           </div>

@@ -22,11 +22,11 @@ export default async function handler(
   }
 
   if (req.method === 'GET') {
-    const id = req.query;
+    const { id } = req.query;
     if (!id) {
       return res.status(400).json({ error: 'Missing id' });
     }
-    const workoutId = id[0] as string;
+    const workoutId = id[0];
 
     const workout = await getWorkoutById(workoutId);
     if (!workout) {
@@ -36,12 +36,12 @@ export default async function handler(
   }
 
   if (req.method === 'PUT') {
-    const id = req.query;
+    const { id } = req.query;
     if (!id) {
       return res.status(400).json({ error: 'Missing id' });
     }
 
-    const workoutId = id[0] as string;
+    const workoutId = id[0];
     const { name } = req.body;
 
     const workout = await getWorkoutById(workoutId);
@@ -64,7 +64,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Missing id' });
     }
 
-    const workoutId = id[0] as string;
+    const workoutId = id[0];
 
     const workout = await getWorkoutById(workoutId);
     if (!workout) {

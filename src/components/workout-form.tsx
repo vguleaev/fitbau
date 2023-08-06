@@ -146,7 +146,7 @@ export const WorkoutForm = () => {
           </div>
 
           <button
-            className="btn btn-primary text-white absolute bottom-[20px] right-[20px]"
+            className="btn btn-primary text-white absolute bottom-[25px] right-4"
             onClick={() => onSaveClick()}
             disabled={isSaving}>
             {isSaving && <span className="loading loading-spinner" />}
