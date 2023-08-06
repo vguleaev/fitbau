@@ -101,11 +101,9 @@ export const WorkoutForm = () => {
             </div>
           </div>
           <div className="divider" />
-          <div className="mt-5 mb-5">Exercises:</div>
-
           {exercises.length === 0 && <div>Empty list</div>}
 
-          <div className="overflow-y-scroll h-[19rem]">
+          <div className="overflow-y-scroll h-[27rem]">
             {exercises.map((exercise) => (
               <div className="bg-base-100 p-3 rounded mb-5" key={exercise.id}>
                 <div className="flex flex-row justify-between">
