@@ -1,62 +1,32 @@
+import { AddExerciseSchema, ExerciseModel } from '@/types/exercise.type';
 import { toast } from 'react-hot-toast';
 import { create } from 'zustand';
-
-type WorkoutModel = {
-  id?: number;
-  name: string;
-};
-
-type ExerciseModel = {
-  id: string;
-  name: string;
-  sets: string;
-  reps: string;
-  weight: string;
-};
 
 type WorkoutCanvasStore = {
   isCanvasOpen: boolean;
   isSaving: boolean;
-  workoutModel: WorkoutModel;
+  isLoading: boolean;
   exercises: ExerciseModel[];
-  exerciseModel: ExerciseModel;
   selectedWorkoutId: string;
   setIsCanvasOpen: (isCanvasOpen: boolean) => void;
-  createWorkout: (data: { name: string }) => void;
-  clearWorkoutModel: () => void;
-  setWorkoutModel: (workoutModel: WorkoutModel) => void;
-  addExercise: (workoutModel: ExerciseModel) => void;
+  addExercise: (exercise: AddExerciseSchema) => void;
+  saveExerciseList: () => Promise<void>;
   removeExercise: (exerciseId: string) => void;
-  setExerciseModel: (exerciseModel: Partial<ExerciseModel>) => void;
   setSelectedWorkoutId: (id: string) => void;
+  loadExerciseList: () => Promise<void>;
 };
 
 const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
   isCanvasOpen: false,
   isSaving: false,
-  workoutModel: {
-    name: '',
-  },
-  exerciseModel: {
-    id: '',
-    name: '',
-    sets: '',
-    reps: '',
-    weight: '',
-  },
+  isLoading: false,
   exercises: [],
   selectedWorkoutId: '',
+  setIsLoading: (isLoading: boolean) => set({ isLoading }),
+  setIsCanvasOpen: (isCanvasOpen) => set({ isCanvasOpen }),
   setSelectedWorkoutId: (id) => {
     set({
       selectedWorkoutId: id,
-    });
-  },
-  setExerciseModel: (exerciseModel) => {
-    set({
-      exerciseModel: {
-        ...get().exerciseModel,
-        ...exerciseModel,
-      },
     });
   },
   removeExercise: (exerciseId) => {
@@ -64,40 +34,45 @@ const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
       exercises: state.exercises.filter((exercise) => exercise.id !== exerciseId),
     }));
   },
-  addExercise: (exerciseModel) => {
-    exerciseModel.id = Math.floor(Math.random() * 100000).toString();
+  addExercise: (exercise: AddExerciseSchema) => {
+    const exerciseModel = {
+      ...exercise,
+      id: Math.floor(Math.random() * 100000).toString(),
+    };
 
     set((state) => ({
       exercises: [...state.exercises, exerciseModel],
     }));
   },
-  setIsCanvasOpen: (isCanvasOpen) => set({ isCanvasOpen }),
-  clearWorkoutModel: () =>
-    set({
-      workoutModel: {
-        name: '',
-      },
-    }),
-  setWorkoutModel: (workoutModel) =>
-    set({
-      workoutModel: {
-        ...get().workoutModel,
-        ...workoutModel,
-      },
-    }),
-  createWorkout: async (data: { name: string }) => {
-    const result = await fetch('/api/workouts', {
+  loadExerciseList: async () => {
+    set({ isLoading: true });
+    const result = await fetch(`/api/workouts/${get().selectedWorkoutId}/exercises`);
+    const exercises = (await result.json()) as ExerciseModel[];
+    set({ exercises, isLoading: false });
+  },
+  saveExerciseList: async () => {
+    set({ isSaving: true });
+
+    await fetch(`/api/workouts/${get().selectedWorkoutId}/exercises`, {
+      method: 'DELETE',
+    });
+
+    const result = await fetch(`/api/workouts/${get().selectedWorkoutId}/exercises`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        exercises: get().exercises,
+      }),
     });
 
     if (result.status === 200) {
-      toast.success(`Created!`);
+      toast.success(`Saved!`);
+      set({ isSaving: false, isCanvasOpen: false });
     } else {
       toast.error('Something went wrong :(');
+      set({ isSaving: false });
     }
   },
 }));

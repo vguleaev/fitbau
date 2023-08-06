@@ -2,7 +2,6 @@ import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { FloatingButton } from '@/components/shared/floating-button';
 import { WorkoutsList } from '@/components/workouts-list';
-import { useWorkoutCanvasStore } from '@/stores/workout-canvas.store';
 import { useEffect, useState } from 'react';
 import { useWorkoutsStore } from '@/stores/workouts.store';
 import { DialogModal } from '@/components/shared/dialog-modal';
@@ -11,12 +10,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function Workouts() {
-  const { createWorkout } = useWorkoutCanvasStore((state) => ({
-    createWorkout: state.createWorkout,
-  }));
-
-  const { loadWorkouts } = useWorkoutsStore((state) => ({
+  const { loadWorkouts, createWorkout } = useWorkoutsStore((state) => ({
     loadWorkouts: state.loadWorkouts,
+    createWorkout: state.createWorkout,
   }));
 
   const [isAddWorkoutDialogOpen, setAddWorkoutDialogOpen] = useState(false);
@@ -56,7 +52,7 @@ export default function Workouts() {
       <DialogModal isOpened={isAddWorkoutDialogOpen} onClose={() => setAddWorkoutDialogOpen(false)}>
         <div>
           <h3 className="font-bold text-lg">Add Workout</h3>
-          <form onSubmit={handleSubmit(onAddWorkoutClick)}>
+          <form onSubmit={handleSubmit(onAddWorkoutClick)} tabIndex={-1}>
             <div className="mb-5">
               <label className="label">Name</label>
               <input required {...register('name')} className="input input-bordered w-full w-full mb-2" type="text" />

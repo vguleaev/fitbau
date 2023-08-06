@@ -1,10 +1,14 @@
 import prisma from '@/db/prisma';
+import { WorkoutWithExercises } from '@/types/workout.type';
 import { Workout } from '@prisma/client';
 
-async function getWorkouts(userId: string): Promise<Workout[]> {
+async function getWorkouts(userId: string): Promise<WorkoutWithExercises[]> {
   const workouts = await prisma.workout.findMany({
     where: {
       userId: userId,
+    },
+    include: {
+      exercises: true,
     },
   });
 

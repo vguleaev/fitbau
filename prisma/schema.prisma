@@ -13,17 +13,31 @@ model User {
   email    String    @unique
   name     String
   password String
-  Workout  Workout[]
+  workouts Workout[]
 }
 
 model Workout {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
   userId    String
-  name      String   @db.VarChar(255)
-  user      User     @relation(fields: [userId], references: [id])
+  name      String     @db.VarChar(255)
+  user      User       @relation(fields: [userId], references: [id])
+  exercises Exercise[]
 
   @@index([userId])
+}
+
+model Exercise {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  name      String   @db.VarChar(255)
+  sets      Int
+  reps      Int
+  weight    Int
+  workoutId String
+  workout   Workout  @relation(fields: [workoutId], references: [id])
+
+  @@index([workoutId])
 }
 
 // run npx prisma db push to update schema

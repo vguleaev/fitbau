@@ -13,14 +13,12 @@ export const WorkoutsList = () => {
     deleteWorkout: state.deleteWorkout,
   }));
 
-  const { isCanvasOpen, setIsCanvasOpen, clearWorkoutModel, setSelectedWorkoutId, selectedWorkoutId } =
+  const { isCanvasOpen, setIsCanvasOpen, setSelectedWorkoutId, selectedWorkoutId, loadExerciseList } =
     useWorkoutCanvasStore((state) => ({
       isCanvasOpen: state.isCanvasOpen,
-      workoutModel: state.workoutModel,
       selectedWorkoutId: state.selectedWorkoutId,
+      loadExerciseList: state.loadExerciseList,
       setIsCanvasOpen: state.setIsCanvasOpen,
-      setWorkoutModel: state.setWorkoutModel,
-      clearWorkoutModel: state.clearWorkoutModel,
       setSelectedWorkoutId: state.setSelectedWorkoutId,
     }));
 
@@ -57,11 +55,11 @@ export const WorkoutsList = () => {
   const onWorkoutClick = (workoutId: string) => {
     setIsCanvasOpen(true);
     setSelectedWorkoutId(workoutId);
+    loadExerciseList();
   };
 
   const onBottomCanvasClose = () => {
     setIsCanvasOpen(false);
-    clearWorkoutModel();
   };
 
   const getWorkoutFormTitle = () => {
@@ -113,9 +111,9 @@ export const WorkoutsList = () => {
   return (
     <div>
       {workouts.map((workout) => (
-        <div className="h-24 mb-4 pt-2 pb-2" key={workout.id} onClick={() => onWorkoutClick(workout.id)}>
+        <div className="h-24 mb-4 pt-2 pb-2" key={workout.id}>
           <div className="flex flex-row justify-between items-center">
-            <div className="">
+            <div className="w-full" onClick={() => onWorkoutClick(workout.id)}>
               <div className="flex flex-row mb-2 items-center">
                 <LuTrophy className="h-5 w-5 text-primary" />
                 <div className="ml-2 font-semibold">{workout.name}</div>
@@ -123,7 +121,7 @@ export const WorkoutsList = () => {
 
               <div className="flex flex-row items-center">
                 <LuDumbbell className="h-5 w-5 text-primary" />
-                <div className="ml-2">3 exercises</div>
+                <div className="ml-2">{workout.exercises.length} exercises</div>
               </div>
             </div>
             <button className="btn btn-circle" onClick={() => showDeleteModal(workout.id)}>

@@ -36,7 +36,7 @@ export const DialogModal = ({ isOpened, children, onClose }: ComponentProps) => 
       onClick={(e) =>
         dialogRef.current && !isClickInsideRectangle(e as unknown as MouseEvent, containerRef.current) && onClose()
       }>
-      <div className="modal-box" ref={containerRef}>
+      <div className="modal-box mb-[3rem]" ref={containerRef}>
         {children}
       </div>
     </dialog>

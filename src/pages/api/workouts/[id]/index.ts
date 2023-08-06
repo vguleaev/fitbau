@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from '../../auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { deleteWorkout, getWorkoutById, updateWorkout } from '@/services/workout.service';
 import { Workout } from '@prisma/client';
@@ -26,7 +26,7 @@ export default async function handler(
     if (!id) {
       return res.status(400).json({ error: 'Missing id' });
     }
-    const workoutId = id[0];
+    const workoutId = id as string;
 
     const workout = await getWorkoutById(workoutId);
     if (!workout) {
@@ -41,7 +41,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Missing id' });
     }
 
-    const workoutId = id[0];
+    const workoutId = id as string;
     const { name } = req.body;
 
     const workout = await getWorkoutById(workoutId);
@@ -64,7 +64,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Missing id' });
     }
 
-    const workoutId = id[0];
+    const workoutId = id as string;
 
     const workout = await getWorkoutById(workoutId);
     if (!workout) {

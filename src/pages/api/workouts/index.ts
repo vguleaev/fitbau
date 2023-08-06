@@ -3,8 +3,9 @@ import { authOptions } from '../auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { createWorkout, getWorkouts } from '@/services/workout.service';
 import { Workout } from '@prisma/client';
+import { WorkoutWithExercises } from '@/types/workout.type';
 
-type GetWorkoutsApiResponse = Workout[];
+type GetWorkoutsApiResponse = WorkoutWithExercises[];
 type CreateWorkoutApiResponse = Workout;
 
 type ErrorResponse = {
