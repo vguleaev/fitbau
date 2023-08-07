@@ -8,6 +8,7 @@ import { DialogModal } from '@/components/shared/dialog-modal';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AddWorkoutSchema, addWorkoutSchema } from '@/types/workout.type';
 
 export default function Workouts() {
   const { loadWorkouts, createWorkout } = useWorkoutsStore((state) => ({
@@ -24,12 +25,6 @@ export default function Workouts() {
   const showAddWorkoutModal = () => {
     setAddWorkoutDialogOpen(true);
   };
-
-  const addWorkoutSchema = z.object({
-    name: z.string().nonempty(),
-  });
-
-  type AddWorkoutSchema = z.infer<typeof addWorkoutSchema>;
 
   const {
     register,

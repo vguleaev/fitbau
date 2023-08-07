@@ -1,32 +1,33 @@
 import { AddExerciseSchema, ExerciseModel } from '@/types/exercise.type';
 import { toast } from 'react-hot-toast';
 import { create } from 'zustand';
+import type { WorkoutWithExercises } from '@/types/workout.type';
 
-type WorkoutCanvasStore = {
+type ExercisesCanvasStore = {
   isCanvasOpen: boolean;
   isSaving: boolean;
   isLoading: boolean;
   exercises: ExerciseModel[];
-  selectedWorkoutId: string;
+  selectedWorkout: WorkoutWithExercises;
   setIsCanvasOpen: (isCanvasOpen: boolean) => void;
   addExercise: (exercise: AddExerciseSchema) => void;
   saveExerciseList: () => Promise<void>;
   removeExercise: (exerciseId: string) => void;
-  setSelectedWorkoutId: (id: string) => void;
+  setSelectedWorkout: (workout: WorkoutWithExercises) => void;
   loadExerciseList: () => Promise<void>;
 };
 
-const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
+const useExercisesCanvasStore = create<ExercisesCanvasStore>((set, get) => ({
   isCanvasOpen: false,
   isSaving: false,
   isLoading: false,
   exercises: [],
-  selectedWorkoutId: '',
+  selectedWorkout: {} as WorkoutWithExercises,
   setIsLoading: (isLoading: boolean) => set({ isLoading }),
   setIsCanvasOpen: (isCanvasOpen) => set({ isCanvasOpen }),
-  setSelectedWorkoutId: (id) => {
+  setSelectedWorkout: (workout: WorkoutWithExercises) => {
     set({
-      selectedWorkoutId: id,
+      selectedWorkout: workout,
     });
   },
   removeExercise: (exerciseId) => {
@@ -46,18 +47,18 @@ const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
   },
   loadExerciseList: async () => {
     set({ isLoading: true });
-    const result = await fetch(`/api/workouts/${get().selectedWorkoutId}/exercises`);
+    const result = await fetch(`/api/workouts/${get().selectedWorkout.id}/exercises`);
     const exercises = (await result.json()) as ExerciseModel[];
     set({ exercises, isLoading: false });
   },
   saveExerciseList: async () => {
     set({ isSaving: true });
 
-    await fetch(`/api/workouts/${get().selectedWorkoutId}/exercises`, {
+    await fetch(`/api/workouts/${get().selectedWorkout.id}/exercises`, {
       method: 'DELETE',
     });
 
-    const result = await fetch(`/api/workouts/${get().selectedWorkoutId}/exercises`, {
+    const result = await fetch(`/api/workouts/${get().selectedWorkout.id}/exercises`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -77,4 +78,4 @@ const useWorkoutCanvasStore = create<WorkoutCanvasStore>((set, get) => ({
   },
 }));
 
-export { useWorkoutCanvasStore };
+export { useExercisesCanvasStore };

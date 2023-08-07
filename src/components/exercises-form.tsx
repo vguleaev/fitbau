@@ -1,4 +1,4 @@
-import { useWorkoutCanvasStore } from '@/stores/workout-canvas.store';
+import { useExercisesCanvasStore } from '@/stores/exercises-canvas.store';
 import { useWorkoutsStore } from '@/stores/workouts.store';
 import { AddExerciseSchema, addExerciseSchema } from '@/types/exercise.type';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,17 +6,15 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { LuFrown, LuPencil, LuPlusCircle, LuX } from 'react-icons/lu';
 
-export const WorkoutForm = () => {
+export const ExercisesForm = () => {
   const { loadWorkouts } = useWorkoutsStore((state) => ({
     loadWorkouts: state.loadWorkouts,
   }));
 
-  const { isSaving, isLoading, exercises, addExercise, removeExercise, saveExerciseList, setIsCanvasOpen } =
-    useWorkoutCanvasStore((state) => ({
+  const { isSaving, exercises, addExercise, removeExercise, saveExerciseList, setIsCanvasOpen } =
+    useExercisesCanvasStore((state) => ({
       isSaving: state.isSaving,
-      isLoading: state.isLoading,
       exercises: state.exercises,
-      selectedWorkoutId: state.selectedWorkoutId,
       setIsCanvasOpen: state.setIsCanvasOpen,
       addExercise: state.addExercise,
       removeExercise: state.removeExercise,
@@ -48,10 +46,6 @@ export const WorkoutForm = () => {
     addExercise(data);
     reset();
   };
-
-  if (isLoading) {
-    return <div>Loading</div>;
-  }
 
   return (
     <div className="mt-5">
@@ -102,8 +96,8 @@ export const WorkoutForm = () => {
               </div>
             </div>
             <div className="flex flex-row gap-5">
-              <div>Sets: {exercise.reps}</div>
-              <div>Reps: {exercise.sets}</div>
+              <div>Sets: {exercise.sets}</div>
+              <div>Reps: {exercise.reps}</div>
               <div>Weight: {exercise.weight} (kg)</div>
             </div>
           </div>

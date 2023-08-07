@@ -1,4 +1,4 @@
-import { WorkoutWithExercises } from '@/types/workout.type';
+import { AddWorkoutSchema, WorkoutWithExercises } from '@/types/workout.type';
 import { toast } from 'react-hot-toast';
 import { create } from 'zustand';
 
@@ -7,7 +7,7 @@ type WorkoutStore = {
   workouts: WorkoutWithExercises[];
   loadWorkouts: () => void;
   deleteWorkout: (workoutId: string) => void;
-  createWorkout: (data: { name: string }) => void;
+  createWorkout: (data: AddWorkoutSchema) => void;
 };
 
 const useWorkoutsStore = create<WorkoutStore>((set) => ({
@@ -33,7 +33,7 @@ const useWorkoutsStore = create<WorkoutStore>((set) => ({
       toast.error('Something went wrong :(');
     }
   },
-  createWorkout: async (data: { name: string }) => {
+  createWorkout: async (data: AddWorkoutSchema) => {
     const result = await fetch('/api/workouts', {
       method: 'POST',
       headers: {

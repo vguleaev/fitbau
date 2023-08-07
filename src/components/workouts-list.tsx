@@ -2,9 +2,10 @@ import { useWorkoutsStore } from '@/stores/workouts.store';
 import React, { useState } from 'react';
 import { LuTrophy, LuDumbbell, LuTrash } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
-import { useWorkoutCanvasStore } from '@/stores/workout-canvas.store';
+import { useExercisesCanvasStore } from '@/stores/exercises-canvas.store';
 import { BottomOffcanvas } from './shared/bottom-offcanvas';
-import { WorkoutForm } from './workout-form';
+import { ExercisesForm } from './exercises-form';
+import { WorkoutWithExercises } from '@/types/workout.type';
 
 export const WorkoutsList = () => {
   const { isLoading, workouts, deleteWorkout } = useWorkoutsStore((state) => ({
@@ -13,28 +14,43 @@ export const WorkoutsList = () => {
     deleteWorkout: state.deleteWorkout,
   }));
 
-  const { isCanvasOpen, setIsCanvasOpen, setSelectedWorkoutId, selectedWorkoutId, loadExerciseList } =
-    useWorkoutCanvasStore((state) => ({
+  const { isCanvasOpen, setIsCanvasOpen, setSelectedWorkout, selectedWorkout, loadExerciseList } =
+    useExercisesCanvasStore((state) => ({
       isCanvasOpen: state.isCanvasOpen,
-      selectedWorkoutId: state.selectedWorkoutId,
+      selectedWorkout: state.selectedWorkout,
       loadExerciseList: state.loadExerciseList,
       setIsCanvasOpen: state.setIsCanvasOpen,
-      setSelectedWorkoutId: state.setSelectedWorkoutId,
+      setSelectedWorkout: state.setSelectedWorkout,
     }));
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const showDeleteModal = (workoutId: string) => {
+  const showDeleteModal = (workout: WorkoutWithExercises) => {
     setIsDeleteDialogOpen(true);
-    setSelectedWorkoutId(workoutId);
+    setSelectedWorkout(workout);
   };
 
   const onDeleteClick = async () => {
     setIsDeleting(true);
-    await deleteWorkout(selectedWorkoutId);
+    await deleteWorkout(selectedWorkout.id);
     setIsDeleting(false);
     setIsDeleteDialogOpen(false);
+  };
+
+  const onWorkoutClick = (workout: WorkoutWithExercises) => {
+    setIsCanvasOpen(true);
+    setSelectedWorkout(workout);
+    loadExerciseList();
+  };
+
+  const onBottomCanvasClose = () => {
+    setIsCanvasOpen(false);
+  };
+
+  const getWorkoutFormTitle = () => {
+    const workout = workouts.find((w) => w.id === selectedWorkout.id);
+    return workout ? workout.name : '';
   };
 
   const renderWorkoutSkeleton = () => {
@@ -50,21 +66,6 @@ export const WorkoutsList = () => {
         <div className="divider" />
       </div>
     );
-  };
-
-  const onWorkoutClick = (workoutId: string) => {
-    setIsCanvasOpen(true);
-    setSelectedWorkoutId(workoutId);
-    loadExerciseList();
-  };
-
-  const onBottomCanvasClose = () => {
-    setIsCanvasOpen(false);
-  };
-
-  const getWorkoutFormTitle = () => {
-    const workout = workouts.find((w) => w.id === selectedWorkoutId);
-    return workout ? workout.name : '';
   };
 
   const renderDeleteModal = () => {
@@ -113,28 +114,26 @@ export const WorkoutsList = () => {
       {workouts.map((workout) => (
         <div className="h-24 mb-4 pt-2 pb-2" key={workout.id}>
           <div className="flex flex-row justify-between items-center">
-            <div className="w-full" onClick={() => onWorkoutClick(workout.id)}>
+            <div className="w-full" onClick={() => onWorkoutClick(workout)}>
               <div className="flex flex-row mb-2 items-center">
                 <LuTrophy className="h-5 w-5 text-primary" />
                 <div className="ml-2 font-semibold">{workout.name}</div>
               </div>
-
               <div className="flex flex-row items-center">
                 <LuDumbbell className="h-5 w-5 text-primary" />
                 <div className="ml-2">{workout.exercises.length} exercises</div>
               </div>
             </div>
-            <button className="btn btn-circle" onClick={() => showDeleteModal(workout.id)}>
+            <button className="btn btn-circle" onClick={() => showDeleteModal(workout)}>
               <LuTrash className="h-5 w-5" />
             </button>
           </div>
-
           <div className="divider" />
         </div>
       ))}
 
       <BottomOffcanvas title={getWorkoutFormTitle()} isOpen={isCanvasOpen} onClose={() => onBottomCanvasClose()}>
-        <WorkoutForm />
+        <ExercisesForm />
       </BottomOffcanvas>
 
       {renderDeleteModal()}
