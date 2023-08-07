@@ -11,7 +11,7 @@ export default function Profile() {
     <Layout page={PAGE_URL.PROFILE}>
       <div className="m-5">
         <div>
-          <h1 className="text-2xl mb-5">My Account:</h1>
+          <h1 className="text-lg mb-10">My Account</h1>
 
           <div className="form-control w-full">
             <label className="label">

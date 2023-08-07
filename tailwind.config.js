@@ -9,6 +9,7 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   plugins: [require('@tailwindcss/typography'), require('daisyui')],
+  darkMode: 'class',
   daisyui: {
     themes: [
       {

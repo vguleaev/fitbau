@@ -1,13 +1,19 @@
 import { useWorkoutsStore } from '@/stores/workouts.store';
 import React, { useState } from 'react';
-import { LuTrophy, LuDumbbell, LuTrash } from 'react-icons/lu';
+import { LuTrophy, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { useExercisesCanvasStore } from '@/stores/exercises-canvas.store';
 import { BottomOffcanvas } from './shared/bottom-offcanvas';
 import { ExercisesForm } from './exercises-form';
 import { WorkoutWithExercises } from '@/types/workout.type';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import PAGE_URL from '@/constants/page.constant';
+import { useActiveWorkoutStore } from '@/stores/active-workout.store';
 
 export const WorkoutsList = () => {
+  const router = useRouter();
+
   const { isLoading, workouts, deleteWorkout } = useWorkoutsStore((state) => ({
     isLoading: state.isLoading,
     workouts: state.workouts,
@@ -23,12 +29,25 @@ export const WorkoutsList = () => {
       setSelectedWorkout: state.setSelectedWorkout,
     }));
 
+  const { setActiveWorkout } = useActiveWorkoutStore((state) => ({
+    setActiveWorkout: state.setActiveWorkout,
+  }));
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const showDeleteModal = (workout: WorkoutWithExercises) => {
     setIsDeleteDialogOpen(true);
     setSelectedWorkout(workout);
+  };
+
+  const startWorkout = (workout: WorkoutWithExercises) => {
+    if (workout.exercises.length === 0) {
+      toast.error('Workout has no exercises!');
+      return;
+    }
+    setActiveWorkout(workout);
+    router.push(PAGE_URL.START_WORKOUT);
   };
 
   const onDeleteClick = async () => {
@@ -124,9 +143,14 @@ export const WorkoutsList = () => {
                 <div className="ml-2">{workout.exercises.length} exercises</div>
               </div>
             </div>
-            <button className="btn btn-circle" onClick={() => showDeleteModal(workout)}>
-              <LuTrash className="h-5 w-5" />
-            </button>
+            <div className="flex gap-2">
+              <button className="btn btn-circle" onClick={() => startWorkout(workout)}>
+                <LuPlay className="h-5 w-5" />
+              </button>
+              <button className="btn btn-circle" onClick={() => showDeleteModal(workout)}>
+                <LuTrash className="h-5 w-5" />
+              </button>
+            </div>
           </div>
           <div className="divider" />
         </div>

@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { useWorkoutsStore } from '@/stores/workouts.store';
 import { DialogModal } from '@/components/shared/dialog-modal';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddWorkoutSchema, addWorkoutSchema } from '@/types/workout.type';
 
@@ -72,7 +71,7 @@ export default function Workouts() {
 
   return (
     <Layout page={PAGE_URL.WORKOUTS}>
-      <div className="m-5">
+      <div className="m-5 mb-20">
         <h1 className="text-lg mb-10">Workouts</h1>
         <WorkoutsList />
         <FloatingButton onClick={() => showAddWorkoutModal()} />

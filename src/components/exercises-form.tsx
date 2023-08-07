@@ -96,8 +96,8 @@ export const ExercisesForm = () => {
               </div>
             </div>
             <div className="flex flex-row gap-5">
-              <div>Sets: {exercise.sets}</div>
               <div>Reps: {exercise.reps}</div>
+              <div>Sets: {exercise.sets}</div>
               <div>Weight: {exercise.weight} (kg)</div>
             </div>
           </div>
