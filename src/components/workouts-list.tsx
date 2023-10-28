@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import PAGE_URL from '@/constants/page.constant';
 import { useActiveWorkoutStore } from '@/stores/active-workout.store';
+import { cloneDeep } from 'lodash';
 
 export const WorkoutsList = () => {
   const router = useRouter();
@@ -20,13 +21,13 @@ export const WorkoutsList = () => {
     deleteWorkout: state.deleteWorkout,
   }));
 
-  const { isCanvasOpen, setIsCanvasOpen, setSelectedWorkout, selectedWorkout, loadExerciseList } =
+  const { isCanvasOpen, setIsCanvasOpen, setSelectedWorkout, selectedWorkout, setExerciseList } =
     useExercisesCanvasStore((state) => ({
       isCanvasOpen: state.isCanvasOpen,
       selectedWorkout: state.selectedWorkout,
-      loadExerciseList: state.loadExerciseList,
       setIsCanvasOpen: state.setIsCanvasOpen,
       setSelectedWorkout: state.setSelectedWorkout,
+      setExerciseList: state.setExerciseList,
     }));
 
   const { setActiveWorkout } = useActiveWorkoutStore((state) => ({
@@ -58,9 +59,9 @@ export const WorkoutsList = () => {
   };
 
   const onWorkoutClick = (workout: WorkoutWithExercises) => {
-    setIsCanvasOpen(true);
     setSelectedWorkout(workout);
-    loadExerciseList();
+    setExerciseList(cloneDeep(workout.exercises));
+    setIsCanvasOpen(true);
   };
 
   const onBottomCanvasClose = () => {

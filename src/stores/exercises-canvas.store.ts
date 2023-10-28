@@ -14,6 +14,7 @@ type ExercisesCanvasStore = {
   saveExerciseList: () => Promise<void>;
   removeExercise: (exerciseId: string) => void;
   setSelectedWorkout: (workout: WorkoutWithExercises) => void;
+  setExerciseList: (exercises: ExerciseModel[]) => void;
   loadExerciseList: () => Promise<void>;
 };
 
@@ -44,6 +45,9 @@ const useExercisesCanvasStore = create<ExercisesCanvasStore>((set, get) => ({
     set((state) => ({
       exercises: [...state.exercises, exerciseModel],
     }));
+  },
+  setExerciseList: (exercises: ExerciseModel[]) => {
+    set({ exercises });
   },
   loadExerciseList: async () => {
     set({ isLoading: true });

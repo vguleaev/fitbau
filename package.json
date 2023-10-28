@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-updates": "npx npm-check-updates"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
@@ -17,9 +18,11 @@
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "bcrypt": "5.1.0",
+    "clsx": "2.0.0",
     "daisyui": "3.5.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "lodash": "4.17.21",
     "next": "13.4.12",
     "next-auth": "4.22.3",
     "next-pwa": "^5.6.0",
@@ -36,6 +39,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.0",
+    "@types/lodash": "^4.14.200",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "eslint-plugin-react": "^7.33.1",

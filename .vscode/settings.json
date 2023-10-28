@@ -1,10 +1,7 @@
 {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    },
-    "editor.formatOnSave": true,
-    "cSpell.words": [
-      "daisyui",
-      "tailwindcss"
-    ]
-  }
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "cSpell.words": ["clsx", "daisyui", "tailwindcss"]
+}
