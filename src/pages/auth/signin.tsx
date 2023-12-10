@@ -66,7 +66,7 @@ export default function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof
               required
             />
             <div className="flex flex-row gap-3 justify-center mb-4">
-              <button className={`btn btn-primary w-full max-w-xs`} type="submit" disabled={isLoading}>
+              <button className="btn btn-primary w-full max-w-xs text-white" type="submit" disabled={isLoading}>
                 <span className={isLoading ? 'loading loading-spinner' : ''} />
                 Sign in with email
               </button>
