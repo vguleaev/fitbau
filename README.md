@@ -8,6 +8,7 @@ https://fitbau.vercel.app/
 
 ## TechStack:
 
+- NextJs
 - Typescript
 - eslint
 - SASS
