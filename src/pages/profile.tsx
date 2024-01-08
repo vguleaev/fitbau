@@ -20,7 +20,7 @@ export default function Profile() {
             <input
               type="text"
               defaultValue={session?.user?.name as string}
-              className="input input-bordered w-full mb-2"
+              className="input input-bordered w-full mb-2 !text-slate-600 dark:!text-slate-400"
               disabled
             />
           </div>
@@ -32,7 +32,7 @@ export default function Profile() {
             <input
               type="text"
               defaultValue={session?.user?.email as string}
-              className="input input-bordered w-full mb-2"
+              className="input input-bordered w-full mb-2 !text-slate-600 dark:!text-slate-400"
               disabled
             />
           </div>

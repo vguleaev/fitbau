@@ -12,7 +12,9 @@ export const BottomNav = ({ page }: ComponentProps) => {
   return (
     <div className="btm-nav bg-base-200 shadow-lg">
       <button
-        className={`text-primary bg-base-200 ${PAGE_URL.WORKOUTS == page && 'active'}`}
+        className={`text-primary bg-base-200 ${
+          [PAGE_URL.WORKOUTS, PAGE_URL.WORKOUT_DETAILS].includes(page) && 'active'
+        }`}
         onClick={() => router.push(PAGE_URL.WORKOUTS)}>
         <FaDumbbell className="h-5 w-5" />
       </button>

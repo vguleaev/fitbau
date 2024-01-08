@@ -20,6 +20,9 @@ async function getWorkoutById(workoutId: string): Promise<Workout | null> {
     where: {
       id: workoutId,
     },
+    include: {
+      exercises: true,
+    },
   });
 
   return workout;

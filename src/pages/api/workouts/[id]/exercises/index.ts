@@ -2,19 +2,21 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { authOptions } from '../../../auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { Exercise } from '@prisma/client';
-import { ExerciseModel } from '@/types/exercise.type';
-import { createExercises, deleteExercises, getExercises } from '@/services/exercise.service';
+import { AddExerciseSchema, addExerciseSchema } from '@/types/exercise.type';
+import { createExercise, deleteExercises, getExercises } from '@/services/exercise.service';
+import { ZodErrors } from '@/types/zod.type';
 
 type GetExercisesApiResponse = Exercise[];
-type CreateExercisesApiResponse = { success: boolean };
+type CreateExerciseApiResponse = Exercise;
+type DeleteExercisesApiResponse = { success: boolean };
 
 type ErrorResponse = {
-  error: string;
+  error: string | ZodErrors;
 };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<GetExercisesApiResponse | CreateExercisesApiResponse | ErrorResponse>
+  res: NextApiResponse<GetExercisesApiResponse | CreateExerciseApiResponse | DeleteExercisesApiResponse | ErrorResponse>
 ) {
   const session = await getServerSession(req, res, authOptions);
   if (!session || !session.user) {
@@ -41,14 +43,17 @@ export default async function handler(
       return res.status(400).json({ error: 'Missing id' });
     }
     const workoutId = id as string;
+    const exercise = req.body as AddExerciseSchema;
 
-    const { exercises } = req.body as { exercises: ExerciseModel[] };
-    if (!exercises) {
-      return res.status(400).json({ error: 'Missing exercises' });
+    const validatedFields = addExerciseSchema.safeParse(exercise);
+    if (!validatedFields.success) {
+      return res.status(400).json({
+        error: validatedFields.error.flatten().fieldErrors,
+      });
     }
 
-    await createExercises(workoutId, exercises);
-    return res.status(200).json({ success: true });
+    const created = await createExercise(workoutId, exercise);
+    return res.status(201).json(created);
   }
 
   if (req.method === 'DELETE') {

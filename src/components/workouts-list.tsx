@@ -2,15 +2,11 @@ import { useWorkoutsStore } from '@/stores/workouts.store';
 import React, { useState } from 'react';
 import { LuTrophy, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
-import { useExercisesCanvasStore } from '@/stores/exercises-canvas.store';
-import { BottomOffcanvas } from './shared/bottom-offcanvas';
-import { ExercisesForm } from './exercises-form';
 import { WorkoutWithExercises } from '@/types/workout.type';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import PAGE_URL from '@/constants/page.constant';
 import { useActiveWorkoutStore } from '@/stores/active-workout.store';
-import { cloneDeep } from 'lodash';
 
 export const WorkoutsList = () => {
   const router = useRouter();
@@ -21,21 +17,13 @@ export const WorkoutsList = () => {
     deleteWorkout: state.deleteWorkout,
   }));
 
-  const { isCanvasOpen, setIsCanvasOpen, setSelectedWorkout, selectedWorkout, setExerciseList } =
-    useExercisesCanvasStore((state) => ({
-      isCanvasOpen: state.isCanvasOpen,
-      selectedWorkout: state.selectedWorkout,
-      setIsCanvasOpen: state.setIsCanvasOpen,
-      setSelectedWorkout: state.setSelectedWorkout,
-      setExerciseList: state.setExerciseList,
-    }));
-
   const { setActiveWorkout } = useActiveWorkoutStore((state) => ({
     setActiveWorkout: state.setActiveWorkout,
   }));
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutWithExercises | null>(null);
 
   const showDeleteModal = (workout: WorkoutWithExercises) => {
     setIsDeleteDialogOpen(true);
@@ -52,6 +40,10 @@ export const WorkoutsList = () => {
   };
 
   const onDeleteClick = async () => {
+    if (!selectedWorkout) {
+      return;
+    }
+
     setIsDeleting(true);
     await deleteWorkout(selectedWorkout.id);
     setIsDeleting(false);
@@ -59,18 +51,8 @@ export const WorkoutsList = () => {
   };
 
   const onWorkoutClick = (workout: WorkoutWithExercises) => {
-    setSelectedWorkout(workout);
-    setExerciseList(cloneDeep(workout.exercises));
-    setIsCanvasOpen(true);
-  };
-
-  const onBottomCanvasClose = () => {
-    setIsCanvasOpen(false);
-  };
-
-  const getWorkoutFormTitle = () => {
-    const workout = workouts.find((w) => w.id === selectedWorkout.id);
-    return workout ? workout.name : '';
+    router.push(PAGE_URL.WORKOUT_DETAILS.replace(':id', workout.id.toString()));
+    return;
   };
 
   const renderWorkoutSkeleton = () => {
@@ -156,10 +138,6 @@ export const WorkoutsList = () => {
           <div className="divider" />
         </div>
       ))}
-
-      <BottomOffcanvas title={getWorkoutFormTitle()} isOpen={isCanvasOpen} onClose={() => onBottomCanvasClose()}>
-        <ExercisesForm />
-      </BottomOffcanvas>
 
       {renderDeleteModal()}
     </div>

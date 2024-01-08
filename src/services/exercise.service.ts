@@ -1,5 +1,5 @@
 import prisma from '@/db/prisma';
-import { ExerciseModel } from '@/types/exercise.type';
+import { AddExerciseSchema, ExerciseModel } from '@/types/exercise.type';
 import { Exercise } from '@prisma/client';
 
 async function getExercises(workoutId: string): Promise<Exercise[]> {
@@ -10,6 +10,39 @@ async function getExercises(workoutId: string): Promise<Exercise[]> {
   });
 
   return exercises;
+}
+
+async function getExerciseById(exerciseId: string): Promise<Exercise | null> {
+  const exercise = await prisma.exercise.findUnique({
+    where: {
+      id: exerciseId,
+    },
+  });
+
+  return exercise;
+}
+
+async function createExercise(workoutId: string, exercise: AddExerciseSchema): Promise<Exercise> {
+  const result = await prisma.exercise.create({
+    data: {
+      workoutId,
+      name: exercise.name,
+      sets: exercise.sets,
+      reps: exercise.reps,
+      weight: exercise.weight,
+    },
+  });
+
+  return result;
+}
+
+async function deleteExercise(exerciseId: string): Promise<Exercise> {
+  const result = await prisma.exercise.delete({
+    where: {
+      id: exerciseId,
+    },
+  });
+  return result;
 }
 
 async function createExercises(workoutId: string, exercises: ExerciseModel[]): Promise<number | null> {
@@ -35,4 +68,4 @@ async function deleteExercises(workoutId: string): Promise<number> {
   return result.count;
 }
 
-export { getExercises, createExercises, deleteExercises };
+export { getExercises, createExercises, deleteExercises, createExercise, deleteExercise, getExerciseById };
