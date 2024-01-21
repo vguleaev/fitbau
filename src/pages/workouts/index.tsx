@@ -2,28 +2,21 @@ import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { FloatingButton } from '@/components/shared/floating-button';
 import { WorkoutsList } from '@/components/workouts-list';
-import { useEffect, useState } from 'react';
-import { useWorkoutsStore } from '@/stores/workouts.store';
+import { useState } from 'react';
 import { DialogModal } from '@/components/shared/dialog-modal';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddWorkoutSchema, addWorkoutSchema } from '@/types/workout.type';
+import { useCreateWorkout } from '@/hooks/workouts.hooks';
 
 export default function Workouts() {
-  const { loadWorkouts, createWorkout } = useWorkoutsStore((state) => ({
-    loadWorkouts: state.loadWorkouts,
-    createWorkout: state.createWorkout,
-  }));
-
   const [isAddWorkoutDialogOpen, setAddWorkoutDialogOpen] = useState(false);
-
-  useEffect(() => {
-    loadWorkouts();
-  }, []);
 
   const showAddWorkoutModal = () => {
     setAddWorkoutDialogOpen(true);
   };
+
+  const createWorkoutMutation = useCreateWorkout();
 
   const {
     register,
@@ -35,8 +28,7 @@ export default function Workouts() {
   });
 
   const onAddWorkoutClick = async (data: AddWorkoutSchema) => {
-    await createWorkout(data);
-    loadWorkouts();
+    await createWorkoutMutation.mutateAsync(data);
     setAddWorkoutDialogOpen(false);
     reset();
   };

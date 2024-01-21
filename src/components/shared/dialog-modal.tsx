@@ -18,24 +18,43 @@ export const DialogModal = ({ isOpened, children, onClose }: ComponentProps) => 
     return e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom;
   };
 
+  const onDialogClick = (e: React.MouseEvent<HTMLDialogElement, MouseEvent>) => {
+    if (dialogRef.current && !isClickInsideRectangle(e.nativeEvent, containerRef.current)) {
+      onClose();
+    }
+  };
+
+  const closeDialog = () => {
+    dialogRef.current?.close();
+    document.body.classList.remove('modal-open');
+  };
+
+  const openDialog = () => {
+    dialogRef.current?.showModal();
+    document.body.classList.add('modal-open'); // prevent bg scroll
+  };
+
   useEffect(() => {
     if (isOpened) {
-      dialogRef.current?.showModal();
-      document.body.classList.add('modal-open'); // prevent bg scroll
+      openDialog();
     } else {
-      dialogRef.current?.close();
-      document.body.classList.remove('modal-open');
+      closeDialog();
     }
-  }, [isOpened]);
+
+    const onEscKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpened) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', onEscKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onEscKeyDown);
+    };
+  }, [isOpened, onClose]);
 
   return (
-    <dialog
-      id="my-modal-dialog"
-      className="modal"
-      ref={dialogRef}
-      onClick={(e) =>
-        dialogRef.current && !isClickInsideRectangle(e as unknown as MouseEvent, containerRef.current) && onClose()
-      }>
+    <dialog id="my-modal-dialog" className="modal" ref={dialogRef} onClick={(e) => onDialogClick(e)}>
       <div className="modal-box mb-[3rem]" ref={containerRef}>
         {children}
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { useActiveWorkoutStore } from '@/stores/active-workout.store';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn.helper';
 
 export default function StartWorkout() {
   const { activeWorkout, activeExercises, setExerciseDone } = useActiveWorkoutStore((state) => ({
@@ -19,7 +19,7 @@ export default function StartWorkout() {
           {activeExercises.map((exercise) => (
             <div
               key={exercise.id}
-              className={clsx('bg-base-200 rounded-md p-4 transition ease-in-out delay-100 duration-300', {
+              className={cn('bg-base-200 rounded-md p-4 transition ease-in-out delay-100 duration-300', {
                 'bg-rose-200 dark:bg-neutral-900': exercise.isDone,
               })}>
               <h2 className="text-lg mb-4 font-semibold">{exercise.name}</h2>

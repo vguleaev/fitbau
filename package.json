@@ -13,12 +13,10 @@
     "@hookform/resolvers": "^3.3.2",
     "@prisma/client": "5.0.0",
     "@tailwindcss/typography": "0.5.9",
-    "autoprefixer": "10.4.14",
+    "@tanstack/react-query": "^5.17.19",
     "bcrypt": "5.1.0",
     "clsx": "2.0.0",
     "daisyui": "4.4.19",
-    "eslint": "8.46.0",
-    "eslint-config-next": "14.0.0",
     "lodash": "4.17.21",
     "next": "14.0.1",
     "next-auth": "4.24.4",
@@ -27,13 +25,15 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.49.0",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^4.12.0",
+    "react-icons": "^5.0.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "zod": "^3.22.4",
     "zustand": "4.3.9"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.17.20",
+    "@tanstack/react-query-devtools": "^5.17.19",
     "@types/bcrypt": "5.0.0",
     "@types/lodash": "^4.14.202",
     "@types/node": "20.4.5",
@@ -41,9 +41,13 @@
     "@types/react-dom": "18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.46.0",
+    "eslint-config-next": "14.0.0",
     "eslint-plugin-react": "^7.33.2",
     "postcss": "8.4.27",
     "prisma": "5.0.0",
-    "sass": "^1.69.5"
+    "sass": "^1.69.5",
+    "tailwind-merge": "^2.2.0"
   }
 }

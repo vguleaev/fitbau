@@ -1,4 +1,3 @@
-import { useWorkoutsStore } from '@/stores/workouts.store';
 import React, { useState } from 'react';
 import { LuTrophy, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
@@ -7,22 +6,18 @@ import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import PAGE_URL from '@/constants/page.constant';
 import { useActiveWorkoutStore } from '@/stores/active-workout.store';
+import { useDeleteWorkout, useWorkouts } from '@/hooks/workouts.hooks';
 
 export const WorkoutsList = () => {
   const router = useRouter();
-
-  const { isLoading, workouts, deleteWorkout } = useWorkoutsStore((state) => ({
-    isLoading: state.isLoading,
-    workouts: state.workouts,
-    deleteWorkout: state.deleteWorkout,
-  }));
+  const { isFetching, data: workouts } = useWorkouts();
+  const deleteWorkoutMutation = useDeleteWorkout();
 
   const { setActiveWorkout } = useActiveWorkoutStore((state) => ({
     setActiveWorkout: state.setActiveWorkout,
   }));
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutWithExercises | null>(null);
 
   const showDeleteModal = (workout: WorkoutWithExercises) => {
@@ -43,16 +38,12 @@ export const WorkoutsList = () => {
     if (!selectedWorkout) {
       return;
     }
-
-    setIsDeleting(true);
-    await deleteWorkout(selectedWorkout.id);
-    setIsDeleting(false);
+    await deleteWorkoutMutation.mutateAsync(selectedWorkout.id);
     setIsDeleteDialogOpen(false);
   };
 
   const onWorkoutClick = (workout: WorkoutWithExercises) => {
     router.push(PAGE_URL.WORKOUT_DETAILS.replace(':id', workout.id.toString()));
-    return;
   };
 
   const renderWorkoutSkeleton = () => {
@@ -60,10 +51,13 @@ export const WorkoutsList = () => {
       <div className="h-24 mb-4 pt-2 pb-2">
         <div className="flex flex-row justify-between items-center">
           <div>
-            <div className="w-[160px] h-5 mb-2 bg-base-200 skeleton" />
-            <div className="w-[110px] h-5 mb-2 bg-base-200 skeleton" />
+            <div className="w-[160px] h-5 mb-2 bg-base-300 skeleton" />
+            <div className="w-[110px] h-5 mb-2 bg-base-300 skeleton" />
           </div>
-          <div className="h-11 w-11 rounded-full bg-base-200 skeleton" />
+          <div className="flex flex-row gap-4">
+            <div className="h-11 w-11 rounded-full bg-base-300 skeleton" />
+            <div className="h-11 w-11 rounded-full bg-base-300 skeleton" />
+          </div>
         </div>
         <div className="divider" />
       </div>
@@ -82,9 +76,9 @@ export const WorkoutsList = () => {
             </button>
             <button
               className="btn btn-primary min-w-[80px] text-white"
-              disabled={isDeleting}
+              disabled={deleteWorkoutMutation.isPending}
               onClick={() => onDeleteClick()}>
-              {isDeleting && <span className="loading loading-spinner" />}
+              {deleteWorkoutMutation.isPending && <span className="loading loading-spinner" />}
               Yes
             </button>
           </div>
@@ -93,7 +87,7 @@ export const WorkoutsList = () => {
     );
   };
 
-  if (isLoading) {
+  if (isFetching) {
     return (
       <div>
         {renderWorkoutSkeleton()}
@@ -103,7 +97,7 @@ export const WorkoutsList = () => {
     );
   }
 
-  if (workouts.length === 0) {
+  if (workouts?.length === 0) {
     return (
       <div className="text-center">
         <span className="">Your list is empty</span>
@@ -113,7 +107,7 @@ export const WorkoutsList = () => {
 
   return (
     <div>
-      {workouts.map((workout) => (
+      {workouts?.map((workout) => (
         <div className="h-24 mb-4 pt-2 pb-2" key={workout.id}>
           <div className="flex flex-row justify-between items-center">
             <div className="w-full" onClick={() => onWorkoutClick(workout)}>
@@ -138,7 +132,6 @@ export const WorkoutsList = () => {
           <div className="divider" />
         </div>
       ))}
-
       {renderDeleteModal()}
     </div>
   );

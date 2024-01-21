@@ -1,5 +1,3 @@
-function isClient() {
+export function isClient() {
   return typeof window !== 'undefined';
 }
-
-export { isClient };
