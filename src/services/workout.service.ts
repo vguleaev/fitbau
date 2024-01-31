@@ -15,7 +15,7 @@ async function getWorkouts(userId: string): Promise<WorkoutWithExercises[]> {
   return workouts;
 }
 
-async function getWorkoutById(workoutId: string): Promise<Workout | null> {
+async function getWorkoutById(workoutId: string): Promise<WorkoutWithExercises | null> {
   const workout = await prisma.workout.findUnique({
     where: {
       id: workoutId,

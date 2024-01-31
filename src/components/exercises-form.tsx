@@ -1,25 +1,23 @@
-import { useExerciseCanvasStore } from '@/stores/exercise-canvas.store';
-import { useWorkoutDetailsStore } from '@/stores/workout-details.store';
+import { useAddExercise } from '@/hooks/exercises.hooks';
+import { useWorkout } from '@/hooks/workouts.hooks';
 import { AddExerciseSchema, addExerciseSchema } from '@/types/exercise.type';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Exercise } from '@prisma/client';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-export const ExercisesForm = () => {
-  const { loadWorkout, workout } = useWorkoutDetailsStore((state) => ({
-    workout: state.workout,
-    loadWorkout: state.loadWorkout,
-  }));
+type Props = {
+  exercise: Exercise | null;
+  onClose: () => void;
+};
 
-  const { isSaving, addExercise, setIsCanvasOpen } = useExerciseCanvasStore((state) => ({
-    isSaving: state.isSaving,
-    setIsCanvasOpen: state.setIsCanvasOpen,
-    addExercise: state.addExercise,
-  }));
+export const ExercisesForm = ({ exercise, onClose }: Props) => {
+  const router = useRouter();
+  const workoutId = router.query.id as string;
+  const { refetch } = useWorkout(workoutId);
 
-  const onCloseClick = () => {
-    setIsCanvasOpen(false);
-  };
+  const addExerciseMutation = useAddExercise();
 
   const {
     register,
@@ -28,21 +26,35 @@ export const ExercisesForm = () => {
     formState: { errors },
   } = useForm<AddExerciseSchema>({
     resolver: zodResolver(addExerciseSchema),
+    values: {
+      name: exercise ? exercise.name : '',
+      reps: exercise ? exercise.reps : 0,
+      sets: exercise ? exercise.sets : 0,
+      weight: exercise ? exercise.weight : 0,
+    },
   });
 
-  const onSaveFormSubmit = async (data: AddExerciseSchema) => {
-    await addExercise(data);
+  const onCloseClick = () => {
+    onClose();
+  };
+
+  const onSubmit = async (data: AddExerciseSchema) => {
+    await addExerciseMutation.mutateAsync({
+      exercise: data,
+      workoutId: workoutId,
+    });
+
     reset();
-    setIsCanvasOpen(false);
+    onClose();
 
     setTimeout(() => {
-      loadWorkout(workout.id);
+      refetch();
     }, 500);
   };
 
   return (
     <div className="mt-5">
-      <form onSubmit={handleSubmit(onSaveFormSubmit)} tabIndex={-1}>
+      <form onSubmit={handleSubmit(onSubmit)} tabIndex={-1}>
         {errors.reps && <div className="text-red-500">Reps must be a positive number</div>}
         {errors.sets && <div className="text-red-500">Sets must be a positive number</div>}
         {errors.weight && <div className="text-red-500">Weight must be a positive number</div>}
@@ -66,14 +78,18 @@ export const ExercisesForm = () => {
         </div>
 
         <button
+          type="button"
           className="btn btn-neutral text-white absolute bottom-[25px] left-4 w-[100px]"
           onClick={() => onCloseClick()}
-          disabled={isSaving}>
+          disabled={addExerciseMutation.isPending}>
           Close
         </button>
 
-        <button type="submit" className="btn btn-primary text-white absolute bottom-[25px] right-4" disabled={isSaving}>
-          {isSaving && <span className="loading loading-spinner" />}
+        <button
+          type="submit"
+          className="btn btn-primary text-white absolute bottom-[25px] right-4"
+          disabled={addExerciseMutation.isPending}>
+          {addExerciseMutation.isPending && <span className="loading loading-spinner" />}
           Save Workout
         </button>
       </form>

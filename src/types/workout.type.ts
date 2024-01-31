@@ -1,14 +1,16 @@
-import { Exercise, Workout } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 const addWorkoutSchema = z.object({
-  name: z.string().nonempty(),
+  name: z.string().min(1),
 });
 
 export type AddWorkoutSchema = z.infer<typeof addWorkoutSchema>;
 
-export type WorkoutWithExercises = Workout & {
-  exercises: Exercise[];
-};
+export type WorkoutWithExercises = Prisma.WorkoutGetPayload<{
+  include: {
+    exercises: true;
+  };
+}>;
 
 export { addWorkoutSchema };

@@ -5,8 +5,14 @@ import queryClient from '@/query-client/query-client';
 
 const fetchWorkouts = async (): Promise<WorkoutWithExercises[]> => {
   const result = await fetch('/api/workouts');
-  const workouts = (await result.json()) as WorkoutWithExercises[];
-  return workouts;
+  const workouts = await result.json();
+  return workouts as WorkoutWithExercises[];
+};
+
+const fetchWorkout = async (workoutId: string): Promise<WorkoutWithExercises> => {
+  const result = await fetch(`/api/workouts/${workoutId}`);
+  const workout = await result.json();
+  return workout as WorkoutWithExercises;
 };
 
 const createWorkout = async (data: AddWorkoutSchema) => {
@@ -38,7 +44,18 @@ const deleteWorkout = async (workoutId: string) => {
 };
 
 export const useWorkouts = () => {
-  return useQuery({ queryKey: ['workouts'], queryFn: fetchWorkouts });
+  return useQuery({
+    queryKey: ['workouts'],
+    queryFn: fetchWorkouts,
+  });
+};
+
+export const useWorkout = (workoutId: string) => {
+  return useQuery({
+    queryKey: ['workout', workoutId],
+    queryFn: () => fetchWorkout(workoutId),
+    staleTime: 1000,
+  });
 };
 
 export const useCreateWorkout = () => {

@@ -1,29 +1,32 @@
-import { useWorkoutDetailsStore } from '@/stores/workout-details.store';
 import { ExerciseModel } from '@/types/exercise.type';
 import React, { useState } from 'react';
 import { LuFrown, LuPencil, LuX } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
-import { useExerciseCanvasStore } from '@/stores/exercise-canvas.store';
+import { useRouter } from 'next/router';
+import { useWorkout } from '@/hooks/workouts.hooks';
+import { Exercise } from '@prisma/client';
+import { useDeleteExercise } from '@/hooks/exercises.hooks';
 
-export const ExercisesList = () => {
-  const { workout, loadWorkout } = useWorkoutDetailsStore((state) => ({
-    workout: state.workout,
-    loadWorkout: state.loadWorkout,
-  }));
+type Props = {
+  onEditExercise: (exercise: Exercise) => void;
+};
 
-  const { deleteExercise, setWorkout } = useExerciseCanvasStore((state) => ({
-    deleteExercise: state.deleteExercise,
-    setWorkout: state.setWorkout,
-  }));
+export const ExercisesList = ({ onEditExercise }: Props) => {
+  const router = useRouter();
+  const workoutId = router.query.id as string;
+
+  const { data: workout, isFetching, refetch } = useWorkout(workoutId);
+  const deleteExerciseMutation = useDeleteExercise();
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<ExerciseModel | null>(null);
 
   const showDeleteModal = (exercise: ExerciseModel) => {
-    setIsDeleteDialogOpen(true);
-    setWorkout(workout);
-    setSelectedExercise(exercise);
+    if (workout) {
+      setIsDeleteDialogOpen(true);
+      setSelectedExercise(exercise);
+    }
   };
 
   const onDeleteClick = async () => {
@@ -32,15 +35,19 @@ export const ExercisesList = () => {
     }
 
     setIsDeleting(true);
-    await deleteExercise(selectedExercise.id);
+    await deleteExerciseMutation.mutateAsync({
+      exerciseId: selectedExercise.id,
+      workoutId: workoutId,
+    });
     setIsDeleting(false);
     setIsDeleteDialogOpen(false);
-    loadWorkout(workout.id);
+    refetch();
   };
 
-  const editExercise = (exercise: ExerciseModel) => {
-    setWorkout(workout);
-    setSelectedExercise(exercise);
+  const editExercise = (exercise: Exercise) => {
+    if (workout) {
+      onEditExercise(exercise);
+    }
   };
 
   const renderDeleteModal = () => {
@@ -66,6 +73,40 @@ export const ExercisesList = () => {
     );
   };
 
+  const renderExerciseSkeleton = () => {
+    return (
+      <div className="p-3 rounded-lg mb-5 w-full h-[88px] bg-base-200">
+        <div className="flex flex-row justify-between items-center mb-4">
+          <div className="rounded-lg w-[100px] mb-2 h-5 bg-base-300 skeleton" />
+          <div className="flex flex-row">
+            <div className="h-6 w-6 rounded-full bg-base-300 skeleton" />
+            <div className="h-6 w-6 ml-2 rounded-full bg-base-300 skeleton" />
+          </div>
+        </div>
+        <div className="flex flex-row gap-5">
+          <div className="rounded-lg w-[50px] mb-2 h-5 bg-base-300 skeleton" />
+          <div className="rounded-lg w-[50px] mb-2 h-5 bg-base-300 skeleton" />
+          <div className="rounded-lg w-[110px] mb-2 h-5 bg-base-300 skeleton" />
+        </div>
+      </div>
+    );
+  };
+
+  if (isFetching) {
+    return (
+      <div>
+        {renderExerciseSkeleton()}
+        {renderExerciseSkeleton()}
+        {renderExerciseSkeleton()}
+        {renderExerciseSkeleton()}
+      </div>
+    );
+  }
+
+  if (!workout) {
+    return null;
+  }
+
   return (
     <div>
       {workout.exercises.length === 0 && (
@@ -75,7 +116,7 @@ export const ExercisesList = () => {
         </div>
       )}
 
-      <div className="overflow-y-scroll h-[30rem]">
+      <div className="overflow-y-scroll h-[32rem]">
         {workout.exercises.map((exercise) => (
           <div className="bg-base-200 p-3 rounded-lg mb-5" key={exercise.id}>
             <div className="flex flex-row justify-between items-center mb-4">

@@ -1,70 +1,78 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { useRouter } from 'next/router';
 import { ExercisesList } from '@/components/exercises-list';
-import { useWorkoutDetailsStore } from '@/stores/workout-details.store';
 import { FloatingButton } from '@/components/shared/floating-button';
-import { useExerciseCanvasStore } from '@/stores/exercise-canvas.store';
 import { BottomOffcanvas } from '@/components/shared/bottom-offcanvas';
 import { ExercisesForm } from '@/components/exercises-form';
+import { useWorkout } from '@/hooks/workouts.hooks';
+import { Exercise } from '@prisma/client';
 
 export default function WorkoutDetails() {
+  const [isExerciseCanvasOpen, setExerciseCanvasOpen] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+
   const router = useRouter();
   const workoutId = router.query.id as string;
 
-  const { workout, loadWorkout, isLoading } = useWorkoutDetailsStore((state) => ({
-    loadWorkout: state.loadWorkout,
-    isLoading: state.isLoading,
-    workout: state.workout,
-  }));
+  const { data: workout, isFetching } = useWorkout(workoutId);
 
-  const { isCanvasOpen, setIsCanvasOpen, setWorkout } = useExerciseCanvasStore((state) => ({
-    isCanvasOpen: state.isCanvasOpen,
-    setIsCanvasOpen: state.setIsCanvasOpen,
-    setWorkout: state.setWorkout,
-  }));
-
-  useEffect(() => {
-    if (!workoutId) {
-      return;
+  const onEditExercise = (exercise: Exercise) => {
+    if (workout) {
+      setSelectedExercise(exercise);
+      setExerciseCanvasOpen(true);
     }
-    loadWorkout(workoutId);
-  }, [workoutId]);
-
-  const showAddExerciseCanvas = () => {
-    setWorkout(workout);
-    setIsCanvasOpen(true);
   };
 
-  const onBottomCanvasClose = () => {
-    setIsCanvasOpen(false);
+  const showAddExerciseCanvas = () => {
+    if (workout) {
+      setSelectedExercise(null);
+      setExerciseCanvasOpen(true);
+    }
   };
 
   const getWorkoutFormTitle = () => {
-    return 'New Exercise';
+    return selectedExercise ? 'Edit Exercise' : 'New Exercise';
   };
 
-  const renderWorkoutDetails = () => {
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-
+  const renderWorkoutSkeleton = () => {
     return (
-      <div className="m-5">
-        <div className="link mb-2" onClick={() => router.push('/workouts')}>
-          Back
-        </div>
-        <h1 className="text-lg mb-10">Workout: {workout.name}</h1>
-        <ExercisesList />
-        <FloatingButton onClick={() => showAddExerciseCanvas()} />
-
-        <BottomOffcanvas title={getWorkoutFormTitle()} isOpen={isCanvasOpen} onClose={() => onBottomCanvasClose()}>
-          <ExercisesForm />
-        </BottomOffcanvas>
+      <div>
+        <div className="w-[60px] h-6 mb-2 bg-base-300 skeleton" />
+        <div className="w-[160px] h-6 mb-5 bg-base-300 skeleton" />
       </div>
     );
   };
 
-  return <Layout page={PAGE_URL.WORKOUT_DETAILS}>{renderWorkoutDetails()}</Layout>;
+  const renderWorkoutHeader = () => {
+    if (isFetching) {
+      return renderWorkoutSkeleton();
+    }
+
+    return (
+      <div>
+        <div className="link mb-2" onClick={() => router.push('/workouts')}>
+          Back
+        </div>
+        <h1 className="text-lg mb-5">Workout: {workout?.name}</h1>
+      </div>
+    );
+  };
+
+  return (
+    <Layout page={PAGE_URL.WORKOUT_DETAILS}>
+      <div className="m-5">
+        {renderWorkoutHeader()}
+        <ExercisesList onEditExercise={onEditExercise} />
+        <FloatingButton onClick={() => showAddExerciseCanvas()} />
+        <BottomOffcanvas
+          title={getWorkoutFormTitle()}
+          isOpen={isExerciseCanvasOpen}
+          onClose={() => setExerciseCanvasOpen(false)}>
+          <ExercisesForm exercise={selectedExercise} onClose={() => setExerciseCanvasOpen(false)} />
+        </BottomOffcanvas>
+      </div>
+    </Layout>
+  );
 }
