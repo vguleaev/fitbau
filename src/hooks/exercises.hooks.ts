@@ -30,6 +30,22 @@ const deleteExercise = async (data: { workoutId: string; exerciseId: string }) =
   }
 };
 
+const updateExercise = async (data: { workoutId: string; exerciseId: string; exercise: AddExerciseSchema }) => {
+  const result = await fetch(`/api/workouts/${data.workoutId}/exercises/${data.exerciseId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data.exercise),
+  });
+
+  if (result.status === 200) {
+    toast.success(`Updated!`);
+  } else {
+    toast.error('Something went wrong :(');
+  }
+};
+
 export const useAddExercise = () => {
   return useMutation({
     mutationFn: addExercise,
@@ -39,5 +55,11 @@ export const useAddExercise = () => {
 export const useDeleteExercise = () => {
   return useMutation({
     mutationFn: deleteExercise,
+  });
+};
+
+export const useUpdateExercise = () => {
+  return useMutation({
+    mutationFn: updateExercise,
   });
 };

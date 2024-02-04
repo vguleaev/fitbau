@@ -1,4 +1,4 @@
-import { useAddExercise } from '@/hooks/exercises.hooks';
+import { useAddExercise, useUpdateExercise } from '@/hooks/exercises.hooks';
 import { useWorkout } from '@/hooks/workouts.hooks';
 import { AddExerciseSchema, addExerciseSchema } from '@/types/exercise.type';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +18,7 @@ export const ExercisesForm = ({ exercise, onClose }: Props) => {
   const { refetch } = useWorkout(workoutId);
 
   const addExerciseMutation = useAddExercise();
+  const updateExerciseMutation = useUpdateExercise();
 
   const {
     register,
@@ -39,10 +40,18 @@ export const ExercisesForm = ({ exercise, onClose }: Props) => {
   };
 
   const onSubmit = async (data: AddExerciseSchema) => {
-    await addExerciseMutation.mutateAsync({
-      exercise: data,
-      workoutId: workoutId,
-    });
+    if (!exercise) {
+      await addExerciseMutation.mutateAsync({
+        exercise: data,
+        workoutId: workoutId,
+      });
+    } else {
+      await updateExerciseMutation.mutateAsync({
+        exercise: data,
+        workoutId: workoutId,
+        exerciseId: exercise.id,
+      });
+    }
 
     reset();
     onClose();

@@ -68,4 +68,23 @@ async function deleteExercises(workoutId: string): Promise<number> {
   return result.count;
 }
 
-export { getExercises, createExercises, deleteExercises, createExercise, deleteExercise, getExerciseById };
+async function updateExercise(exerciseId: string, exercise: Partial<Exercise>): Promise<Exercise> {
+  const result = await prisma.exercise.update({
+    where: {
+      id: exerciseId,
+    },
+    data: exercise,
+  });
+
+  return result;
+}
+
+export {
+  getExercises,
+  createExercises,
+  deleteExercises,
+  createExercise,
+  deleteExercise,
+  getExerciseById,
+  updateExercise,
+};
