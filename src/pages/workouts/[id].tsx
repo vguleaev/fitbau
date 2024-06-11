@@ -8,6 +8,7 @@ import { BottomOffcanvas } from '@/components/shared/bottom-offcanvas';
 import { ExercisesForm } from '@/components/exercises-form';
 import { useWorkout } from '@/hooks/workouts.hooks';
 import { Exercise } from '@prisma/client';
+import { LuChevronsLeft } from 'react-icons/lu';
 
 export default function WorkoutDetails() {
   const [isExerciseCanvasOpen, setExerciseCanvasOpen] = useState(false);
@@ -52,10 +53,11 @@ export default function WorkoutDetails() {
 
     return (
       <div>
-        <div className="link mb-2" onClick={() => router.push('/workouts')}>
+        <div className="link flex flex-row items-center mb-2 no-underline" onClick={() => router.push('/workouts')}>
+          <LuChevronsLeft className="w-5 h-5 mr-1" />
           Back
         </div>
-        <h1 className="text-lg mb-5">Workout: {workout?.name}</h1>
+        <h1 className="text-lg mb-5 font-bold">{workout?.name}</h1>
       </div>
     );
   };

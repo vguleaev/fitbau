@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LuTrophy, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
+import { LuList, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { WorkoutWithExercises } from '@/types/workout.type';
 import { toast } from 'react-hot-toast';
@@ -112,7 +112,7 @@ export const WorkoutsList = () => {
           <div className="flex flex-row justify-between items-center">
             <div className="w-full" onClick={() => onWorkoutClick(workout)}>
               <div className="flex flex-row mb-2 items-center">
-                <LuTrophy className="h-5 w-5 text-primary" />
+                <LuList className="h-5 w-5 text-primary" />
                 <div className="ml-2 font-semibold">{workout.name}</div>
               </div>
               <div className="flex flex-row items-center">

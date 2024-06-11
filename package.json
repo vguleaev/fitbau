@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check-updates": "npx npm-check-updates"
+    "check-updates": "npm outdated"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -16,7 +16,7 @@
     "@tanstack/react-query": "^5.17.19",
     "bcrypt": "5.1.0",
     "clsx": "2.0.0",
-    "daisyui": "4.4.19",
+    "daisyui": "4.12.2",
     "lodash": "4.17.21",
     "next": "14.0.1",
     "next-auth": "4.24.4",
@@ -25,7 +25,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.49.0",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^5.0.1",
+    "react-icons": "^5.2.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "zod": "^3.22.4",

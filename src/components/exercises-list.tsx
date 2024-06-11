@@ -118,11 +118,10 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
 
       <div className="overflow-y-scroll h-[32rem]">
         {workout.exercises.map((exercise) => (
-          <div className="bg-base-200 p-3 rounded-lg mb-5" key={exercise.id}>
+          <div className="bg-base-200 p-3 rounded-lg mb-5" key={exercise.id} onClick={() => editExercise(exercise)}>
             <div className="flex flex-row justify-between items-center mb-4">
               <div className="font-semibold">{exercise.name}</div>
               <div className="flex flex-row">
-                <LuPencil className="h-5 w-5" onClick={() => editExercise(exercise)} />
                 <LuX className="h-6 w-6 ml-2" onClick={() => showDeleteModal(exercise)} />
               </div>
             </div>
