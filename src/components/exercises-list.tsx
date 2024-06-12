@@ -1,6 +1,6 @@
 import { ExerciseModel } from '@/types/exercise.type';
 import React, { useState } from 'react';
-import { LuFrown, LuPencil, LuX } from 'react-icons/lu';
+import { LuFrown, LuX } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { useRouter } from 'next/router';
 import { useWorkout } from '@/hooks/workouts.hooks';
