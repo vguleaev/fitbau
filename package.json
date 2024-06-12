@@ -10,14 +10,6 @@
     "check-updates": "npm outdated",
     "prepare": "husky"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "yarn lint"
-  },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
     "@prisma/client": "5.0.0",
