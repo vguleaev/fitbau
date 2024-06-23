@@ -9,20 +9,23 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  email    String    @unique
+  id       String                 @id @default(uuid())
+  email    String                 @unique
   name     String
   password String
   workouts Workout[]
+  history  HistoryRecordWorkout[]
 }
 
 model Workout {
-  id        String     @id @default(uuid())
-  createdAt DateTime   @default(now())
-  userId    String
-  name      String     @db.VarChar(255)
-  user      User       @relation(fields: [userId], references: [id])
-  exercises Exercise[]
+  id           String     @id @default(uuid())
+  createdAt    DateTime   @default(now())
+  userId       String
+  name         String     @db.VarChar(255)
+  user         User       @relation(fields: [userId], references: [id])
+  exercises    Exercise[]
+  isPlayed     Boolean    @default(false)
+  lastPlayedOn DateTime?
 
   @@index([userId])
 }
@@ -38,6 +41,33 @@ model Exercise {
   workout   Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
 
   @@index([workoutId])
+}
+
+model HistoryRecordWorkout {
+  id                String                  @id @default(uuid())
+  createdAt         DateTime                @default(now())
+  userId            String
+  name              String                  @db.VarChar(255)
+  user              User                    @relation(fields: [userId], references: [id])
+  exercises         HistoryRecordExercise[]
+  finishedOn        DateTime?
+  durationInMinutes Int                     @default(0)
+
+  @@index([userId])
+}
+
+model HistoryRecordExercise {
+  id                     String               @id @default(uuid())
+  createdAt              DateTime             @default(now())
+  name                   String               @db.VarChar(255)
+  sets                   Int
+  reps                   Int
+  weight                 Int
+  historyRecordWorkoutId String
+  historyRecordWorkout   HistoryRecordWorkout @relation(fields: [historyRecordWorkoutId], references: [id], onDelete: Cascade)
+  isCompleted            Boolean              @default(false)
+
+  @@index([historyRecordWorkoutId])
 }
 
 // run npx prisma db push to update schema

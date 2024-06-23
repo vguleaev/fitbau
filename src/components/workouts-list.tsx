@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { LuList, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
+import { LuClipboardList, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { WorkoutWithExercises } from '@/types/workout.type';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import PAGE_URL from '@/constants/page.constant';
 import { useActiveWorkoutStore } from '@/stores/active-workout.store';
-import { useDeleteWorkout, useWorkouts } from '@/hooks/workouts.hooks';
+import { useDeleteWorkout, usePlayWorkout, useWorkouts } from '@/hooks/workouts.hooks';
 
 export const WorkoutsList = () => {
   const router = useRouter();
   const { isFetching, data: workouts } = useWorkouts();
   const deleteWorkoutMutation = useDeleteWorkout();
+  const playWorkoutMutation = usePlayWorkout();
 
   const { setActiveWorkout } = useActiveWorkoutStore((state) => ({
     setActiveWorkout: state.setActiveWorkout,
@@ -25,12 +26,13 @@ export const WorkoutsList = () => {
     setSelectedWorkout(workout);
   };
 
-  const startWorkout = (workout: WorkoutWithExercises) => {
+  const startWorkout = async (workout: WorkoutWithExercises) => {
     if (workout.exercises.length === 0) {
       toast.error('Workout has no exercises!');
       return;
     }
     setActiveWorkout(workout);
+    await playWorkoutMutation.mutateAsync(workout.id);
     router.push(PAGE_URL.START_WORKOUT);
   };
 
@@ -112,7 +114,7 @@ export const WorkoutsList = () => {
           <div className="flex flex-row justify-between items-center">
             <div className="w-full" onClick={() => onWorkoutClick(workout)}>
               <div className="flex flex-row mb-2 items-center">
-                <LuList className="h-5 w-5 text-primary" />
+                <LuClipboardList className="h-5 w-5 text-primary" />
                 <div className="ml-2 font-semibold">{workout.name}</div>
               </div>
               <div className="flex flex-row items-center">

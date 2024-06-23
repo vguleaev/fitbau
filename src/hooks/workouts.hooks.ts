@@ -31,6 +31,36 @@ const createWorkout = async (data: AddWorkoutSchema) => {
   }
 };
 
+export const playWorkout = async (workoutId: string) => {
+  const result = await fetch(`/api/workouts/${workoutId}/play`, {
+    method: 'POST',
+  });
+
+  if (result.status === 200) {
+    toast.success(`Started!`);
+  } else {
+    toast.error('Something went wrong :(');
+  }
+};
+
+export const getPlayedWorkout = async () => {
+  const result = await fetch(`/api/workouts/played`);
+  const workout = await result.json();
+  return workout as WorkoutWithExercises;
+};
+
+export const stopWorkout = async (workoutId: string) => {
+  const result = await fetch(`/api/workouts/${workoutId}/stop`, {
+    method: 'POST',
+  });
+
+  if (result.status === 200) {
+    toast.success(`Stopped!`);
+  } else {
+    toast.error('Something went wrong :(');
+  }
+};
+
 const deleteWorkout = async (workoutId: string) => {
   const result = await fetch(`/api/workouts/${workoutId}`, {
     method: 'DELETE',
@@ -72,6 +102,31 @@ export const useDeleteWorkout = () => {
     mutationFn: deleteWorkout,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workouts'] });
+    },
+  });
+};
+
+export const usePlayWorkout = () => {
+  return useMutation({
+    mutationFn: playWorkout,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['played-workout'] });
+    },
+  });
+};
+
+export const usePlayedWorkout = () => {
+  return useQuery({
+    queryKey: ['played-workout'],
+    queryFn: getPlayedWorkout,
+  });
+};
+
+export const useStopWorkout = () => {
+  return useMutation({
+    mutationFn: stopWorkout,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['played-workout'] });
     },
   });
 };
