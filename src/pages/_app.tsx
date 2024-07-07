@@ -5,7 +5,6 @@ import { SessionProvider } from 'next-auth/react';
 import Notification from '@/components/notification';
 import { Roboto } from 'next/font/google';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import queryClient from '@/query-client/query-client';
 const roboto = Roboto({ subsets: ['latin', 'cyrillic'], weight: ['400', '500', '700'] });
 
@@ -25,7 +24,6 @@ export default function App({ Component, pageProps }: AppProps) {
           <Notification />
           <Component {...pageProps} />
         </main>
-        <ReactQueryDevtools initialIsOpen={false} client={queryClient} />
       </QueryClientProvider>
     </SessionProvider>
   );
