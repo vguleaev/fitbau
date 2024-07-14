@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AddWorkoutSchema, WorkoutWithExercises } from '@/types/workout.type';
 import toast from 'react-hot-toast';
 import queryClient from '@/query-client/query-client';
+import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
 
 const fetchWorkouts = async (): Promise<WorkoutWithExercises[]> => {
   const result = await fetch('/api/workouts');
@@ -39,6 +40,11 @@ export const playWorkout = async (workoutId: string) => {
   if (result.status === 200) {
     toast.success(`Started!`);
   } else {
+    const data = await result.json();
+    if (data.isPlayed) {
+      toast.error('Stop active workout first!');
+      return;
+    }
     toast.error('Something went wrong :(');
   }
 };
@@ -46,7 +52,7 @@ export const playWorkout = async (workoutId: string) => {
 export const getPlayedWorkout = async () => {
   const result = await fetch(`/api/workouts/played`);
   const workout = await result.json();
-  return workout as WorkoutWithExercises;
+  return workout as WorkoutPlayWithExercises;
 };
 
 export const stopWorkout = async (workoutId: string) => {

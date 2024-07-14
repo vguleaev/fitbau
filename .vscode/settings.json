@@ -3,6 +3,6 @@
     "source.fixAll.eslint": "explicit"
   },
   "editor.formatOnSave": true,
-  "cSpell.words": ["clsx", "cn", "daisyui", "tailwindcss"],
+  "cSpell.words": ["clsx", "cn", "daisyui", "Fitbau", "tailwindcss"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

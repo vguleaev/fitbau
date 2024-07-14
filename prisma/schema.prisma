@@ -9,23 +9,24 @@ datasource db {
 }
 
 model User {
-  id       String                 @id @default(uuid())
-  email    String                 @unique
+  id       String        @id @default(uuid())
+  email    String        @unique
   name     String
   password String
   workouts Workout[]
-  history  HistoryRecordWorkout[]
+  history  WorkoutPlay[]
 }
 
 model Workout {
-  id           String     @id @default(uuid())
-  createdAt    DateTime   @default(now())
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  name         String       @db.VarChar(255)
   userId       String
-  name         String     @db.VarChar(255)
-  user         User       @relation(fields: [userId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
   exercises    Exercise[]
-  isPlayed     Boolean    @default(false)
+  isPlayed     Boolean      @default(false)
   lastPlayedOn DateTime?
+  workoutPlay  WorkoutPlay?
 
   @@index([userId])
 }
@@ -43,31 +44,46 @@ model Exercise {
   @@index([workoutId])
 }
 
-model HistoryRecordWorkout {
-  id                String                  @id @default(uuid())
-  createdAt         DateTime                @default(now())
+model WorkoutPlay {
+  id                String         @id @default(uuid())
+  createdAt         DateTime       @default(now())
+  name              String         @db.VarChar(255)
   userId            String
-  name              String                  @db.VarChar(255)
-  user              User                    @relation(fields: [userId], references: [id])
-  exercises         HistoryRecordExercise[]
+  user              User           @relation(fields: [userId], references: [id])
+  exercises         ExercisePlay[]
   finishedOn        DateTime?
-  durationInMinutes Int                     @default(0)
+  durationInMinutes Int            @default(0)
+  workoutId         String         @unique
+  workout           Workout?       @relation(fields: [workoutId], references: [id])
 
   @@index([userId])
 }
 
-model HistoryRecordExercise {
-  id                     String               @id @default(uuid())
-  createdAt              DateTime             @default(now())
-  name                   String               @db.VarChar(255)
-  sets                   Int
-  reps                   Int
-  weight                 Int
-  historyRecordWorkoutId String
-  historyRecordWorkout   HistoryRecordWorkout @relation(fields: [historyRecordWorkoutId], references: [id], onDelete: Cascade)
-  isCompleted            Boolean              @default(false)
+model ExercisePlay {
+  id            String            @id @default(uuid())
+  createdAt     DateTime          @default(now())
+  name          String            @db.VarChar(255)
+  order         Int               @default(0)
+  reps          Int
+  weight        Int
+  sets          ExercisePlaySet[]
+  workoutPlayId String
+  workoutPlay   WorkoutPlay       @relation(fields: [workoutPlayId], references: [id], onDelete: Cascade)
+  isCompleted   Boolean           @default(false)
 
-  @@index([historyRecordWorkoutId])
+  @@index([workoutPlayId])
+}
+
+model ExercisePlaySet {
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  reps           Int
+  weight         Int
+  isCompleted    Boolean      @default(false)
+  exercisePlayId String
+  exercisePlay   ExercisePlay @relation(fields: [exercisePlayId], references: [id], onDelete: Cascade)
+
+  @@index([exercisePlayId])
 }
 
 // run npx prisma db push to update schema

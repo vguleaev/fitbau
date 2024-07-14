@@ -2,10 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { authOptions } from '../../../auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { getPlayedWorkout, getWorkoutById, playWorkout } from '@/services/workout.service';
+import { cloneWorkoutForPlay } from '@/services/workout-play.service';
 
 type PlayApiResponse = string;
 type ErrorResponse = {
   error: string;
+  isPlayed?: boolean;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<PlayApiResponse | ErrorResponse>) {
@@ -31,10 +33,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
     const playedWorkout = await getPlayedWorkout(session.user.id);
     if (playedWorkout) {
-      return res.status(400).json({ error: 'There can be only single workout played' });
+      return res.status(400).json({ error: 'There can be only single workout played', isPlayed: true });
     }
 
     await playWorkout(workoutId);
+    await cloneWorkoutForPlay(workout, session.user.id);
+
     return res.status(200).send('OK');
   }
 
