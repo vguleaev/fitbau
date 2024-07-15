@@ -18,15 +18,15 @@ model User {
 }
 
 model Workout {
-  id           String       @id @default(uuid())
-  createdAt    DateTime     @default(now())
-  name         String       @db.VarChar(255)
+  id           String        @id @default(uuid())
+  createdAt    DateTime      @default(now())
+  name         String        @db.VarChar(255)
   userId       String
-  user         User         @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id])
   exercises    Exercise[]
-  isPlayed     Boolean      @default(false)
+  isPlayed     Boolean       @default(false)
   lastPlayedOn DateTime?
-  workoutPlay  WorkoutPlay?
+  workoutPlays WorkoutPlay[]
 
   @@index([userId])
 }
@@ -53,10 +53,11 @@ model WorkoutPlay {
   exercises         ExercisePlay[]
   finishedOn        DateTime?
   durationInMinutes Int            @default(0)
-  workoutId         String         @unique
+  workoutId         String
   workout           Workout?       @relation(fields: [workoutId], references: [id])
 
   @@index([userId])
+  @@index([workoutId])
 }
 
 model ExercisePlay {

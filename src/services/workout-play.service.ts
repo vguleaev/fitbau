@@ -62,6 +62,9 @@ async function getWorkoutPlayWithExercises(workoutId: string): Promise<WorkoutPl
       workoutId: workoutId,
       finishedOn: null,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
     include: {
       exercises: {
         include: {
