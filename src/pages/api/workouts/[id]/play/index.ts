@@ -36,8 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return res.status(400).json({ error: 'There can be only single workout played', isPlayed: true });
     }
 
-    await playWorkout(workoutId);
-    await cloneWorkoutForPlay(workout, session.user.id);
+    await Promise.all([playWorkout(workoutId), cloneWorkoutForPlay(workout, session.user.id)]);
 
     return res.status(200).send('OK');
   }

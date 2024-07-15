@@ -123,8 +123,15 @@ export const WorkoutsList = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <button className="btn btn-circle" onClick={() => startWorkout(workout)}>
-                <LuPlay className="h-5 w-5" />
+              <button
+                className="btn btn-circle"
+                onClick={() => startWorkout(workout)}
+                disabled={playWorkoutMutation.isPending}>
+                {playWorkoutMutation.isPending ? (
+                  <span className="loading loading-spinner" />
+                ) : (
+                  <LuPlay className="h-5 w-5" />
+                )}
               </button>
               <button className="btn btn-circle" onClick={() => showDeleteModal(workout)}>
                 <LuTrash className="h-5 w-5" />
