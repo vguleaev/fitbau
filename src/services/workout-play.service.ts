@@ -97,14 +97,14 @@ async function finishWorkoutPlay(workoutPlayId: string, date: Date) {
   });
 }
 
-async function finishWorkoutPlayByWorkoutId(workoutId: string) {
+async function finishWorkoutPlayByWorkoutId(workoutId: string, date: Date) {
   await prisma.workoutPlay.updateMany({
     where: {
       workoutId: workoutId,
       finishedOn: null,
     },
     data: {
-      finishedOn: new Date(),
+      finishedOn: date,
     },
   });
 }

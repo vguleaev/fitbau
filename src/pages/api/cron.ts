@@ -1,4 +1,5 @@
 import { finishWorkoutPlay, getAllUnfinishedWorkoutPlays } from '@/services/workout-play.service';
+import { stopWorkout } from '@/services/workout.service';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
@@ -10,6 +11,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const date = play.createdAt;
     date.setHours(date.getHours() + 2);
     await finishWorkoutPlay(play.id, date);
+    await stopWorkout(play.workoutId);
   }
 
   const finishedWorkoutIds = unfinishedWorkoutPlays.map((play) => play.workoutId);

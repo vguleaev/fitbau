@@ -100,6 +100,16 @@ async function stopWorkout(workoutId: string): Promise<void> {
   });
 }
 
+async function getAllUnfinishedWorkouts(): Promise<Workout[]> {
+  const workouts = await prisma.workout.findMany({
+    where: {
+      isPlayed: true,
+    },
+  });
+
+  return workouts;
+}
+
 export {
   getWorkouts,
   createWorkout,
@@ -109,4 +119,5 @@ export {
   getPlayedWorkout,
   playWorkout,
   stopWorkout,
+  getAllUnfinishedWorkouts,
 };

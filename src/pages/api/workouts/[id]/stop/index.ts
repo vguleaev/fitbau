@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import dayjs from 'dayjs';
 import { authOptions } from '../../../auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { getWorkoutById, stopWorkout } from '@/services/workout.service';
@@ -35,10 +36,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     await stopWorkout(workoutId);
-    await finishWorkoutPlayByWorkoutId(workoutId);
+    const finishDate = getFinishDate(workout.lastPlayedOn!);
+    await finishWorkoutPlayByWorkoutId(workoutId, finishDate);
 
     return res.status(200).send('OK');
   }
 
   res.status(404).json({ error: 'Not found' });
+}
+
+function getFinishDate(playDate: Date): Date {
+  const MAX_DURATION_IN_MINUTES = 120;
+  const diffInMinutes = dayjs().diff(dayjs(playDate), 'minutes');
+  if (diffInMinutes >= MAX_DURATION_IN_MINUTES) {
+    return dayjs(playDate).add(MAX_DURATION_IN_MINUTES, 'minutes').toDate();
+  }
+  const now = new Date();
+  return now;
 }
