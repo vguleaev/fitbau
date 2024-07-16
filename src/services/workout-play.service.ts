@@ -77,10 +77,45 @@ async function getWorkoutPlayWithExercises(workoutId: string): Promise<WorkoutPl
   return workoutPlay;
 }
 
+async function getAllUnfinishedWorkoutPlays() {
+  const workoutPlays = await prisma.workoutPlay.findMany({
+    where: {
+      finishedOn: null,
+    },
+  });
+  return workoutPlays;
+}
+
+async function finishWorkoutPlay(workoutPlayId: string, date: Date) {
+  await prisma.workoutPlay.update({
+    where: {
+      id: workoutPlayId,
+    },
+    data: {
+      finishedOn: date,
+    },
+  });
+}
+
+async function finishWorkoutPlayByWorkoutId(workoutId: string) {
+  await prisma.workoutPlay.updateMany({
+    where: {
+      workoutId: workoutId,
+      finishedOn: null,
+    },
+    data: {
+      finishedOn: new Date(),
+    },
+  });
+}
+
 export {
   createWorkoutPlay,
   createExercisePlay,
   createExercisePlaySet,
   getWorkoutPlayWithExercises,
   cloneWorkoutForPlay,
+  getAllUnfinishedWorkoutPlays,
+  finishWorkoutPlay,
+  finishWorkoutPlayByWorkoutId,
 };

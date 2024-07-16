@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { authOptions } from '../../../auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { getWorkoutById, stopWorkout } from '@/services/workout.service';
+import { finishWorkoutPlayByWorkoutId } from '@/services/workout-play.service';
 
 type StopApiResponse = string;
 type ErrorResponse = {
@@ -34,6 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     await stopWorkout(workoutId);
+    await finishWorkoutPlayByWorkoutId(workoutId);
+
     return res.status(200).send('OK');
   }
 
