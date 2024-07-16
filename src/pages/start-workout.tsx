@@ -87,7 +87,7 @@ export default function StartWorkout() {
 
     return (
       <>
-        <h1 className="text-lg mb-10">{workoutPlay.name}</h1>
+        <h1 className="text-lg mb-5">{workoutPlay.name}</h1>
         {renderTimeContainer(workoutPlay)}
         {renderExercises(workoutPlay)}
       </>

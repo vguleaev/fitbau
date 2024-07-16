@@ -64,7 +64,7 @@ export default function Workouts() {
   return (
     <Layout page={PAGE_URL.WORKOUTS}>
       <div className="m-5 mb-20">
-        <h1 className="text-lg mb-10">Workouts</h1>
+        <h1 className="text-lg mb-5">Workouts</h1>
         <WorkoutsList />
         <FloatingButton onClick={() => showAddWorkoutModal()} />
         {renderAddWorkoutModal()}

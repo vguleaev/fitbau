@@ -109,6 +109,21 @@ async function finishWorkoutPlayByWorkoutId(workoutId: string, date: Date) {
   });
 }
 
+async function getAllFinishedWorkoutsForUser(userId: string): Promise<WorkoutPlay[]> {
+  const workoutPlays = prisma.workoutPlay.findMany({
+    where: {
+      userId: userId,
+      finishedOn: {
+        not: null,
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  return workoutPlays;
+}
+
 export {
   createWorkoutPlay,
   createExercisePlay,
@@ -118,4 +133,5 @@ export {
   getAllUnfinishedWorkoutPlays,
   finishWorkoutPlay,
   finishWorkoutPlayByWorkoutId,
+  getAllFinishedWorkoutsForUser,
 };

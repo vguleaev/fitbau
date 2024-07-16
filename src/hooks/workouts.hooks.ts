@@ -3,6 +3,7 @@ import { AddWorkoutSchema, WorkoutWithExercises } from '@/types/workout.type';
 import toast from 'react-hot-toast';
 import queryClient from '@/query-client/query-client';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
+import { WorkoutPlay } from '@prisma/client';
 
 const fetchWorkouts = async (): Promise<WorkoutWithExercises[]> => {
   const result = await fetch('/api/workouts');
@@ -79,6 +80,12 @@ const deleteWorkout = async (workoutId: string) => {
   }
 };
 
+const getWorkoutPlaysHistory = async () => {
+  const result = await fetch('/api/workouts/history');
+  const history = await result.json();
+  return history as WorkoutPlay[];
+};
+
 export const useWorkouts = () => {
   return useQuery({
     queryKey: ['workouts'],
@@ -134,5 +141,12 @@ export const useStopWorkout = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['played-workout'] });
     },
+  });
+};
+
+export const useWorkoutPlaysHistory = () => {
+  return useQuery({
+    queryKey: ['workout-plays-history'],
+    queryFn: getWorkoutPlaysHistory,
   });
 };

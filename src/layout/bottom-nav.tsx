@@ -1,6 +1,6 @@
 import PAGE_URL from '@/constants/page.constant';
 import { useRouter } from 'next/router';
-import { FaDumbbell, FaUser, FaPlayCircle } from 'react-icons/fa';
+import { FaDumbbell, FaPlayCircle, FaClock } from 'react-icons/fa';
 
 type ComponentProps = {
   page: string;
@@ -24,9 +24,9 @@ export const BottomNav = ({ page }: ComponentProps) => {
         <FaPlayCircle className="h-5 w-5" />
       </button>
       <button
-        className={`text-primary bg-base-200 ${PAGE_URL.PROFILE == page && 'active'}`}
-        onClick={() => router.push(PAGE_URL.PROFILE)}>
-        <FaUser className="h-5 w-5" />
+        className={`text-primary bg-base-200 ${PAGE_URL.HISTORY == page && 'active'}`}
+        onClick={() => router.push(PAGE_URL.HISTORY)}>
+        <FaClock className="h-5 w-5" />
       </button>
     </div>
   );
