@@ -1,12 +1,12 @@
 import React from 'react';
 import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
-import { cn } from '@/utils/cn.helper';
 import { usePlayedWorkout, useStopWorkout } from '@/hooks/workouts.hooks';
 import CountdownText from '@/components/shared/countdown-text';
 import { LuTimer } from 'react-icons/lu';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
 import { useSetPlayUpdate } from '@/hooks/play-sets.hooks';
+import Confetti from 'react-confetti';
 
 export default function StartWorkout() {
   const { isFetching, data: workoutPlay } = usePlayedWorkout();
@@ -24,8 +24,8 @@ export default function StartWorkout() {
   const renderTimeContainer = (workoutPlay: WorkoutPlayWithExercises) => {
     return (
       <div className="flex flex-row gap-5 items-center justify-between mb-5">
-        <div className="flex flex-row">
-          <LuTimer className="w-5 h-5 mr-2" />
+        <div className="flex flex-row text-lg">
+          <LuTimer className="w-6 h-6 mr-2" />
           <CountdownText timestamp={new Date(workoutPlay.createdAt || 0).getTime()} />
         </div>
         <button
@@ -39,23 +39,36 @@ export default function StartWorkout() {
     );
   };
 
+  const isExerciseDone = (exerciseId: string) => {
+    const exercise = workoutPlay?.exercises.find((e) => e.id === exerciseId);
+    if (!exercise) {
+      return false;
+    }
+
+    return exercise.sets.every((set) => set.isCompleted);
+  };
+
+  const areAllExercisesDone = (workoutPlay: WorkoutPlayWithExercises) => {
+    return workoutPlay.exercises.every((exercise) => exercise.sets.every((set) => set.isCompleted));
+  };
+
   const renderExercises = (workoutPlay: WorkoutPlayWithExercises) => {
     const activeExercises = workoutPlay.exercises;
 
     return (
       <div className="flex flex-col gap-5">
+        {areAllExercisesDone(workoutPlay) && <Confetti />}
         {activeExercises.map((exercise) => (
-          <div
-            key={exercise.id}
-            className={cn('bg-base-200 rounded-md p-4 transition ease-in-out delay-100 duration-300', {
-              'bg-rose-200 dark:bg-neutral-900': exercise.isCompleted,
-            })}>
-            <h2 className="text-lg mb-4 font-semibold">{exercise.name}</h2>
+          <div key={exercise.id} className="bg-base-200 rounded-md p-4 transition ease-in-out delay-100 duration-300">
+            <div className="flex flex-row justify-between">
+              <h2 className="text-lg mb-4 font-semibold">{exercise.name}</h2>
+              {isExerciseDone(exercise.id) && <div className="badge badge-success fade-in">done</div>}
+            </div>
             <div>
               {exercise.sets.map((set, index) => (
                 <div key={set.id} className="flex flex-row gap-5 items-center">
-                  <div>Set {index + 1}</div>
-                  <div>Reps {exercise.reps}</div>
+                  <div>#{index + 1}</div>
+                  <div>{exercise.reps} reps</div>
                   <div>{exercise.weight} kg</div>
                   <div className="form-control">
                     <label className="label cursor-pointer">

@@ -38,6 +38,11 @@ export const useSetPlayUpdate = () => {
         }
         set.isCompleted = targetData.isCompleted;
 
+        const areAllExercisesDone = old.exercises.every((exercise) => exercise.sets.every((set) => set.isCompleted));
+        if (areAllExercisesDone) {
+          toast.success('Great job! You have completed the workout!');
+        }
+
         return {
           ...old,
         };
