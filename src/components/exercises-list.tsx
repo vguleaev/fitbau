@@ -122,7 +122,13 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
             <div className="flex flex-row justify-between items-center mb-4">
               <div className="font-semibold">{exercise.name}</div>
               <div className="flex flex-row">
-                <LuX className="h-6 w-6 ml-2" onClick={() => showDeleteModal(exercise)} />
+                <LuX
+                  className="h-6 w-6 ml-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    showDeleteModal(exercise);
+                  }}
+                />
               </div>
             </div>
             <div className="flex flex-row gap-5">
