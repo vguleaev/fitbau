@@ -45,6 +45,13 @@ export const WorkoutsList = () => {
   };
 
   const onWorkoutClick = (workout: WorkoutWithExercises) => {
+    if (playWorkoutMutation.isPending) {
+      return;
+    }
+    if (workout.isPlayed) {
+      toast.error('You can not edit played workout. Finish it first!');
+      return;
+    }
     router.push(PAGE_URL.WORKOUT_DETAILS.replace(':id', workout.id.toString()));
   };
 
