@@ -1,7 +1,6 @@
 import prisma from '@/db/prisma';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
 import { WorkoutWithExercises } from '@/types/workout.type';
-
 import { Exercise, ExercisePlay, ExercisePlaySet, Workout, WorkoutPlay } from '@prisma/client';
 
 async function cloneWorkoutForPlay(workout: WorkoutWithExercises, userId: string): Promise<WorkoutPlay> {
@@ -54,6 +53,24 @@ async function createExercisePlaySet(exercisePlay: ExercisePlay): Promise<Exerci
     },
   });
   return created;
+}
+
+async function getWorkoutPlayById(workoutPlayId: string): Promise<WorkoutPlay | null> {
+  const workoutPlay = await prisma.workoutPlay.findUnique({
+    where: {
+      id: workoutPlayId,
+    },
+  });
+  return workoutPlay;
+}
+
+async function deleteWorkoutPlay(workoutPlayId: string): Promise<WorkoutPlay> {
+  const deleted = await prisma.workoutPlay.delete({
+    where: {
+      id: workoutPlayId,
+    },
+  });
+  return deleted;
 }
 
 async function getWorkoutPlayWithExercises(workoutId: string): Promise<WorkoutPlayWithExercises | null> {
@@ -134,4 +151,6 @@ export {
   finishWorkoutPlay,
   finishWorkoutPlayByWorkoutId,
   getAllFinishedWorkoutsForUser,
+  getWorkoutPlayById,
+  deleteWorkoutPlay,
 };

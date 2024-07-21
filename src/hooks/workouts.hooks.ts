@@ -86,6 +86,18 @@ const getWorkoutPlaysHistory = async () => {
   return history as WorkoutPlay[];
 };
 
+export const deleteWorkoutPlay = async (workoutPlayId: string) => {
+  const result = await fetch(`/api/workout-plays/${workoutPlayId}`, {
+    method: 'DELETE',
+  });
+
+  if (result.status === 200) {
+    toast.success(`Deleted!`);
+  } else {
+    toast.error('Something went wrong :(');
+  }
+};
+
 export const useWorkouts = () => {
   return useQuery({
     queryKey: ['workouts'],
@@ -148,5 +160,15 @@ export const useWorkoutPlaysHistory = () => {
   return useQuery({
     queryKey: ['workout-plays-history'],
     queryFn: getWorkoutPlaysHistory,
+    staleTime: 1000,
+  });
+};
+
+export const useDeleteWorkoutPlay = () => {
+  return useMutation({
+    mutationFn: deleteWorkoutPlay,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workout-plays-history'] });
+    },
   });
 };
