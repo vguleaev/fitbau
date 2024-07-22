@@ -64,6 +64,22 @@ async function getWorkoutPlayById(workoutPlayId: string): Promise<WorkoutPlay | 
   return workoutPlay;
 }
 
+async function getWorkoutPlayWithExercisesById(workoutPlayId: string): Promise<WorkoutPlayWithExercises | null> {
+  const workoutPlay = await prisma.workoutPlay.findUnique({
+    where: {
+      id: workoutPlayId,
+    },
+    include: {
+      exercises: {
+        include: {
+          sets: true,
+        },
+      },
+    },
+  });
+  return workoutPlay;
+}
+
 async function deleteWorkoutPlay(workoutPlayId: string): Promise<WorkoutPlay> {
   const deleted = await prisma.workoutPlay.delete({
     where: {
@@ -153,4 +169,5 @@ export {
   getAllFinishedWorkoutsForUser,
   getWorkoutPlayById,
   deleteWorkoutPlay,
+  getWorkoutPlayWithExercisesById,
 };

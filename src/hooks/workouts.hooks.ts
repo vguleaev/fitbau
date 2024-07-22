@@ -98,6 +98,16 @@ export const deleteWorkoutPlay = async (workoutPlayId: string) => {
   }
 };
 
+const fetchWorkoutPlay = async (workoutPlayId: string) => {
+  const result = await fetch(`/api/workout-plays/${workoutPlayId}`);
+
+  if (result.status === 404) {
+    return null;
+  }
+  const data = await result.json();
+  return data as WorkoutPlayWithExercises;
+};
+
 export const useWorkouts = () => {
   return useQuery({
     queryKey: ['workouts'],
@@ -170,5 +180,14 @@ export const useDeleteWorkoutPlay = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workout-plays-history'] });
     },
+  });
+};
+
+export const useWorkoutPlay = (workoutPlayId: string | null) => {
+  return useQuery({
+    queryKey: ['workout-play', workoutPlayId],
+    queryFn: () => fetchWorkoutPlay(workoutPlayId!),
+    enabled: !!workoutPlayId,
+    staleTime: 1000,
   });
 };

@@ -54,7 +54,6 @@ export default function History() {
 
     return (
       <>
-        <h1 className="text-lg mb-5">Workout History</h1>
         {renderHistory(history)}
         <BottomOffcanvas
           title={getPlayTitle()}
