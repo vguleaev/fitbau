@@ -4,7 +4,7 @@ import PAGE_URL from '@/constants/page.constant';
 import { useWorkoutPlaysHistory } from '@/hooks/workouts.hooks';
 import dayjs from 'dayjs';
 import { WorkoutPlay } from '@prisma/client';
-import { LuHourglass } from 'react-icons/lu';
+import { LuClock, LuHourglass } from 'react-icons/lu';
 import { BottomOffcanvas } from '@/components/shared/bottom-offcanvas';
 import { WorkoutPlayDetails } from '@/components/workout-play-details';
 import { getWorkoutPlayDuration } from '@/utils/workout-play.helper';
@@ -45,11 +45,24 @@ export default function History() {
 
   const renderContent = () => {
     if (isFetching) {
-      return <div>Loading...</div>;
+      return (
+        <div className="flex flex-col gap-5">
+          <div className="skeleton w-full h-[100px]" />
+          <div className="skeleton w-full h-[100px]" />
+          <div className="skeleton w-full h-[100px]" />
+          <div className="skeleton w-full h-[100px]" />
+          <div className="skeleton w-full h-[100px]" />
+        </div>
+      );
     }
 
     if (!history || !history.length) {
-      return <div className="mb-5">You do not have any workout history yet.</div>;
+      return (
+        <div className="mt-10 flex flex-col gap-5 text-center items-center">
+          <div>You do not have any workout history yet.</div>
+          <LuClock className="h-10 w-10 text-primary" />
+        </div>
+      );
     }
 
     return (

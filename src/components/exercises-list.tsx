@@ -84,9 +84,7 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
           </div>
         </div>
         <div className="flex flex-row gap-5">
-          <div className="rounded-lg w-[50px] mb-2 h-5 bg-base-300 skeleton" />
-          <div className="rounded-lg w-[50px] mb-2 h-5 bg-base-300 skeleton" />
-          <div className="rounded-lg w-[110px] mb-2 h-5 bg-base-300 skeleton" />
+          <div className="rounded-lg w-[230px] mb-2 h-5 bg-base-300 skeleton" />
         </div>
       </div>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LuClipboardList, LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
+import { LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { WorkoutWithExercises } from '@/types/workout.type';
 import { toast } from 'react-hot-toast';
@@ -108,21 +108,21 @@ export const WorkoutsList = () => {
 
   if (workouts?.length === 0) {
     return (
-      <div className="text-center">
-        <span className="">Your list is empty</span>
+      <div className="mt-10 flex flex-col gap-5 text-center items-center">
+        <div>Your workout list is empty.</div>
+        <LuDumbbell className="h-10 w-10 text-primary" />
       </div>
     );
   }
 
   return (
     <div>
-      {workouts?.map((workout) => (
+      {workouts?.map((workout, index) => (
         <div className="h-24 mb-4 pt-2 pb-2" key={workout.id}>
           <div className="flex flex-row justify-between items-center">
             <div className="w-full" onClick={() => onWorkoutClick(workout)}>
               <div className="flex flex-row mb-2 items-center">
-                <LuClipboardList className="h-5 w-5 text-primary" />
-                <div className="ml-2 font-semibold">{workout.name}</div>
+                <div className="text-lg">{workout.name}</div>
               </div>
               <div className="flex flex-row items-center">
                 <LuDumbbell className="h-5 w-5 text-primary" />
@@ -140,12 +140,15 @@ export const WorkoutsList = () => {
                   <LuPlay className="h-5 w-5" />
                 )}
               </button>
-              <button className="btn btn-circle" onClick={() => showDeleteModal(workout)}>
+              <button
+                className="btn btn-circle"
+                disabled={playWorkoutMutation.isPending}
+                onClick={() => showDeleteModal(workout)}>
                 <LuTrash className="h-5 w-5" />
               </button>
             </div>
           </div>
-          <div className="divider" />
+          {index < workouts.length - 1 && <div className="divider" />}
         </div>
       ))}
       {renderDeleteModal()}

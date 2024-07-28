@@ -3,7 +3,7 @@ import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { usePlayedWorkout, useStopWorkout } from '@/hooks/workouts.hooks';
 import CountdownText from '@/components/shared/countdown-text';
-import { LuTimer } from 'react-icons/lu';
+import { LuPlayCircle, LuTimer } from 'react-icons/lu';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
 import { useSetPlayUpdate } from '@/hooks/play-sets.hooks';
 import Confetti from 'react-confetti';
@@ -91,11 +91,44 @@ export default function StartWorkout() {
 
   const renderContent = () => {
     if (isFetching) {
-      return <div>Loading...</div>;
+      return (
+        <div>
+          <div className="skeleton w-[170px] h-[28px] mb-5" />
+          <div className="flex flex-row gap-5 items-center justify-between mb-5">
+            <div className="skeleton w-[90px] h-[28px]" />
+            <div className="skeleton w-[130px] h-[50px]" />
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="skeleton w-full h-[200px] rounded-md p-4 flex flex-col gap-5">
+              <div className="skeleton w-[220px] bg-base-200 h-[20px] mt-2 mb-2" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+            </div>
+            <div className="skeleton w-full h-[200px] rounded-md p-4 flex flex-col gap-5">
+              <div className="skeleton w-[220px] bg-base-200 h-[20px] mt-2 mb-2" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+            </div>
+            <div className="skeleton w-full h-[200px] rounded-md p-4 flex flex-col gap-5">
+              <div className="skeleton w-[220px] bg-base-200 h-[20px] mt-2 mb-2" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+            </div>
+          </div>
+        </div>
+      );
     }
 
     if (!workoutPlay) {
-      return <div className="mb-5">You do not have an active workout. Please select your workout and click play.</div>;
+      return (
+        <div className="mt-10 flex flex-col gap-5 text-center items-center">
+          <div>You do not have an active workout. Please select your workout and click play.</div>
+          <LuPlayCircle className="h-10 w-10 text-primary" />
+        </div>
+      );
     }
 
     return (

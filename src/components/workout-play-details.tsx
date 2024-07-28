@@ -31,7 +31,7 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
   if (isFetching) {
     return (
       <div className="flex w-full justify-center">
-        <div className="loading loading-lg" />
+        <div className="loading loading-lg mt-10" />
       </div>
     );
   }
@@ -54,7 +54,7 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
                   <div>#{index + 1}</div>
                   <div>{set.reps} reps</div>
                   <div>{set.weight} kg</div>
-                  <div>{set.isCompleted ? <FaCheckSquare /> : null}</div>
+                  <div>{set.isCompleted ? <FaCheckSquare className="h-5 w-5" /> : null}</div>
                 </div>
               ))}
             </div>
