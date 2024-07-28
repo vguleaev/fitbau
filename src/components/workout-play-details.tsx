@@ -50,11 +50,11 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
             <div className="font-bold mb-2">{exercise.name}</div>
             <div className="w-full">
               {exercise.sets.map((set, index) => (
-                <div key={index} className="flex flex-row items-center">
-                  <div className="ml-2">#{index + 1}</div>
-                  <div className="ml-2">{set.reps} reps</div>
-                  <div className="ml-2">{set.weight} kg</div>
-                  <div className="ml-2">{set.isCompleted ? <FaCheckSquare /> : null}</div>
+                <div key={index} className="flex flex-row items-center gap-3">
+                  <div>#{index + 1}</div>
+                  <div>{set.reps} reps</div>
+                  <div>{set.weight} kg</div>
+                  <div>{set.isCompleted ? <FaCheckSquare /> : null}</div>
                 </div>
               ))}
             </div>
@@ -65,7 +65,7 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 text-lg">
       <div className="flex flex-col gap-2">
         <div className="flex fle-row justify-between mt-2 mb-2 text-lg">
           <div>{dayjs(workoutPlay.createdAt).format('DD.MM.YYYY')}</div>
