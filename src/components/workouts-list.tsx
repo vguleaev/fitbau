@@ -57,10 +57,10 @@ export const WorkoutsList = () => {
 
   const renderWorkoutSkeleton = () => {
     return (
-      <div className="h-24 mb-4 pt-2 pb-2">
+      <div className="h-24 skeleton w-full bg-base-200 rounded-md p-4">
         <div className="flex flex-row justify-between items-center">
           <div>
-            <div className="w-[160px] h-5 mb-2 bg-base-300 skeleton" />
+            <div className="w-[160px] h-5 mb-3 mt-2 bg-base-300 skeleton" />
             <div className="w-[110px] h-5 mb-2 bg-base-300 skeleton" />
           </div>
           <div className="flex flex-row gap-4">
@@ -68,7 +68,6 @@ export const WorkoutsList = () => {
             <div className="h-11 w-11 rounded-full bg-base-300 skeleton" />
           </div>
         </div>
-        <div className="divider" />
       </div>
     );
   };
@@ -98,7 +97,10 @@ export const WorkoutsList = () => {
 
   if (isFetching) {
     return (
-      <div>
+      <div className="flex flex-col gap-4">
+        {renderWorkoutSkeleton()}
+        {renderWorkoutSkeleton()}
+        {renderWorkoutSkeleton()}
         {renderWorkoutSkeleton()}
         {renderWorkoutSkeleton()}
         {renderWorkoutSkeleton()}
@@ -116,22 +118,21 @@ export const WorkoutsList = () => {
   }
 
   return (
-    <div>
-      {workouts?.map((workout, index) => (
-        <div className="h-24 mb-4 pt-2 pb-2" key={workout.id}>
-          <div className="flex flex-row justify-between items-center">
+    <div className="flex flex-col gap-4">
+      {workouts?.map((workout) => (
+        <div className="h-24" key={workout.id}>
+          <div className="flex flex-row justify-between items-center bg-base-200 rounded-md p-4">
             <div className="w-full" onClick={() => onWorkoutClick(workout)}>
               <div className="flex flex-row mb-2 items-center">
-                <div className="text-lg">{workout.name}</div>
+                <div className="text-lg font-bold">{workout.name}</div>
               </div>
               <div className="flex flex-row items-center">
-                <LuDumbbell className="h-5 w-5 text-primary" />
-                <div className="ml-2">{workout.exercises.length} exercises</div>
+                <div className="text-base-content">{workout.exercises.length} exercises</div>
               </div>
             </div>
             <div className="flex gap-2">
               <button
-                className="btn btn-circle"
+                className="btn btn-circle bg-base-300"
                 onClick={() => startWorkout(workout)}
                 disabled={playWorkoutMutation.isPending}>
                 {playWorkoutMutation.isPending ? (
@@ -141,14 +142,13 @@ export const WorkoutsList = () => {
                 )}
               </button>
               <button
-                className="btn btn-circle"
+                className="btn btn-circle  bg-base-300"
                 disabled={playWorkoutMutation.isPending}
                 onClick={() => showDeleteModal(workout)}>
                 <LuTrash className="h-5 w-5" />
               </button>
             </div>
           </div>
-          {index < workouts.length - 1 && <div className="divider" />}
         </div>
       ))}
       {renderDeleteModal()}

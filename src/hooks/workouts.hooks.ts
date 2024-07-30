@@ -188,6 +188,6 @@ export const useWorkoutPlay = (workoutPlayId: string | null) => {
     queryKey: ['workout-play', workoutPlayId],
     queryFn: () => fetchWorkoutPlay(workoutPlayId!),
     enabled: !!workoutPlayId,
-    staleTime: 1000,
+    staleTime: Infinity,
   });
 };

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useAddExercise, useUpdateExercise } from '@/hooks/exercises.hooks';
 import { useWorkout } from '@/hooks/workouts.hooks';
 import { AddExerciseSchema, addExerciseSchema } from '@/types/exercise.type';
@@ -36,6 +37,7 @@ export const ExercisesForm = ({ exercise, onClose }: Props) => {
   });
 
   const onCloseClick = () => {
+    reset();
     onClose();
   };
 
@@ -64,27 +66,34 @@ export const ExercisesForm = ({ exercise, onClose }: Props) => {
   return (
     <div className="mt-5">
       <form onSubmit={handleSubmit(onSubmit)} tabIndex={-1}>
-        {errors.reps && <div className="text-red-500">Reps must be a positive number</div>}
-        {errors.sets && <div className="text-red-500">Sets must be a positive number</div>}
-        {errors.weight && <div className="text-red-500">Weight must be a positive number</div>}
+        <Image
+          className="rounded-lg dark:border-base-100 mb-5"
+          src="/images/workout_image.svg"
+          width={500}
+          height={500}
+          alt="Picture"
+        />
         <div>
           <label className="label">Exercise Name</label>
-          <input className="input input-bordered w-full w-full mb-2" type="text" required {...register('name')} />
+          <input className="input input-bordered w-full mb-2" type="text" required {...register('name')} />
         </div>
         <div className="flex flex-row gap-2 items-center">
           <div>
             <label className="label">Reps</label>
-            <input className="input input-bordered w-full w-full mb-2" type="number" required {...register('reps')} />
+            <input className="input input-bordered w-full mb-2" type="number" required {...register('reps')} />
           </div>
           <div>
             <label className="label">Sets</label>
-            <input className="input input-bordered w-full w-full mb-2" type="number" required {...register('sets')} />
+            <input className="input input-bordered w-full mb-2" type="number" required {...register('sets')} />
           </div>
           <div>
             <label className="label">Weight (kg)</label>
-            <input className="input input-bordered w-full w-full mb-2" type="number" required {...register('weight')} />
+            <input className="input input-bordered w-full mb-2" type="number" required {...register('weight')} />
           </div>
         </div>
+        {errors.reps && <div className="text-red-500 text-[16px]">Reps must be a positive number!</div>}
+        {errors.sets && <div className="text-red-500 text-[16px]">Sets must be a positive number!</div>}
+        {errors.weight && <div className="text-red-500 text-[16px]">Weight must be a positive number!</div>}
 
         <button
           type="button"

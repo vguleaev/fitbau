@@ -14,7 +14,7 @@ export const BottomOffcanvas = ({ isOpen, children, title, onClose }: ComponentP
         <input id="bottom-offcanvas" type="checkbox" readOnly checked={isOpen} className="drawer-toggle" />
 
         <div className="drawer-side z-[1]">
-          <div className="menu p-4 w-80 h-full bg-base-200 text-base-content w-full">
+          <div className="menu p-4 h-full bg-base-200 text-base-content w-full flex flex-col">
             <div className="flex flex-row justify-between mt-2">
               {title && <span className="text-lg font-bold">{title}</span>}
               <div className="cursor-pointer" onClick={() => onClose()}>
@@ -22,7 +22,7 @@ export const BottomOffcanvas = ({ isOpen, children, title, onClose }: ComponentP
               </div>
             </div>
 
-            <div>{children}</div>
+            <div className="h-[90%]">{children}</div>
           </div>
         </div>
       </div>

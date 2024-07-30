@@ -30,8 +30,8 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
 
   if (isFetching) {
     return (
-      <div className="flex w-full justify-center">
-        <div className="loading loading-lg mt-10" />
+      <div className="flex w-full justify-center items-center h-full">
+        <div className="loading loading-spinner w-20 h-20 mb-10 text-primary" />
       </div>
     );
   }
@@ -44,13 +44,11 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
     return (
       <div className="w-full h-[calc(70vh-25px)] overflow-scroll mb-5">
         {workoutPlayDetails.exercises.map((exercise) => (
-          <div
-            key={exercise.id}
-            className="flex flex-col w-full mb-6 bg-base-300 rounded-md p-4 transition ease-in-out delay-100 duration-300">
+          <div key={exercise.id} className="flex flex-col w-full mb-5 bg-base-300 rounded-md p-4 text-[16px]">
             <div className="font-bold mb-2">{exercise.name}</div>
-            <div className="w-full">
+            <div className="w-full flex flex-col gap-2">
               {exercise.sets.map((set, index) => (
-                <div key={index} className="flex flex-row items-center gap-3">
+                <div key={index} className="flex flex-row items-center gap-5">
                   <div>#{index + 1}</div>
                   <div>{set.reps} reps</div>
                   <div>{set.weight} kg</div>
@@ -65,9 +63,9 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
   };
 
   return (
-    <div className="mt-5 text-lg">
+    <div className="mt-5">
       <div className="flex flex-col gap-2">
-        <div className="flex fle-row justify-between mt-2 mb-2 text-lg">
+        <div className="flex fle-row justify-between mt-2 mb-2 mx-1 text-lg">
           <div>{dayjs(workoutPlay.createdAt).format('DD.MM.YYYY')}</div>
           <div className="flex items-center">
             {getWorkoutPlayDuration(workoutPlay)} minutes

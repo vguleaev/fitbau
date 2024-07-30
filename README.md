@@ -20,6 +20,7 @@ https://fitbau.vercel.app/
 - react-icons
 - react-hook-form
 - zod
+- PWA
 
 Hosted on **Vercel**
 

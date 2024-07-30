@@ -24,7 +24,7 @@ export default function History() {
               setPlayDetailsCanvasOpen(true);
             }}
             key={workoutPlay.id}
-            className="bg-base-200 rounded-md p-4 transition ease-in-out delay-100 duration-300">
+            className="bg-base-200 rounded-md p-4">
             <h2 className="text-lg mb-4 font-semibold">{workoutPlay.name}</h2>
             <div className="flex fle-row justify-between">
               <div>{dayjs(workoutPlay.createdAt).format('DD.MM.YYYY')}</div>
@@ -46,12 +46,27 @@ export default function History() {
   const renderContent = () => {
     if (isFetching) {
       return (
-        <div className="flex flex-col gap-5">
-          <div className="skeleton w-full h-[100px]" />
-          <div className="skeleton w-full h-[100px]" />
-          <div className="skeleton w-full h-[100px]" />
-          <div className="skeleton w-full h-[100px]" />
-          <div className="skeleton w-full h-[100px]" />
+        <div>
+          <div className="flex flex-col gap-5">
+            <div className="skeleton w-full h-[100px] p-4 bg-base-200">
+              <div className="skeleton w-[180px] h-6 mb-4 bg-base-300" />
+            </div>
+            <div className="skeleton w-full h-[100px] p-4 bg-base-200">
+              <div className="skeleton w-[180px] h-6 mb-4 bg-base-300" />
+            </div>
+            <div className="skeleton w-full h-[100px] p-4 bg-base-200">
+              <div className="skeleton w-[180px] h-6 mb-4 bg-base-300" />
+            </div>
+            <div className="skeleton w-full h-[100px] p-4 bg-base-200">
+              <div className="skeleton w-[180px] h-6 mb-4 bg-base-300" />
+            </div>
+            <div className="skeleton w-full h-[100px] p-4 bg-base-200">
+              <div className="skeleton w-[180px] h-6 mb-4 bg-base-300" />
+            </div>
+            <div className="skeleton w-full h-[100px] p-4 bg-base-200">
+              <div className="skeleton w-[180px] h-6 mb-4 bg-base-300" />
+            </div>
+          </div>
         </div>
       );
     }
@@ -80,7 +95,10 @@ export default function History() {
 
   return (
     <Layout page={PAGE_URL.HISTORY}>
-      <div className="m-5 mb-20">{renderContent()}</div>
+      <div className="m-5 mb-20">
+        <h1 className="text-lg mb-5">History</h1>
+        {renderContent()}
+      </div>
     </Layout>
   );
 }

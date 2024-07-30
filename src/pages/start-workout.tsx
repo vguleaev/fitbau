@@ -59,7 +59,7 @@ export default function StartWorkout() {
       <div className="flex flex-col gap-5">
         {areAllExercisesDone(workoutPlay) && <Confetti />}
         {activeExercises.map((exercise) => (
-          <div key={exercise.id} className="bg-base-200 rounded-md p-4 transition ease-in-out delay-100 duration-300">
+          <div key={exercise.id} className="bg-base-200 rounded-md p-4">
             <div className="flex flex-row justify-between">
               <h2 className="text-lg mb-4 font-semibold">{exercise.name}</h2>
               {isExerciseDone(exercise.id) && <div className="badge badge-success fade-in">done</div>}
@@ -95,27 +95,27 @@ export default function StartWorkout() {
         <div>
           <div className="skeleton w-[170px] h-[28px] mb-5" />
           <div className="flex flex-row gap-5 items-center justify-between mb-5">
-            <div className="skeleton w-[90px] h-[28px]" />
-            <div className="skeleton w-[130px] h-[50px]" />
+            <div className="skeleton w-[90px] bg-base-200 h-[28px]" />
+            <div className="skeleton w-[130px] bg-base-200 h-[50px]" />
           </div>
           <div className="flex flex-col gap-5">
-            <div className="skeleton w-full h-[200px] rounded-md p-4 flex flex-col gap-5">
-              <div className="skeleton w-[220px] bg-base-200 h-[20px] mt-2 mb-2" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+            <div className="skeleton w-full h-[200px] bg-base-200 rounded-md p-4 flex flex-col gap-5">
+              <div className="skeleton w-[220px] bg-base-300 h-[20px] mt-2 mb-2" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
             </div>
-            <div className="skeleton w-full h-[200px] rounded-md p-4 flex flex-col gap-5">
-              <div className="skeleton w-[220px] bg-base-200 h-[20px] mt-2 mb-2" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+            <div className="skeleton w-full h-[200px] bg-base-200 rounded-md p-4 flex flex-col gap-5">
+              <div className="skeleton w-[220px] bg-base-300 h-[20px] mt-2 mb-2" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
             </div>
-            <div className="skeleton w-full h-[200px] rounded-md p-4 flex flex-col gap-5">
-              <div className="skeleton w-[220px] bg-base-200 h-[20px] mt-2 mb-2" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
-              <div className="skeleton w-[150px] bg-base-200 h-[20px]" />
+            <div className="skeleton w-full h-[200px] bg-base-200 rounded-md p-4 flex flex-col gap-5">
+              <div className="skeleton w-[220px] bg-base-300 h-[20px] mt-2 mb-2" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
+              <div className="skeleton w-[150px] bg-base-300 h-[20px]" />
             </div>
           </div>
         </div>
