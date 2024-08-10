@@ -5,11 +5,13 @@ import { WorkoutsList } from '@/components/workouts-list';
 import { useState } from 'react';
 import { DialogModal } from '@/components/shared/dialog-modal';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddWorkoutSchema, addWorkoutSchema } from '@/types/workout.type';
 import { useCreateWorkout } from '@/hooks/workouts.hooks';
 
 export default function Workouts() {
+  const { t } = useTranslation();
   const [isAddWorkoutDialogOpen, setAddWorkoutDialogOpen] = useState(false);
 
   const showAddWorkoutModal = () => {
@@ -64,7 +66,7 @@ export default function Workouts() {
   return (
     <Layout page={PAGE_URL.WORKOUTS}>
       <div className="m-5 mb-20">
-        <h1 className="text-lg mb-5">Workouts</h1>
+        <h1 className="text-lg mb-5">{t('Workouts')}</h1>
         <WorkoutsList />
         <FloatingButton onClick={() => showAddWorkoutModal()} />
         {renderAddWorkoutModal()}

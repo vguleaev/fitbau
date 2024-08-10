@@ -6,6 +6,8 @@ import Notification from '@/components/notification';
 import { Roboto } from 'next/font/google';
 import { QueryClientProvider } from '@tanstack/react-query';
 import queryClient from '@/query-client/query-client';
+import '../i18n/i18n';
+
 const roboto = Roboto({ subsets: ['latin', 'cyrillic'], weight: ['400', '500', '700'] });
 
 export default function App({ Component, pageProps }: AppProps) {

@@ -3,6 +3,7 @@ import { FaBars } from 'react-icons/fa';
 
 import { Mulish } from 'next/font/google';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { LanguageToggle } from '@/components/shared/language-toggle';
 
 const mulish = Mulish({ subsets: ['latin'], weight: ['400'] });
 
@@ -17,7 +18,8 @@ export const Navbar = () => {
       <div className="flex-1">
         <a className={`btn btn-ghost no-animation normal-case text-lg ${mulish.className}`}>Fitbau</a>
       </div>
-      <div className="dropdown dropdown-end text-lg">
+      <div className="dropdown dropdown-end text-lg flex flex-row">
+        <LanguageToggle />
         <ThemeToggle />
       </div>
     </div>

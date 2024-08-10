@@ -7,9 +7,11 @@ import { useRouter } from 'next/router';
 import PAGE_URL from '@/constants/page.constant';
 import { useActiveWorkoutStore } from '@/stores/active-workout.store';
 import { useDeleteWorkout, usePlayWorkout, useWorkouts } from '@/hooks/workouts.hooks';
+import { useTranslation } from 'react-i18next';
 
 export const WorkoutsList = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { isFetching, data: workouts } = useWorkouts();
   const deleteWorkoutMutation = useDeleteWorkout();
   const playWorkoutMutation = usePlayWorkout();
@@ -127,7 +129,9 @@ export const WorkoutsList = () => {
                 <div className="text-lg font-bold">{workout.name}</div>
               </div>
               <div className="flex flex-row items-center">
-                <div className="text-base-content">{workout.exercises.length} exercises</div>
+                <div className="text-base-content">
+                  {workout.exercises.length} {t('exercises')}
+                </div>
               </div>
             </div>
             <div className="flex gap-2">

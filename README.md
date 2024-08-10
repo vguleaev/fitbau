@@ -21,6 +21,7 @@ https://fitbau.vercel.app/
 - react-hook-form
 - zod
 - PWA
+- react-i18next
 
 Hosted on **Vercel**
 
