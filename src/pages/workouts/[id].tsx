@@ -9,8 +9,10 @@ import { ExercisesForm } from '@/components/exercises-form';
 import { useWorkout } from '@/hooks/workouts.hooks';
 import { Exercise } from '@prisma/client';
 import { LuChevronsLeft } from 'react-icons/lu';
+import { useTranslation } from 'react-i18next';
 
 export default function WorkoutDetails() {
+  const { t } = useTranslation();
   const [isExerciseCanvasOpen, setExerciseCanvasOpen] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
 
@@ -34,7 +36,7 @@ export default function WorkoutDetails() {
   };
 
   const getWorkoutFormTitle = () => {
-    return selectedExercise ? 'Edit Exercise' : 'New Exercise';
+    return selectedExercise ? t('Edit Exercise') : t('New Exercise');
   };
 
   const renderWorkoutSkeleton = () => {
@@ -55,7 +57,7 @@ export default function WorkoutDetails() {
       <div>
         <div className="link flex flex-row items-center mb-2 no-underline" onClick={() => router.push('/workouts')}>
           <LuChevronsLeft className="w-5 h-5 mr-1" />
-          Back
+          {t('Back')}
         </div>
         <h1 className="text-lg mb-5 font-bold">{workout?.name}</h1>
       </div>

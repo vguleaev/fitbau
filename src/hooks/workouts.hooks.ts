@@ -4,6 +4,9 @@ import toast from 'react-hot-toast';
 import queryClient from '@/query-client/query-client';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
 import { WorkoutPlay } from '@prisma/client';
+import i18n from '../i18n/i18n';
+
+const t = i18n.t;
 
 const fetchWorkouts = async (): Promise<WorkoutWithExercises[]> => {
   const result = await fetch('/api/workouts');
@@ -27,9 +30,9 @@ const createWorkout = async (data: AddWorkoutSchema) => {
   });
 
   if (result.status === 200) {
-    toast.success(`Created!`);
+    toast.success(t('Created!'));
   } else {
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 
@@ -43,10 +46,10 @@ export const playWorkout = async (workoutId: string) => {
   } else {
     const data = await result.json();
     if (data.isPlayed) {
-      toast.error('Stop active workout first!');
+      toast.error(t('Stop active workout first!'));
       return;
     }
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 
@@ -62,9 +65,9 @@ export const stopWorkout = async (workoutId: string) => {
   });
 
   if (result.status === 200) {
-    toast.success(`Stopped!`);
+    toast.success(t('Stopped!'));
   } else {
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 
@@ -74,9 +77,9 @@ const deleteWorkout = async (workoutId: string) => {
   });
 
   if (result.status === 200) {
-    toast.success(`Deleted!`);
+    toast.success(t('Deleted!'));
   } else {
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 
@@ -92,9 +95,9 @@ export const deleteWorkoutPlay = async (workoutPlayId: string) => {
   });
 
   if (result.status === 200) {
-    toast.success(`Deleted!`);
+    toast.success(t('Deleted!'));
   } else {
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 

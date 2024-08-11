@@ -1,6 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { AddExerciseSchema } from '@/types/exercise.type';
+import i18n from '../i18n/i18n';
+
+const t = i18n.t;
 
 const addExercise = async (data: { workoutId: string; exercise: AddExerciseSchema }) => {
   const result = await fetch(`/api/workouts/${data.workoutId}/exercises`, {
@@ -12,9 +15,9 @@ const addExercise = async (data: { workoutId: string; exercise: AddExerciseSchem
   });
 
   if (result.status === 201) {
-    toast.success(`Saved!`);
+    toast.success(t('Saved!'));
   } else {
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 
@@ -24,9 +27,9 @@ const deleteExercise = async (data: { workoutId: string; exerciseId: string }) =
   });
 
   if (result.status === 200) {
-    toast.success(`Deleted!`);
+    toast.success(t('Deleted!'));
   } else {
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 
@@ -40,9 +43,9 @@ const updateExercise = async (data: { workoutId: string; exerciseId: string; exe
   });
 
   if (result.status === 200) {
-    toast.success(`Updated!`);
+    toast.success(t('Updated!'));
   } else {
-    toast.error('Something went wrong :(');
+    toast.error(t('Something went wrong :('));
   }
 };
 

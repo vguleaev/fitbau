@@ -7,8 +7,10 @@ import { LuPlayCircle, LuTimer } from 'react-icons/lu';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
 import { useSetPlayUpdate } from '@/hooks/play-sets.hooks';
 import Confetti from 'react-confetti';
+import { useTranslation } from 'react-i18next';
 
 export default function StartWorkout() {
+  const { t } = useTranslation();
   const { isFetching, data: workoutPlay } = usePlayedWorkout();
   const stopWorkoutMutation = useStopWorkout();
   const useSetPlayUpdateMutation = useSetPlayUpdate();
@@ -33,7 +35,7 @@ export default function StartWorkout() {
           onClick={() => stopWorkout(workoutPlay.workoutId)}
           disabled={stopWorkoutMutation.isPending}>
           {stopWorkoutMutation.isPending && <span className="loading loading-spinner" />}
-          Finish workout
+          {t('Finish workout')}
         </button>
       </div>
     );
@@ -68,8 +70,12 @@ export default function StartWorkout() {
               {exercise.sets.map((set, index) => (
                 <div key={set.id} className="flex flex-row gap-5 items-center">
                   <div>#{index + 1}</div>
-                  <div>{exercise.reps} reps</div>
-                  <div>{exercise.weight} kg</div>
+                  <div>
+                    {exercise.reps} {t('reps')}
+                  </div>
+                  <div>
+                    {exercise.weight} {t('kg')}
+                  </div>
                   <div className="form-control">
                     <label className="label cursor-pointer">
                       <input
@@ -125,7 +131,7 @@ export default function StartWorkout() {
     if (!workoutPlay) {
       return (
         <div className="mt-10 flex flex-col gap-5 text-center items-center">
-          <div>You do not have an active workout. Please select your workout and click play.</div>
+          <div>{t('You do not have an active workout. Please select your workout and click play.')}</div>
           <LuPlayCircle className="h-10 w-10 text-primary" />
         </div>
       );

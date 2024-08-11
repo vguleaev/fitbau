@@ -2,6 +2,7 @@ import PAGE_URL from '@/constants/page.constant';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaDumbbell, FaPlayCircle, FaRegClock, FaUser } from 'react-icons/fa';
 
 type ComponentProps = {
@@ -9,6 +10,7 @@ type ComponentProps = {
 };
 
 export const Drawer = ({ children }: ComponentProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
 
   return (
@@ -21,25 +23,25 @@ export const Drawer = ({ children }: ComponentProps) => {
           <li>
             <a className="text-[18px] mb-2" onClick={() => router.push(PAGE_URL.WORKOUTS)}>
               <FaDumbbell className="h-5 w-5 mr-2" />
-              Workouts
+              {t('Workouts')}
             </a>
           </li>
           <li>
             <a className="text-[18px] mb-2" onClick={() => router.push(PAGE_URL.START_WORKOUT)}>
               <FaPlayCircle className="h-5 w-5  mr-2" />
-              Start Workout
+              {t('Start Workout')}
             </a>
           </li>
           <li>
             <a className="text-[18px] mb-2" onClick={() => router.push(PAGE_URL.HISTORY)}>
               <FaRegClock className="h-5 w-5  mr-2" />
-              History
+              {t('History')}
             </a>
           </li>
           <li>
             <a className="text-[18px] mb-2" onClick={() => router.push(PAGE_URL.PROFILE)}>
               <FaUser className="h-5 w-5  mr-2" />
-              My Account
+              {t('My Account')}
             </a>
           </li>
         </ul>

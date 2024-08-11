@@ -4,6 +4,7 @@ import { getWorkoutPlayDuration } from '@/utils/workout-play.helper';
 import { WorkoutPlay } from '@prisma/client';
 import dayjs from 'dayjs';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaCheckSquare } from 'react-icons/fa';
 import { LuHourglass } from 'react-icons/lu';
 
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
+  const { t } = useTranslation();
   const { isFetching, data: workoutPlayDetails } = useWorkoutPlay(workoutPlay?.id ?? null);
   const { refetch } = useWorkoutPlaysHistory();
 
@@ -50,8 +52,12 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
               {exercise.sets.map((set, index) => (
                 <div key={index} className="flex flex-row items-center gap-5">
                   <div>#{index + 1}</div>
-                  <div>{set.reps} reps</div>
-                  <div>{set.weight} kg</div>
+                  <div>
+                    {set.reps} {t('reps')}
+                  </div>
+                  <div>
+                    {set.weight} {t('kg')}
+                  </div>
                   <div>{set.isCompleted ? <FaCheckSquare className="h-5 w-5" /> : null}</div>
                 </div>
               ))}
@@ -68,7 +74,7 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
         <div className="flex fle-row justify-between mt-2 mb-2 mx-1 text-lg">
           <div>{dayjs(workoutPlay.createdAt).format('DD.MM.YYYY')}</div>
           <div className="flex items-center">
-            {getWorkoutPlayDuration(workoutPlay)} minutes
+            {getWorkoutPlayDuration(workoutPlay)} {t('minutes')}
             <LuHourglass className="h-5 w-5 ml-2" />
           </div>
         </div>
@@ -81,7 +87,7 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
             className="btn btn-neutral text-white w-[100px]"
             onClick={() => onCloseClick()}
             disabled={deleteWorkoutPlayMutation.isPending}>
-            Close
+            {t('Close')}
           </button>
 
           <button
@@ -90,7 +96,7 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
             onClick={() => deleteWorkoutPlay(workoutPlay.id)}
             disabled={deleteWorkoutPlayMutation.isPending}>
             {deleteWorkoutPlayMutation.isPending && <span className="loading loading-spinner" />}
-            Delete History
+            {t('Delete History')}
           </button>
         </div>
       </div>

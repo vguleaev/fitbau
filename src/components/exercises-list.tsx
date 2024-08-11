@@ -6,12 +6,14 @@ import { useRouter } from 'next/router';
 import { useWorkout } from '@/hooks/workouts.hooks';
 import { Exercise } from '@prisma/client';
 import { useDeleteExercise } from '@/hooks/exercises.hooks';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   onEditExercise: (exercise: Exercise) => void;
 };
 
 export const ExercisesList = ({ onEditExercise }: Props) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const workoutId = router.query.id as string;
 
@@ -55,17 +57,17 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
       <DialogModal isOpened={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
         <div>
           <h3 className="font-bold text-lg">{selectedExercise?.name}</h3>
-          <p className="py-4">Are you sure you want to delete exercise?</p>
+          <p className="py-4">{t('Are you sure you want to delete exercise?')}</p>
           <div className="flex flex-row justify-between">
             <button className="btn btn-default min-w-[80px]" onClick={() => setIsDeleteDialogOpen(false)}>
-              No
+              {t('No')}
             </button>
             <button
               className="btn btn-primary min-w-[80px] text-white"
               disabled={isDeleting}
               onClick={() => onDeleteClick()}>
               {isDeleting && <span className="loading loading-spinner" />}
-              Yes
+              {t('Yes')}
             </button>
           </div>
         </div>
@@ -109,7 +111,7 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
     <div>
       {workout.exercises.length === 0 && (
         <div className="flex flex-row items-center justify-center w-full">
-          No exercises
+          {t('No exercises')}
           <LuFrown className="h-4 w-4 ml-2" />
         </div>
       )}
@@ -130,9 +132,15 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
               </div>
             </div>
             <div className="flex flex-row gap-5">
-              <div>Reps: {exercise.reps}</div>
-              <div>Sets: {exercise.sets}</div>
-              <div>Weight: {exercise.weight} (kg)</div>
+              <div>
+                {t('Reps')}: {exercise.reps}
+              </div>
+              <div>
+                {t('Sets')}: {exercise.sets}
+              </div>
+              <div>
+                {t('Weight')}: {exercise.weight} ({t('kg')})
+              </div>
             </div>
           </div>
         ))}

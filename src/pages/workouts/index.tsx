@@ -39,22 +39,22 @@ export default function Workouts() {
     return (
       <DialogModal isOpened={isAddWorkoutDialogOpen} onClose={() => setAddWorkoutDialogOpen(false)}>
         <div>
-          <h3 className="font-bold text-lg">Add Workout</h3>
+          <h3 className="font-bold text-lg">{t('Add Workout')}</h3>
           <form onSubmit={handleSubmit(onAddWorkoutClick)} tabIndex={-1}>
             <div className="mb-5">
-              <label className="label">Name</label>
-              <input required {...register('name')} className="input input-bordered w-full w-full mb-2" type="text" />
+              <label className="label">{t('Name')}</label>
+              <input required {...register('name')} className="input input-bordered w-full mb-2" type="text" />
             </div>
             <div className="flex flex-row justify-between">
               <button
                 type="reset"
                 className="btn btn-default min-w-[80px]"
                 onClick={() => setAddWorkoutDialogOpen(false)}>
-                No
+                {t('No')}
               </button>
               <button type="submit" className="btn btn-primary min-w-[80px] text-white" disabled={isSubmitting}>
                 {isSubmitting && <span className="loading loading-spinner" />}
-                Yes
+                {t('Yes')}
               </button>
             </div>
           </form>

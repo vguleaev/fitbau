@@ -8,8 +8,10 @@ import { LuClock, LuHourglass } from 'react-icons/lu';
 import { BottomOffcanvas } from '@/components/shared/bottom-offcanvas';
 import { WorkoutPlayDetails } from '@/components/workout-play-details';
 import { getWorkoutPlayDuration } from '@/utils/workout-play.helper';
+import { useTranslation } from 'react-i18next';
 
 export default function History() {
+  const { t } = useTranslation();
   const [isPlayDetailsCanvasOpen, setPlayDetailsCanvasOpen] = useState(false);
   const [selectedPlay, setSelectedPlay] = useState<WorkoutPlay | null>(null);
   const { isFetching, data: history } = useWorkoutPlaysHistory();
@@ -29,7 +31,7 @@ export default function History() {
             <div className="flex fle-row justify-between">
               <div>{dayjs(workoutPlay.createdAt).format('DD.MM.YYYY')}</div>
               <div className="flex items-center">
-                {getWorkoutPlayDuration(workoutPlay)} minutes
+                {getWorkoutPlayDuration(workoutPlay)} {t('minutes')}
                 <LuHourglass className="h-5 w-5 ml-2" />
               </div>
             </div>
@@ -40,7 +42,7 @@ export default function History() {
   };
 
   const getPlayTitle = () => {
-    return selectedPlay?.name || 'Play Details';
+    return selectedPlay?.name || '';
   };
 
   const renderContent = () => {
@@ -74,7 +76,7 @@ export default function History() {
     if (!history || !history.length) {
       return (
         <div className="mt-10 flex flex-col gap-5 text-center items-center">
-          <div>You do not have any workout history yet.</div>
+          <div>{t('You do not have any workout history yet.')}</div>
           <LuClock className="h-10 w-10 text-primary" />
         </div>
       );
@@ -96,7 +98,7 @@ export default function History() {
   return (
     <Layout page={PAGE_URL.HISTORY}>
       <div className="m-5 mb-20">
-        <h1 className="text-lg mb-5">History</h1>
+        <h1 className="text-lg mb-5">{t('History')}</h1>
         {renderContent()}
       </div>
     </Layout>

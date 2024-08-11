@@ -30,7 +30,7 @@ export const WorkoutsList = () => {
 
   const startWorkout = async (workout: WorkoutWithExercises) => {
     if (workout.exercises.length === 0) {
-      toast.error('Workout has no exercises!');
+      toast.error(t('Workout has no exercises!'));
       return;
     }
     setActiveWorkout(workout);
@@ -51,7 +51,7 @@ export const WorkoutsList = () => {
       return;
     }
     if (workout.isPlayed) {
-      toast.error('You can not edit played workout. Finish it first!');
+      toast.error(t('You can not edit played workout. Finish it first!'));
       return;
     }
     router.push(PAGE_URL.WORKOUT_DETAILS.replace(':id', workout.id.toString()));
@@ -78,18 +78,18 @@ export const WorkoutsList = () => {
     return (
       <DialogModal isOpened={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
         <div>
-          <h3 className="font-bold text-lg">Delete</h3>
-          <p className="py-4">Are you sure you want to delete workout?</p>
+          <h3 className="font-bold text-lg">{t('Delete')}</h3>
+          <p className="py-4">{t('Are you sure you want to delete workout?')}</p>
           <div className="flex flex-row justify-between">
             <button className="btn btn-default min-w-[80px]" onClick={() => setIsDeleteDialogOpen(false)}>
-              No
+              {t('No')}
             </button>
             <button
               className="btn btn-primary min-w-[80px] text-white"
               disabled={deleteWorkoutMutation.isPending}
               onClick={() => onDeleteClick()}>
               {deleteWorkoutMutation.isPending && <span className="loading loading-spinner" />}
-              Yes
+              {t('Yes')}
             </button>
           </div>
         </div>
@@ -113,7 +113,7 @@ export const WorkoutsList = () => {
   if (workouts?.length === 0) {
     return (
       <div className="mt-10 flex flex-col gap-5 text-center items-center">
-        <div>Your workout list is empty.</div>
+        <div>{t('Your workout list is empty.')}</div>
         <LuDumbbell className="h-10 w-10 text-primary" />
       </div>
     );

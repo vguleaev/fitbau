@@ -3,19 +3,21 @@ import { useSession, signOut } from 'next-auth/react';
 import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 export default function Profile() {
+  const { t } = useTranslation();
   const { data: session } = useSession();
 
   return (
     <Layout page={PAGE_URL.PROFILE}>
       <div className="m-5">
         <div>
-          <h1 className="text-lg mb-5">My Account</h1>
+          <h1 className="text-lg mb-5">{t('My Account')}</h1>
 
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">Name</span>
+              <span className="label-text">{t('Person Name')}</span>
             </label>
             <input
               type="text"
@@ -27,7 +29,7 @@ export default function Profile() {
 
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">Email</span>
+              <span className="label-text">{t('Email')}</span>
             </label>
             <input
               type="text"
@@ -39,7 +41,7 @@ export default function Profile() {
 
           <button className="btn w-36 mt-5" onClick={() => signOut()}>
             <FaSignOutAlt className="w-4 h-4 mr-2" />
-            Sign out
+            {t('Sign out')}
           </button>
         </div>
       </div>

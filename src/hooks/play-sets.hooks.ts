@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
+import i18n from '../i18n/i18n';
+
+const t = i18n.t;
 
 const updateSetPlay = async (data: { exerciseId: string; setId: string; isCompleted: boolean }) => {
   const result = await fetch(`/api/play-sets/${data.setId}`, {
@@ -23,11 +26,8 @@ export const useSetPlayUpdate = () => {
       await queryClient.cancelQueries({ queryKey: ['played-workout'] });
       const previousWorkoutPlay = queryClient.getQueryData(['played-workout']);
 
-      // Optimistically update to the new value
       queryClient.setQueryData(['played-workout'], (old: WorkoutPlayWithExercises) => {
-        // Your logic here to update the exercises optimistically
-        // This is a placeholder logic, adjust according to your data structure
-
+        // Optimistically update to the new value
         const targetExercise = old.exercises.find((exercise) => exercise.id === targetData.exerciseId);
         if (!targetExercise) {
           return old;
@@ -40,7 +40,7 @@ export const useSetPlayUpdate = () => {
 
         const areAllExercisesDone = old.exercises.every((exercise) => exercise.sets.every((set) => set.isCompleted));
         if (areAllExercisesDone) {
-          toast.success('Great job! You have completed the workout!');
+          toast.success(t('Great job! You have completed the workout!'));
         }
 
         return {
@@ -54,7 +54,7 @@ export const useSetPlayUpdate = () => {
     onError: (err, variables, context) => {
       // If the mutation fails, use the context returned from onMutate to roll back
       queryClient.setQueryData(['played-workout'], context?.previousWorkoutPlay);
-      toast.error('Something went wrong :(');
+      toast.error(t('Something went wrong :('));
     },
     // If the mutation succeeds, invalidate the query to refetch the updated data
     onSuccess: () => {
