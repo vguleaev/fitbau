@@ -3,6 +3,17 @@
     "source.fixAll.eslint": "explicit"
   },
   "editor.formatOnSave": true,
-  "cSpell.words": ["clsx", "cn", "daisyui", "dayjs", "fitbau", "Fitbau", "hookform", "tailwindcss"],
+  "cSpell.words": [
+    "clsx",
+    "cn",
+    "daisyui",
+    "dayjs",
+    "fitbau",
+    "Fitbau",
+    "hookform",
+    "superjson",
+    "tailwindcss",
+    "trpc"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -22,6 +22,7 @@ https://fitbau.vercel.app/
 - zod
 - PWA
 - react-i18next
+- TRPC
 
 Hosted on **Vercel**
 

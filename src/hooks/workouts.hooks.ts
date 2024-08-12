@@ -5,19 +5,18 @@ import queryClient from '@/query-client/query-client';
 import { WorkoutPlayWithExercises } from '@/types/workout-play.type';
 import { WorkoutPlay } from '@prisma/client';
 import i18n from '../i18n/i18n';
+import { trpc } from '@/utils/trpc';
 
 const t = i18n.t;
 
 const fetchWorkouts = async (): Promise<WorkoutWithExercises[]> => {
-  const result = await fetch('/api/workouts');
-  const workouts = await result.json();
-  return workouts as WorkoutWithExercises[];
+  const result = await trpc.workouts.getAll.query();
+  return result;
 };
 
 const fetchWorkout = async (workoutId: string): Promise<WorkoutWithExercises> => {
-  const result = await fetch(`/api/workouts/${workoutId}`);
-  const workout = await result.json();
-  return workout as WorkoutWithExercises;
+  const result = await trpc.workouts.getById.query(workoutId);
+  return result;
 };
 
 const createWorkout = async (data: AddWorkoutSchema) => {
