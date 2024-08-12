@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { useWorkoutPlaysHistory } from '@/hooks/workouts.hooks';
@@ -9,12 +9,18 @@ import { BottomOffcanvas } from '@/components/shared/bottom-offcanvas';
 import { WorkoutPlayDetails } from '@/components/workout-play-details';
 import { getWorkoutPlayDuration } from '@/utils/workout-play.helper';
 import { useTranslation } from 'react-i18next';
+import { usePlayDetailsBottomCanvasStore } from '@/stores/play-details-bottom-canvas.store';
 
 export default function History() {
   const { t } = useTranslation();
-  const [isPlayDetailsCanvasOpen, setPlayDetailsCanvasOpen] = useState(false);
-  const [selectedPlay, setSelectedPlay] = useState<WorkoutPlay | null>(null);
   const { isFetching, data: history } = useWorkoutPlaysHistory();
+  const { selectedPlay, setSelectedPlay, isPlayDetailsCanvasOpen, setPlayDetailsCanvasOpen } =
+    usePlayDetailsBottomCanvasStore((state) => ({
+      selectedPlay: state.selectedPlay,
+      setSelectedPlay: state.setSelectedPlay,
+      isPlayDetailsCanvasOpen: state.isPlayDetailsCanvasOpen,
+      setPlayDetailsCanvasOpen: state.setPlayDetailsCanvasOpen,
+    }));
 
   const renderHistory = (history: WorkoutPlay[]) => {
     return (

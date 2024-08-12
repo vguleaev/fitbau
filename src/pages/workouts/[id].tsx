@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { useRouter } from 'next/router';
@@ -10,11 +10,18 @@ import { useWorkout } from '@/hooks/workouts.hooks';
 import { Exercise } from '@prisma/client';
 import { LuChevronsLeft } from 'react-icons/lu';
 import { useTranslation } from 'react-i18next';
+import { useExerciseBottomCanvasStore } from '@/stores/exercice-bottom-canvas.store';
 
 export default function WorkoutDetails() {
   const { t } = useTranslation();
-  const [isExerciseCanvasOpen, setExerciseCanvasOpen] = useState(false);
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+
+  const { isExerciseCanvasOpen, setExerciseCanvasOpen, selectedExercise, setSelectedExercise } =
+    useExerciseBottomCanvasStore((state) => ({
+      isExerciseCanvasOpen: state.isExerciseCanvasOpen,
+      setExerciseCanvasOpen: state.setExerciseCanvasOpen,
+      selectedExercise: state.selectedExercise,
+      setSelectedExercise: state.setSelectedExercise,
+    }));
 
   const router = useRouter();
   const workoutId = router.query.id as string;

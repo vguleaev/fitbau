@@ -1,5 +1,5 @@
 import prisma from '@/db/prisma';
-import { AddExerciseSchema, ExerciseModel } from '@/types/exercise.type';
+import { AddExerciseSchema } from '@/types/exercise.type';
 import { Exercise } from '@prisma/client';
 
 async function getExercises(workoutId: string): Promise<Exercise[]> {
@@ -45,7 +45,7 @@ async function deleteExercise(exerciseId: string): Promise<Exercise> {
   return result;
 }
 
-async function createExercises(workoutId: string, exercises: ExerciseModel[]): Promise<number | null> {
+async function createExercises(workoutId: string, exercises: Exercise[]): Promise<number | null> {
   const result = await prisma.exercise.createMany({
     data: exercises.map((exercise) => ({
       workoutId,

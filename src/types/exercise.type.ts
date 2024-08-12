@@ -9,12 +9,4 @@ const addExerciseSchema = z.object({
 
 export type AddExerciseSchema = z.infer<typeof addExerciseSchema>;
 
-export type ExerciseModel = {
-  id: string;
-  name: string;
-  sets: number;
-  reps: number;
-  weight: number;
-};
-
 export { addExerciseSchema };

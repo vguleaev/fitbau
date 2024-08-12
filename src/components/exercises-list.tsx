@@ -1,5 +1,4 @@
-import { ExerciseModel } from '@/types/exercise.type';
-import React, { useState } from 'react';
+import React from 'react';
 import { LuFrown, LuX } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { useRouter } from 'next/router';
@@ -7,6 +6,7 @@ import { useWorkout } from '@/hooks/workouts.hooks';
 import { Exercise } from '@prisma/client';
 import { useDeleteExercise } from '@/hooks/exercises.hooks';
 import { useTranslation } from 'react-i18next';
+import { useDeleteExerciseModalStore } from '@/stores/delete-exercise.modal.store';
 
 type Props = {
   onEditExercise: (exercise: Exercise) => void;
@@ -20,11 +20,15 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
   const { data: workout, isFetching, refetch } = useWorkout(workoutId);
   const deleteExerciseMutation = useDeleteExercise();
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [selectedExercise, setSelectedExercise] = useState<ExerciseModel | null>(null);
+  const { isDeleteDialogOpen, selectedExercise, setIsDeleteDialogOpen, setSelectedExercise } =
+    useDeleteExerciseModalStore((state) => ({
+      isDeleteDialogOpen: state.isDeleteDialogOpen,
+      selectedExercise: state.selectedExercise,
+      setIsDeleteDialogOpen: state.setIsDeleteDialogOpen,
+      setSelectedExercise: state.setSelectedExercise,
+    }));
 
-  const showDeleteModal = (exercise: ExerciseModel) => {
+  const showDeleteModal = (exercise: Exercise) => {
     if (workout) {
       setIsDeleteDialogOpen(true);
       setSelectedExercise(exercise);
@@ -36,12 +40,10 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
       return;
     }
 
-    setIsDeleting(true);
     await deleteExerciseMutation.mutateAsync({
       exerciseId: selectedExercise.id,
       workoutId: workoutId,
     });
-    setIsDeleting(false);
     setIsDeleteDialogOpen(false);
     refetch();
   };
@@ -64,9 +66,9 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
             </button>
             <button
               className="btn btn-primary min-w-[80px] text-white"
-              disabled={isDeleting}
+              disabled={deleteExerciseMutation.isPending}
               onClick={() => onDeleteClick()}>
-              {isDeleting && <span className="loading loading-spinner" />}
+              {deleteExerciseMutation.isPending && <span className="loading loading-spinner" />}
               {t('Yes')}
             </button>
           </div>

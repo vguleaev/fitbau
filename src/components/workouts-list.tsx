@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LuDumbbell, LuTrash, LuPlay } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { WorkoutWithExercises } from '@/types/workout.type';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import PAGE_URL from '@/constants/page.constant';
-import { useActiveWorkoutStore } from '@/stores/active-workout.store';
 import { useDeleteWorkout, usePlayWorkout, useWorkouts } from '@/hooks/workouts.hooks';
 import { useTranslation } from 'react-i18next';
+import { useDeleteWorkoutModalStore } from '@/stores/delete-workout.modal.store';
 
 export const WorkoutsList = () => {
   const router = useRouter();
@@ -16,12 +16,14 @@ export const WorkoutsList = () => {
   const deleteWorkoutMutation = useDeleteWorkout();
   const playWorkoutMutation = usePlayWorkout();
 
-  const { setActiveWorkout } = useActiveWorkoutStore((state) => ({
-    setActiveWorkout: state.setActiveWorkout,
-  }));
-
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutWithExercises | null>(null);
+  const { isDeleteDialogOpen, setIsDeleteDialogOpen, selectedWorkout, setSelectedWorkout } = useDeleteWorkoutModalStore(
+    (state) => ({
+      isDeleteDialogOpen: state.isDeleteDialogOpen,
+      setIsDeleteDialogOpen: state.setIsDeleteDialogOpen,
+      selectedWorkout: state.selectedWorkout,
+      setSelectedWorkout: state.setSelectedWorkout,
+    })
+  );
 
   const showDeleteModal = (workout: WorkoutWithExercises) => {
     setIsDeleteDialogOpen(true);
@@ -33,7 +35,6 @@ export const WorkoutsList = () => {
       toast.error(t('Workout has no exercises!'));
       return;
     }
-    setActiveWorkout(workout);
     await playWorkoutMutation.mutateAsync(workout.id);
     router.push(PAGE_URL.START_WORKOUT);
   };
