@@ -11,16 +11,16 @@ https://fitbau.vercel.app/
 - NextJs
 - Typescript
 - eslint
-- SASS
 - Tailwind
 - daisyUI
 - Zustand
-- Prisma
-- NextAuth
-- react-icons
+- react-query
 - react-hook-form
+- NextAuth
+- Prisma
 - zod
 - PWA
+- react-icons
 - react-i18next
 - TRPC
 
