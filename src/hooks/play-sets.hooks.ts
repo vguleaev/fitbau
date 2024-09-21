@@ -48,15 +48,12 @@ export const useSetPlayUpdate = () => {
         };
       });
 
-      // Return a context object with the snapshotted value
       return { previousWorkoutPlay };
     },
     onError: (err, variables, context) => {
-      // If the mutation fails, use the context returned from onMutate to roll back
       queryClient.setQueryData(['played-workout'], context?.previousWorkoutPlay);
       toast.error(t('Something went wrong :('));
     },
-    // If the mutation succeeds, invalidate the query to refetch the updated data
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['played-workout'],
