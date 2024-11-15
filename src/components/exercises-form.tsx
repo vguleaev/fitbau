@@ -69,8 +69,8 @@ export const ExercisesForm = ({ exercise, onClose }: Props) => {
     <div className="mt-5">
       <form onSubmit={handleSubmit(onSubmit)} tabIndex={-1}>
         <Image
-          className="rounded-lg dark:border-base-100 mb-5"
-          src="/images/workout_image.svg"
+          className="rounded-lg dark:border-base-100 mb-2"
+          src="/images/train-girl.svg"
           width={500}
           height={500}
           alt="Picture"
