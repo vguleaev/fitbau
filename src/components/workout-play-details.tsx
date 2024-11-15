@@ -5,7 +5,7 @@ import { WorkoutPlay } from '@prisma/client';
 import dayjs from 'dayjs';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FaCheckSquare } from 'react-icons/fa';
+import { FaCheckSquare, FaSquare } from 'react-icons/fa';
 import { LuHourglass } from 'react-icons/lu';
 
 type Props = {
@@ -51,6 +51,13 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
             <div className="w-full flex flex-col gap-2">
               {exercise.sets.map((set, index) => (
                 <div key={index} className="flex flex-row items-center gap-5">
+                  <div className="w-5">
+                    {set.isCompleted ? (
+                      <FaCheckSquare className="h-5 w-5 text-green-600" />
+                    ) : (
+                      <FaSquare className="h-5 w-5" />
+                    )}
+                  </div>
                   <div>#{index + 1}</div>
                   <div>
                     {set.reps} {t('reps')}
@@ -58,7 +65,6 @@ export const WorkoutPlayDetails = ({ workoutPlay, onClose }: Props) => {
                   <div>
                     {set.weight} {t('kg')}
                   </div>
-                  <div>{set.isCompleted ? <FaCheckSquare className="h-5 w-5" /> : null}</div>
                 </div>
               ))}
             </div>
