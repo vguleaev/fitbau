@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { useWorkoutPlaysHistory } from '@/hooks/workouts.hooks';
 import dayjs from 'dayjs';
+import Chart from 'chart.js/auto';
 import { WorkoutPlay } from '@prisma/client';
 import { LuClock, LuHourglass } from 'react-icons/lu';
 import { BottomOffcanvas } from '@/components/shared/bottom-offcanvas';
@@ -13,6 +14,9 @@ import { usePlayDetailsBottomCanvasStore } from '@/stores/play-details-bottom-ca
 
 export default function History() {
   const { t } = useTranslation();
+  const barChartCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const chartRef = useRef<Chart | null>(null);
+
   const { isFetching, data: history } = useWorkoutPlaysHistory();
   const { selectedPlay, setSelectedPlay, isPlayDetailsCanvasOpen, setPlayDetailsCanvasOpen } =
     usePlayDetailsBottomCanvasStore((state) => ({
@@ -22,9 +26,51 @@ export default function History() {
       setPlayDetailsCanvasOpen: state.setPlayDetailsCanvasOpen,
     }));
 
+  useEffect(() => {
+    if (history?.length && !isFetching) {
+      renderWorkoutsChart(history);
+    }
+    return () => {
+      chartRef.current?.destroy();
+    };
+  }, [history, isFetching]);
+
+  const renderWorkoutsChart = (history: WorkoutPlay[]) => {
+    const canvas = barChartCanvasRef.current!;
+    const sortedWorkouts = history.sort((a, b) => dayjs(b.createdAt).diff(dayjs(a.createdAt)));
+    const last8Workouts = sortedWorkouts.slice(0, 8);
+    const labels = last8Workouts.map((workoutPlay) => dayjs(workoutPlay.createdAt).format('DD.MM'));
+    const data = last8Workouts.map((workoutPlay) => getWorkoutPlayDuration(workoutPlay));
+
+    chartRef.current = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: t('Duration'),
+            data: data,
+            borderColor: '#f73c4d',
+            tension: 0.1,
+          },
+        ],
+      },
+    });
+  };
+
+  const renderLastWorkoutsChart = () => {
+    return (
+      <div>
+        <canvas ref={barChartCanvasRef} />
+      </div>
+    );
+  };
+
   const renderHistory = (history: WorkoutPlay[]) => {
     return (
       <div className="flex flex-col gap-5">
+        {renderLastWorkoutsChart()}
+
         {history.map((workoutPlay) => (
           <div
             onClick={() => {
@@ -56,6 +102,7 @@ export default function History() {
       return (
         <div>
           <div className="flex flex-col gap-5">
+            <div className="skeleton w-full h-[175px] p-4 bg-base-200" />
             <div className="skeleton w-full h-[100px] p-4 bg-base-200">
               <div className="skeleton w-[180px] h-6 mb-4 bg-base-300" />
             </div>
