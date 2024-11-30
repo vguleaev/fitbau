@@ -33,12 +33,12 @@ export default function History() {
     return () => {
       chartRef.current?.destroy();
     };
-  }, [history, isFetching]);
+  }, [history, isFetching, t]);
 
   const renderWorkoutsChart = (history: WorkoutPlay[]) => {
     const canvas = barChartCanvasRef.current!;
     const sortedWorkouts = history.sort((a, b) => dayjs(b.createdAt).diff(dayjs(a.createdAt)));
-    const last8Workouts = sortedWorkouts.slice(0, 8);
+    const last8Workouts = sortedWorkouts.slice(0, 8).reverse();
     const labels = last8Workouts.map((workoutPlay) => dayjs(workoutPlay.createdAt).format('DD.MM'));
     const data = last8Workouts.map((workoutPlay) => getWorkoutPlayDuration(workoutPlay));
 
