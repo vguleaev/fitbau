@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Navbar } from './navbar';
 import { BottomNav } from './bottom-nav';
 import { Drawer } from './drawer';
+import { registerServiceWorker } from '@/utils/service-worker.helper';
 
 type ComponentProps = {
   page: string;
@@ -9,6 +10,10 @@ type ComponentProps = {
 };
 
 export default function Layout({ children, page }: ComponentProps) {
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
   return (
     <div>
       <Navbar />

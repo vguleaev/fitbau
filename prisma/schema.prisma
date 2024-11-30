@@ -87,5 +87,14 @@ model ExercisePlaySet {
   @@index([exercisePlayId])
 }
 
+model PushMessageSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+}
+
 // run npx prisma db push to update schema
 // run npx prisma generate to update client
