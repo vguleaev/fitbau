@@ -13,7 +13,8 @@
     "hookform",
     "superjson",
     "tailwindcss",
-    "trpc"
+    "trpc",
+    "webpush"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
