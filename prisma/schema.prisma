@@ -90,7 +90,7 @@ model ExercisePlaySet {
 model PushMessageSubscription {
   id        String   @id @default(uuid())
   userId    String
-  endpoint  String   @unique
+  endpoint  String   @unique @db.VarChar(500)
   p256dh    String
   auth      String
   createdAt DateTime @default(now())

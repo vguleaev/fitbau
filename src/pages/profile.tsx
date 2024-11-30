@@ -4,14 +4,15 @@ import Layout from '@/layout/layout';
 import PAGE_URL from '@/constants/page.constant';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
-import { registerServiceWorker } from '@/utils/service-worker.helper';
+import { registerServiceWorker, unregisterServiceWorker } from '@/utils/service-worker.helper';
 
 export default function Profile() {
   const { t } = useTranslation();
   const { data: session } = useSession();
 
   const onSubscribeToNotificationsClick = async () => {
-    registerServiceWorker();
+    await unregisterServiceWorker();
+    await registerServiceWorker();
   };
 
   return (

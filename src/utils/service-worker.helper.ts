@@ -24,6 +24,21 @@ const registerServiceWorker = async () => {
   }
 };
 
+const unregisterServiceWorker = async () => {
+  if (!('serviceWorker' in navigator)) {
+    return;
+  }
+
+  const registration = await navigator.serviceWorker.getRegistration(SERVICE_WORKER_URL);
+  if (registration) {
+    await registration.unregister();
+    const subscription = await registration.pushManager.getSubscription();
+    if (subscription) {
+      await subscription.unsubscribe();
+    }
+  }
+};
+
 const subscribeUserToPush = async (registration: ServiceWorkerRegistration) => {
   try {
     const applicationServerKey = urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!);
@@ -58,4 +73,4 @@ const urlBase64ToUint8Array = (base64String: string) => {
   return outputArray;
 };
 
-export { registerServiceWorker };
+export { registerServiceWorker, unregisterServiceWorker };
