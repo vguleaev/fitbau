@@ -19,16 +19,14 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-// Handle push event
 // In Chrome DevTools, you can send a push message from the Application tab. Simulate a push event from Push server.
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.text() : 'No payload';
-  console.log('Push event received:', data);
 
   const options = {
     body: data,
     icon: '/favicon.ico',
   };
 
-  event.waitUntil(self.registration.showNotification('Push Notification', options));
+  event.waitUntil(self.registration.showNotification('Workout Reminder', options));
 });
