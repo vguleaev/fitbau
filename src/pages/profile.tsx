@@ -11,6 +11,7 @@ export default function Profile() {
   const { data: session } = useSession();
 
   const onSubscribeToNotificationsClick = async () => {
+    // this is for debugging purposes, to reset the service worker and push manager
     await unregisterServiceWorker();
     await registerServiceWorker();
   };
@@ -45,7 +46,10 @@ export default function Profile() {
             />
           </div>
 
-          <button className="btn w-36 mt-5" onClick={() => onSubscribeToNotificationsClick()}>
+          <button
+            style={{ display: 'none' }}
+            className="btn w-36 mt-5"
+            onClick={() => onSubscribeToNotificationsClick()}>
             Subscribe to Notifications
           </button>
 
