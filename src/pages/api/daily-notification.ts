@@ -21,7 +21,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
       });
 
       const userName = user?.name || 'Friend';
-      const notificationText = `Hello, ${userName}! Are already in gym?`;
+      const notificationText = `Hello, ${userName}! Are you already in gym?`;
 
       const mappedSubscription = {
         endpoint: subscription.endpoint,

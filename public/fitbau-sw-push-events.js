@@ -3,6 +3,10 @@ self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting()); // Forces the waiting service worker to become active
 });
 
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim()); // Clients claims this service worker
+});
+
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   event.waitUntil(
@@ -26,6 +30,8 @@ self.addEventListener('push', (event) => {
   const options = {
     body: data,
     icon: '/favicon.ico',
+    silent: false,
+    requireInteraction: true,
   };
 
   event.waitUntil(self.registration.showNotification('Workout Reminder', options));
