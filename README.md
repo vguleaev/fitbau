@@ -23,6 +23,7 @@ https://fitbau.vercel.app/
 - react-icons
 - react-i18next
 - TRPC
+- Push Notifications
 
 Hosted on **Vercel**
 
