@@ -27,8 +27,8 @@ https://fitbau.vercel.app/
 
 Hosted on **Vercel**
 
-Database hosted on **Planetscale**
+Database self-hosted on **DigitalOcean**
 
-All graphic assets generated with **Midjourney**
+Logo generated with **Midjourney**
 
 Created using this starter https://github.com/vguleaev/fullstack-nextjs-starter
