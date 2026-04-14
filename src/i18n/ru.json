@@ -27,7 +27,6 @@
   "Sets must be a positive number!": "Подходы должны быть положительным числом!",
   "Weight must be a positive number!": "Вес должен быть положительным числом!",
   "Finish workout": "Завершить",
-  "You do not have an active workout. Please select your workout and click play.": "У вас нет активной тренировки. Пожалуйста, выберите тренировку и нажмите кнопку 'Начать'.",
   "You do not have any workout history yet.": "У вас пока нет истории тренировок.",
   "History": "История",
   "minutes": "минут",
@@ -45,5 +44,14 @@
   "Something went wrong :(": "Что-то пошло не так :(",
   "Great job! You have completed the workout!": "Отличная работа! Вы завершили тренировку!",
   "Stop active workout first!": "Сначала завершите активную тренировку!",
-  "Duration": "Время тренировки"
+  "Duration": "Время тренировки",
+  "Your training programs": "Ваши программы тренировок",
+  "No workouts yet": "Нет тренировок",
+  "Tap + to create your first training program": "Нажмите + чтобы создать первую программу",
+  "Active": "Активна",
+  "Tap + to add your first exercise": "Нажмите + чтобы добавить упражнение",
+  "No active workout": "Нет активной тренировки",
+  "Select a workout and tap play to start": "Выберите тренировку и нажмите старт",
+  "Go to Workouts": "К тренировкам",
+  "Done": "Готово"
 }

@@ -22,7 +22,7 @@ export const WorkoutsList = () => {
       setIsDeleteDialogOpen: state.setIsDeleteDialogOpen,
       selectedWorkout: state.selectedWorkout,
       setSelectedWorkout: state.setSelectedWorkout,
-    })
+    }),
   );
 
   const showDeleteModal = (workout: WorkoutWithExercises) => {
@@ -60,15 +60,18 @@ export const WorkoutsList = () => {
 
   const renderWorkoutSkeleton = () => {
     return (
-      <div className="h-24 skeleton w-full bg-base-200 rounded-md p-4">
+      <div className="skeleton w-full bg-base-200 rounded-xl p-4 h-[84px]">
         <div className="flex flex-row justify-between items-center">
-          <div>
-            <div className="w-[160px] h-5 mb-3 mt-2 bg-base-300 skeleton" />
-            <div className="w-[110px] h-5 mb-2 bg-base-300 skeleton" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-base-300 skeleton flex-shrink-0" />
+            <div>
+              <div className="w-[140px] h-4 mb-2 bg-base-300 skeleton rounded" />
+              <div className="w-[90px] h-3 bg-base-300 skeleton rounded" />
+            </div>
           </div>
-          <div className="flex flex-row gap-4">
-            <div className="h-11 w-11 rounded-full bg-base-300 skeleton" />
-            <div className="h-11 w-11 rounded-full bg-base-300 skeleton" />
+          <div className="flex flex-row gap-2">
+            <div className="h-9 w-9 rounded-full bg-base-300 skeleton" />
+            <div className="h-9 w-9 rounded-full bg-base-300 skeleton" />
           </div>
         </div>
       </div>
@@ -113,44 +116,58 @@ export const WorkoutsList = () => {
 
   if (workouts?.length === 0) {
     return (
-      <div className="mt-10 flex flex-col gap-5 text-center items-center">
-        <div>{t('Your workout list is empty.')}</div>
-        <LuDumbbell className="h-10 w-10 text-primary" />
+      <div className="mt-16 flex flex-col gap-4 text-center items-center px-6">
+        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+          <LuDumbbell className="h-10 w-10 text-primary" />
+        </div>
+        <div>
+          <p className="font-semibold text-base">{t('No workouts yet')}</p>
+          <p className="text-sm text-base-content/50 mt-1">{t('Tap + to create your first training program')}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       {workouts?.map((workout) => (
-        <div className="h-24" key={workout.id}>
-          <div className="flex flex-row justify-between items-center bg-base-200 rounded-md p-4">
-            <div className="w-full" onClick={() => onWorkoutClick(workout)}>
-              <div className="flex flex-row mb-2 items-center">
-                <div className="text-lg font-bold">{workout.name}</div>
+        <div
+          key={workout.id}
+          className="relative overflow-hidden rounded-xl bg-base-200 border border-base-300/50 shadow-sm transition-all duration-150 active:scale-[0.99]">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-xl" />
+          <div className="flex flex-row justify-between items-center p-4 pl-5">
+            <div className="flex items-center gap-3 flex-1 min-w-0" onClick={() => onWorkoutClick(workout)}>
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <LuDumbbell className="h-5 w-5 text-primary" />
               </div>
-              <div className="flex flex-row items-center">
-                <div className="text-base-content">
-                  {workout.exercises.length} {t('exercises')}
+              <div className="min-w-0">
+                <div className="font-bold text-base leading-tight truncate">{workout.name}</div>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <span className="text-xs text-base-content/60 font-medium">
+                    {workout.exercises.length} {t('exercises')}
+                  </span>
+                  {workout.isPlayed && (
+                    <span className="badge badge-sm badge-primary text-white font-medium px-2">{t('Active')}</span>
+                  )}
                 </div>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-1.5 flex-shrink-0">
               <button
-                className="btn btn-circle bg-base-300"
+                className="btn btn-circle btn-sm btn-primary text-white shadow-sm"
                 onClick={() => startWorkout(workout)}
                 disabled={playWorkoutMutation.isPending}>
                 {playWorkoutMutation.isPending ? (
-                  <span className="loading loading-spinner" />
+                  <span className="loading loading-spinner loading-xs" />
                 ) : (
-                  <LuPlay className="h-5 w-5" />
+                  <LuPlay className="h-4 w-4 fill-current" />
                 )}
               </button>
               <button
-                className="btn btn-circle  bg-base-300"
+                className="btn btn-circle btn-sm btn-ghost text-base-content/40 hover:text-error hover:bg-error/10"
                 disabled={playWorkoutMutation.isPending}
                 onClick={() => showDeleteModal(workout)}>
-                <LuTrash className="h-5 w-5" />
+                <LuTrash className="h-4 w-4" />
               </button>
             </div>
           </div>

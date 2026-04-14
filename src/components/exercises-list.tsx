@@ -1,5 +1,5 @@
 import React from 'react';
-import { LuFrown, LuX } from 'react-icons/lu';
+import { LuX, LuDumbbell } from 'react-icons/lu';
 import { DialogModal } from './shared/dialog-modal';
 import { useRouter } from 'next/router';
 import { useWorkout } from '@/hooks/workouts.hooks';
@@ -79,16 +79,20 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
 
   const renderExerciseSkeleton = () => {
     return (
-      <div className="p-3 rounded-lg mb-5 w-full h-[88px] bg-base-200">
-        <div className="flex flex-row justify-between items-center mb-4">
-          <div className="rounded-lg w-[100px] mb-2 h-5 bg-base-300 skeleton" />
-          <div className="flex flex-row">
-            <div className="h-6 w-6 rounded-full bg-base-300 skeleton" />
-            <div className="h-6 w-6 ml-2 rounded-full bg-base-300 skeleton" />
+      <div className="skeleton w-full bg-base-200 rounded-xl p-4 h-[90px]">
+        <div className="flex flex-row justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-base-300 skeleton flex-shrink-0" />
+            <div>
+              <div className="w-[130px] h-4 mb-2 bg-base-300 skeleton rounded" />
+              <div className="flex gap-2">
+                <div className="w-14 h-3 bg-base-300 skeleton rounded" />
+                <div className="w-14 h-3 bg-base-300 skeleton rounded" />
+                <div className="w-14 h-3 bg-base-300 skeleton rounded" />
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-row gap-5">
-          <div className="rounded-lg w-[230px] mb-2 h-5 bg-base-300 skeleton" />
+          <div className="h-7 w-7 rounded-full bg-base-300 skeleton" />
         </div>
       </div>
     );
@@ -96,7 +100,7 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
 
   if (isFetching) {
     return (
-      <div>
+      <div className="flex flex-col gap-3">
         {renderExerciseSkeleton()}
         {renderExerciseSkeleton()}
         {renderExerciseSkeleton()}
@@ -109,45 +113,59 @@ export const ExercisesList = ({ onEditExercise }: Props) => {
     return null;
   }
 
-  return (
-    <div>
-      {workout.exercises.length === 0 && (
-        <div className="flex flex-row items-center justify-center w-full">
-          {t('No exercises')}
-          <LuFrown className="h-4 w-4 ml-2" />
+  if (workout.exercises.length === 0) {
+    return (
+      <div className="mt-16 flex flex-col gap-4 text-center items-center px-6">
+        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+          <LuDumbbell className="h-10 w-10 text-primary" />
         </div>
-      )}
-
-      <div className="overflow-y-scroll h-[32rem]">
-        {workout.exercises.map((exercise) => (
-          <div className="bg-base-200 p-3 rounded-lg mb-5" key={exercise.id} onClick={() => editExercise(exercise)}>
-            <div className="flex flex-row justify-between items-center mb-4">
-              <div className="font-semibold">{exercise.name}</div>
-              <div className="flex flex-row">
-                <LuX
-                  className="h-6 w-6 ml-2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    showDeleteModal(exercise);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="flex flex-row gap-5">
-              <div>
-                {t('Reps')}: {exercise.reps}
-              </div>
-              <div>
-                {t('Sets')}: {exercise.sets}
-              </div>
-              <div>
-                {t('Weight')}: {exercise.weight} ({t('kg')})
-              </div>
-            </div>
-          </div>
-        ))}
+        <div>
+          <p className="font-semibold text-base">{t('No exercises')}</p>
+          <p className="text-sm text-base-content/50 mt-1">{t('Tap + to add your first exercise')}</p>
+        </div>
       </div>
+    );
+  }
 
+  return (
+    <div className="flex flex-col gap-3 mb-24">
+      {workout.exercises.map((exercise, index) => (
+        <div
+          key={exercise.id}
+          className="relative overflow-hidden rounded-xl bg-base-200 border border-base-300/50 shadow-sm transition-all duration-150 active:scale-[0.99]"
+          onClick={() => editExercise(exercise)}>
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-xl" />
+          <div className="flex flex-row justify-between items-center p-4 pl-5">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary font-bold text-sm">
+                {index + 1}
+              </div>
+              <div className="min-w-0">
+                <div className="font-bold text-base leading-tight truncate">{exercise.name}</div>
+                <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                  <span className="bg-base-300 text-base-content/70 text-xs font-medium px-2 py-0.5 rounded-full">
+                    {exercise.reps} {t('reps')}
+                  </span>
+                  <span className="bg-base-300 text-base-content/70 text-xs font-medium px-2 py-0.5 rounded-full">
+                    {exercise.sets} {t('Sets').toLowerCase()}
+                  </span>
+                  <span className="bg-primary/10 text-primary text-xs font-semibold px-2 py-0.5 rounded-full">
+                    {exercise.weight} {t('kg')}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button
+              className="btn btn-circle btn-xs btn-ghost text-base-content/30 hover:text-error hover:bg-error/10 flex-shrink-0 ml-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                showDeleteModal(exercise);
+              }}>
+              <LuX className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      ))}
       {renderDeleteModal()}
     </div>
   );

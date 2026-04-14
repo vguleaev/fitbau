@@ -27,7 +27,7 @@
   "Sets must be a positive number!": "Sets must be a positive number!",
   "Weight must be a positive number!": "Weight must be a positive number!",
   "Finish workout": "Finish Workout",
-  "You do not have an active workout. Please select your workout and click play.": "You do not have an active workout. Please select your workout and click play.",
+  "Go to Workouts": "Go to Workouts",
   "You do not have any workout history yet.": "You do not have any workout history yet.",
   "History": "History",
   "minutes": "minutes",
@@ -45,5 +45,13 @@
   "Something went wrong :(": "Something went wrong :(",
   "Great job! You have completed the workout!": "Great job! You have completed the workout!",
   "Stop active workout first!": "Stop active workout first!",
-  "Duration": "Duration"
+  "Duration": "Duration",
+  "Your training programs": "Your training programs",
+  "No workouts yet": "No workouts yet",
+  "Tap + to create your first training program": "Tap + to create your first training program",
+  "Active": "Active",
+  "Tap + to add your first exercise": "Tap + to add your first exercise",
+  "No active workout": "No active workout",
+  "Select a workout and tap play to start": "Select a workout and tap play to start",
+  "Done": "Done"
 }

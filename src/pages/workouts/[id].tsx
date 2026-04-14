@@ -48,9 +48,10 @@ export default function WorkoutDetails() {
 
   const renderWorkoutSkeleton = () => {
     return (
-      <div>
-        <div className="w-[60px] h-6 mb-2 bg-base-300 skeleton" />
-        <div className="w-[160px] h-6 mb-5 bg-base-300 skeleton" />
+      <div className="mb-6">
+        <div className="w-[60px] h-4 mb-3 bg-base-300 skeleton rounded" />
+        <div className="w-[180px] h-7 mb-1 bg-base-300 skeleton rounded" />
+        <div className="w-[100px] h-4 bg-base-300 skeleton rounded" />
       </div>
     );
   };
@@ -61,12 +62,17 @@ export default function WorkoutDetails() {
     }
 
     return (
-      <div>
-        <div className="link flex flex-row items-center mb-2 no-underline" onClick={() => router.push('/workouts')}>
-          <LuChevronsLeft className="w-5 h-5 mr-1" />
+      <div className="mb-6">
+        <button
+          className="flex flex-row items-center gap-1 text-sm text-base-content/50 hover:text-primary transition-colors mb-3"
+          onClick={() => router.push('/workouts')}>
+          <LuChevronsLeft className="w-4 h-4" />
           {t('Back')}
-        </div>
-        <h1 className="text-lg mb-5 font-bold">{workout?.name}</h1>
+        </button>
+        <h1 className="text-2xl font-bold tracking-tight">{workout?.name}</h1>
+        <p className="text-sm text-base-content/50 mt-0.5">
+          {workout?.exercises.length} {t('exercises')}
+        </p>
       </div>
     );
   };

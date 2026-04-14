@@ -65,8 +65,11 @@ export default function Workouts() {
 
   return (
     <Layout page={PAGE_URL.WORKOUTS}>
-      <div className="m-5 mb-20">
-        <h1 className="text-lg mb-5">{t('Workouts')}</h1>
+      <div className="m-5 mb-24">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold tracking-tight">{t('Workouts')}</h1>
+          <p className="text-sm text-base-content/50 mt-0.5">{t('Your training programs')}</p>
+        </div>
         <WorkoutsList />
         <FloatingButton onClick={() => showAddWorkoutModal()} />
         {renderAddWorkoutModal()}
