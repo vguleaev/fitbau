@@ -1,60 +1,35 @@
 import { LuMoon, LuSun } from 'react-icons/lu';
-import styles from '../../styles/theme-toggle.module.scss';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const ThemeToggle = () => {
+  const [theme, setTheme] = useState<string>('dark');
+
   useEffect(() => {
-    themeCheck();
-  }, []);
-
-  const applyThemeClass = (theme: string) => {
-    if (theme === 'dark') {
-      document.documentElement.classList.remove('light');
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
-    }
-  };
-
-  const applyThemeAttribute = (theme: string) => {
-    document.documentElement.setAttribute('data-theme', theme);
-  };
-
-  const themeCheck = () => {
     const storedTheme =
       localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(storedTheme);
+    setTheme(storedTheme);
+  }, []);
 
-    if (storedTheme) {
-      applyThemeAttribute(storedTheme);
-      applyThemeClass(storedTheme);
-    }
+  const applyTheme = (t: string) => {
+    document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(t);
   };
 
   const onToggleClick = () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    let targetTheme = 'light';
-
-    if (currentTheme === 'light') {
-      targetTheme = 'dark';
-    }
+    const targetTheme = theme === 'light' ? 'dark' : 'light';
     localStorage.setItem('theme', targetTheme);
-    applyThemeAttribute(targetTheme);
-    applyThemeClass(targetTheme);
+    applyTheme(targetTheme);
+    setTheme(targetTheme);
   };
 
   return (
-    <div>
-      <button
-        className={`btn btn-primary text-white no-animation fade-in ${styles.themeLight} hidden`}
-        onClick={() => onToggleClick()}>
-        <LuSun className="h-5 w-5" />
-      </button>
-      <button
-        className={`btn btn-primary text-white no-animation fade-in ${styles.themeDark} hidden`}
-        onClick={() => onToggleClick()}>
-        <LuMoon className="h-5 w-5" />
-      </button>
-    </div>
+    <button
+      className="btn btn-primary text-white no-animation fade-in"
+      style={{ touchAction: 'manipulation' }}
+      onClick={onToggleClick}>
+      {theme === 'light' ? <LuSun className="h-5 w-5" /> : <LuMoon className="h-5 w-5" />}
+    </button>
   );
 };
