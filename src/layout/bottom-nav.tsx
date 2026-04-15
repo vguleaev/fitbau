@@ -12,26 +12,32 @@ export const BottomNav = ({ page }: ComponentProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className="btm-nav bg-base-200 shadow-lg">
+    <div
+      className="fixed bottom-0 left-0 right-0 bg-base-200 shadow-lg flex flex-row z-50"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <button
-        className={`text-primary bg-base-200 ${
-          [PAGE_URL.WORKOUTS, PAGE_URL.WORKOUT_DETAILS].includes(page) && 'active'
+        className={`flex flex-col items-center justify-center flex-1 py-3 gap-1 text-primary bg-base-200 border-t-2 ${
+          [PAGE_URL.WORKOUTS, PAGE_URL.WORKOUT_DETAILS].includes(page) ? 'border-primary' : 'border-transparent'
         }`}
         onClick={() => router.push(PAGE_URL.WORKOUTS)}>
         <FaDumbbell className="h-5 w-5" />
-        <span className="btm-nav-label text-[12px]">{t('Workouts')}</span>
+        <span className="text-[12px]">{t('Workouts')}</span>
       </button>
       <button
-        className={`text-primary bg-base-200 ${PAGE_URL.START_WORKOUT == page && 'active'}`}
+        className={`flex flex-col items-center justify-center flex-1 py-3 gap-1 text-primary bg-base-200 border-t-2 ${
+          PAGE_URL.START_WORKOUT == page ? 'border-primary' : 'border-transparent'
+        }`}
         onClick={() => router.push(PAGE_URL.START_WORKOUT)}>
         <FaPlayCircle className="h-5 w-5" />
-        <span className="btm-nav-label text-[12px]">{t('Start Workout')}</span>
+        <span className="text-[12px]">{t('Start Workout')}</span>
       </button>
       <button
-        className={`text-primary bg-base-200 ${PAGE_URL.HISTORY == page && 'active'}`}
+        className={`flex flex-col items-center justify-center flex-1 py-3 gap-1 text-primary bg-base-200 border-t-2 ${
+          PAGE_URL.HISTORY == page ? 'border-primary' : 'border-transparent'
+        }`}
         onClick={() => router.push(PAGE_URL.HISTORY)}>
         <FaClock className="h-5 w-5" />
-        <span className="btm-nav-label text-[12px]">{t('History')}</span>
+        <span className="text-[12px]">{t('History')}</span>
       </button>
     </div>
   );

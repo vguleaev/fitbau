@@ -18,7 +18,7 @@ export default function Layout({ children, page }: ComponentProps) {
     <div>
       <Navbar />
       <Drawer>
-        <div>{children}</div>
+        <div className="pb-20">{children}</div>
       </Drawer>
       <BottomNav page={page} />
     </div>
